@@ -1,0 +1,5 @@
+11/12/2017:
+-Creada la estructura básica de la base de datos.
+-Configurado el "nodejs" para que devuelva JSON con los datos de la DB.
+-Inicio estructura báscia html.
+
