@@ -23,14 +23,20 @@ CREATE TABLE Users (
 	CREATE TABLE Soportes(
     SoporteID int not null UNIQUE AUTO_INCREMENT,
     Tipo varchar(255) not null
-    );	
+    );
+	
+	CREATE TABLE Generos(
+	GeneroID int not null UNIQUE AUTO_INCREMENT,
+	GeneroNombre varchar(255) not null,
+	PRIMARY KEY (GeneroID)
+	);
 
 CREATE TABLE Discos (
     DiscoID int not null UNIQUE AUTO_INCREMENT,    
     Album varchar(225) not null,
     Artista varchar(255) not null,	
-	año datetime,
-    Genero TEXT not null,    
+	Año datetime,
+    Genero varchar(255) not null,
     SoporteID int not null,
 	NumDeDiscos int not null,
     Etiquetado varchar(255),

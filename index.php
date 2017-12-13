@@ -59,33 +59,108 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 	
-	<div class="row fixed-top" id="cabecera">
-		<div class="col-12" id="upperHead">Cabecera</div>
-	</div>
-	<br><br>
-	<div class="container">		
-		<div class="row d-none d-sm-block">			
-			<div class="col aling-self-start" id="headerArea">
-				<h1>ICONO</h1>
-				<div class="row">
-					<div class="col-6"></div>
-					<div class="col-5 align-self-end" id="header">
-						<b>Añadir Eliminar Cerrar</b>
-					</div>
-				</div>
+	<div class="container-wide fixed-top" id="cabecera">
+		<div class="row">
+			<div class="col-3" id="upperHead">
+				<h1>TSL</h1>
+			</div>
+			<div class="col">
+				<ul class="nav justify-content-center">
+					<li class="nav-item"><a href="#menu_buscar" class="nav-link" data-toggle="collapse" data-target="#menu_buscar">Buscar</a></li>
+					<li class="nav-item"><a href="#menu_añadir" class="nav-link" data-toggle="collapse" data-target="#menu_añadir">Añadir</a></li>
+					<li class="nav-item"><a href="#menu_eliminar" class="nav-link" data-toggle="collapse" data-target="#menu_eliminar">Eliminar</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">Cerrar</a></li>
+				</ul>						
 			</div>
 		</div>
-		<div class="row d-block d-sm-none">
-			<div class="col aling-self-center"><b>Añadir Eliminar Cerrar</b></div>
+		<div class="row collapse" id="menu_buscar">
+			<div class="col-xs-12 col-sm-4">			
+				<form id="form_buscar" action="POST">
+					<div class="form-group">
+						<label>Artista:</label>
+						<input class="form-control" type="text" value="" id="Artista">
+						<label>Album:</label>
+						<input class="form-control" type="text" value="" id="Titulo">
+					</div>
+					<div class="form-check form-check-inline">
+						<label class="">Genero:</label>
+					<div class="form-check form-check-inline">	
+						<label class="form-check-label">
+							<input class="form-control" type="checkbox" name="genero" value="Blues">Blues
+						</label>
+					</div>
+					<div class="form-check form-check-inline">	
+						<label class="form-check-label">
+							<input class="form-control" type="checkbox" name="genero" value="Jazz">Jazz
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<label class="form-check-label">
+							<input class="form-control" type="checkbox" name="genero" value="Pop">Pop
+						</label>
+					</div>
+					</div>
+					<div class="form-group">
+						<input	type="submit" value="Buscar">
+					</div>	
+				</form>
+			</div>			
 		</div>
-		<br>
+		<div class="row collapse" id="menu_eliminar">
+			<div class="col-xs-12 col-sm-3">			
+				<form id="form_buscar">
+					<div class="form-group">
+						<label>Artista:</label>
+						<input class="form-control" type="text" value="" id="Artista">
+						<label>Album:</label>
+						<input class="form-control" type="text" value="" id="Titulo">
+						<input	type="submit" value="Buscar">
+					</div>
+				</form>
+			</div>			
+		</div>
+			<div class="row collapse" id="menu_añadir">
+			<div class="col-xs-12 col-sm-3">			
+				<form id="form_buscar">
+					<div class="form-group">
+						<label>Artista:</label>
+						<input class="form-control" type="text" value="" id="Artista">
+						<label>Album:</label>
+						<input class="form-control" type="text" value="" id="Titulo">
+						<input	type="submit" value="Buscar">
+					</div>
+				</form>
+			</div>			
+		</div>	
+		<div class="row">
+			<div class="col border">
+				BARRRA DE NAVEGACIÓN
+			</div>
+		</div>		
+	</div>
+	<div class="row">	
+		<div class="col">
+			<br><br><br><br>
+		</div>
+		<div class="col d-block d-md-none">
+			<br>
+		</div>
+		<div class="col d-block d-sm-none">
+			<br><br><br><br><br>
+		</div>
+	</div>
+	
+	<div class="container">
+		
 		<div class="row">
 			<div class="d-none d-sm-block col-2" id="menu">
-				<ul class ="menu  sticky-top">
-					<li>Buscar</li>
-					<li>Fonoteca</li>
-					<li>Cerrar</li>
-				</ul>
+				<form id="form_buscar">
+					<div class="form-group">
+					<label>Artista:</label><input class="form-control" type="text" value="" id="Artista">
+					<label>Título:</label><input class="form-control" type="text" value="" id="Titulo">
+					<br><input	type="submit" value="Buscar">
+					</div>
+				</form>				
 			</div>			
 			<div class="col-xs-12 col-sm-10 " id="contenido">
 				<div class="row">
@@ -165,7 +240,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row fixed-bottom" id="foot">
+	<div class="row" id="foot">
 		<div class="col">Pie</div>
 	</div>
 </body>
