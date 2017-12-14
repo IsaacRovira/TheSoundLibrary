@@ -236,7 +236,7 @@ public class XMLtoMySQL {
             }
             */
             for(Album valor: album){
-                System.out.println("(\""+valor.getAlbum()+"\"), (\""+valor.albumArtist+"\"), (\""+valor.getAño()+"\"), (\""+valor.getGenero()+"\"),(1),(\"\"),(\"\"),(\"\"),(\""+valor.getAlbum()+".jpg\"),(\"\")");
+                System.out.println("INSERT INTO Discos (Album, Artista, año, Genero, SoporteID, Etiquetado, Identificadores, Discografica, Img_cover, Img_back) VALUES (\""+valor.getAlbum()+"\", \""+valor.albumArtist+"\", \""+valor.getAño()+"\", \""+valor.getGenero()+"\",1,\"\",\"\",\"\",\""+valor.getAlbum()+".jpg\",\"\");");
             }
             
             System.out.println(album.size());

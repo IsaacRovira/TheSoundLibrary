@@ -8,6 +8,7 @@ DROP DATABASE IF EXISTS soundlib;
 CREATE DATABASE soundlib DEFAULT CHARACTER SET latin1 COLLATE latin1_spanish_ci;
 USE soundlib;
 
+--TABLAS
 /*tabla usuarios*/
 CREATE TABLE Users (
     UserID int not null UNIQUE AUTO_INCREMENT,
@@ -19,18 +20,21 @@ CREATE TABLE Users (
 	ID_key varchar(25) not null UNIQUE,
     PRIMARY KEY (UserID)
 	);
-	
+
+--SOPORTES	
 	CREATE TABLE Soportes(
     SoporteID int not null UNIQUE AUTO_INCREMENT,
     Tipo varchar(255) not null
     );
-	
+
+--GENEROS
 	CREATE TABLE Generos(
 	GeneroID int not null UNIQUE AUTO_INCREMENT,
 	GeneroNombre varchar(255) not null,
 	PRIMARY KEY (GeneroID)
 	);
 
+--DISCOS
 CREATE TABLE Discos (
     DiscoID int not null UNIQUE AUTO_INCREMENT,    
     Album varchar(225) not null,
@@ -43,12 +47,10 @@ CREATE TABLE Discos (
 	Discografica varchar(255),
 	Img_cover int,
 	Img_back int,
-    PRIMARY KEY (DiscoID),
-	CONSTRAINT Chk_ImgCover (CHECK Img_cover IN (SELECT CoverID FROM Covers)),
-	CONSTRAINT Chk_ImgBack (CHECK Img_back IN (SELECT CoverID FROM Covers)),
-    FOREIGN KEY (SoporteID) REFERENCES Soportes(SoporteID)	
+    PRIMARY KEY (DiscoID)
 	);
-	
+
+--COVERS	
 CREATE TABLE Covers (
 	CoverID int not null UNIQUE AUTO_INCREMENT,
 	FileName varchar(255) not null,
@@ -58,14 +60,15 @@ CREATE TABLE Covers (
 	PRIMARY KEY (CoverID)	
 	);	
 
+--FONOTECAS
 CREATE TABLE Fonotecas(
     FonoID int not null UNIQUE AUTO_INCREMENT,
     Nombre varchar(255) not null,
     UserID int not null,
-    PRIMARY KEY (FonoID),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    PRIMARY KEY (FonoID)    
     );
-
+	
+--FONOTECASDATA
 CREATE TABLE FonotecasData(
     FonotecasDataID int not null UNIQUE AUTO_INCREMENT,
     DiscoID int not null,
@@ -75,21 +78,8 @@ CREATE TABLE FonotecasData(
 	PRIMARY KEY (FonotecasDataID),
 	FOREIGN KEY (FonoID) REFERENCES Fonotecas(FonoID)
     );
-    
-CREATE TABLE Generos(
-    GeneroID int not null UNIQUE AUTO_INCREMENT,
-    GeneroNombre varchar(255) not null,
-    PRIMARY KEY (GeneroID)
-    );
 
-CREATE TABLE Estilos(
-    EstiloID int not null UNIQUE AUTO_INCREMENT,
-    GeneroID int not null,
-    EstiloNombre varchar(255) not null,
-    PRIMARY KEY (EstiloID),
-    FOREIGN KEY (GeneroID) REFERENCES Generos(GeneroID)
-    );
-    
+--CANCIONES    
 CREATE TABLE Canciones(
 	CancionID int not null UNIQUE AUTO_INCREMENT,
     Titulo varchar(255) not null,
@@ -97,6 +87,13 @@ CREATE TABLE Canciones(
     Duracion time,
     Artistas TEXT,
 	DiscoID int,
-    PRIMARY KEY (CancionID),
-	FOREIGN KEY (DiscoID) REFERENCES Discos(DiscoID)	
+    PRIMARY KEY (CancionID)	
     );
+	
+--CONSTRAINTS
+ALTER TABLE Discos ADD FOREIGN KEY Chk_cover (Img_cover) REFERENCES Covers(CoverID);
+ALTER TABLE Discos ADD FOREIGN KEY Chk_back (Img_back) REFERENCES Covers(CoverID);
+ALTER TABLE Discos ADD FOREIGN KEY Chk_soporteId (SoporteID) REFERENCES Soportes(SoporteID));
+ALTER TABLE Fonotecas ADD FOREIGN KEY Chk_userId (UserID) REFERENCES Users(UserID);
+ALTER TABLE FonotecasData ADD FOREIGN KEY Chk_fonoId (FonoID) REFERENCES Fonotecas(FonoID);
+ALTER TABLE Canciones ADD FOREIGN KEY chk_discoId (DiscoID) REFERENCES Discos(DiscoID);
