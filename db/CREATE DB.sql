@@ -34,11 +34,10 @@ CREATE TABLE Users (
 CREATE TABLE Discos (
     DiscoID int not null UNIQUE AUTO_INCREMENT,    
     Album varchar(225) not null,
-    Artista varchar(255) not null,	
+    Artista varchar(255),	
 	Año datetime,
     Genero varchar(255) not null,
     SoporteID int not null,
-	NumDeDiscos int not null,
     Etiquetado varchar(255),
     Identificadores varchar(255),
 	Discografica varchar(255),
@@ -94,12 +93,10 @@ CREATE TABLE Estilos(
 CREATE TABLE Canciones(
 	CancionID int not null UNIQUE AUTO_INCREMENT,
     Titulo varchar(255) not null,
-    Pista int not null,
-	Cara char NOT NULL DEFAULT '',
+    Pista int,
     Duracion time,
     Artistas TEXT,
-	DiscoID int not null,
+	DiscoID int,
     PRIMARY KEY (CancionID),
-	CONSTRAINT CHK_Cara CHECK (Cara in ('', 'A', 'B')),
 	FOREIGN KEY (DiscoID) REFERENCES Discos(DiscoID)	
     );
