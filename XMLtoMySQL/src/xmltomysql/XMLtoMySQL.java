@@ -236,7 +236,7 @@ public class XMLtoMySQL {
             }
             */
             for(Album valor: album){
-                System.out.println("(\""+valor.getAlbum()+"\"), (\""+valor.albumArtist+"\"), (\""+valor.getAño()+"\"), (\""+valor.getGenero()+"\"),(1),(\"\"),(\"\"),(\"\"),(\"\"),(\"\")");
+                System.out.println("(\""+valor.getAlbum()+"\"), (\""+valor.albumArtist+"\"), (\""+valor.getAño()+"\"), (\""+valor.getGenero()+"\"),(1),(\"\"),(\"\"),(\"\"),(\""+valor.getAlbum()+".jpg\"),(\"\")");
             }
             
             System.out.println(album.size());
