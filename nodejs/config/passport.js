@@ -26,14 +26,17 @@ module.exports = function(passport) {
 
     //serialize
     passport.serializeUser(function(user, done) {		
-        done(null, user);
+        done(null, user.local.id);
     });
 
     //deserialize
     passport.deserializeUser(function(id, done) {
-		console.log("deserialize: " + id);
-        con.query("SELECT * from users where ID_key = ?", id, function(err, results){		
-			done(err, results[0].ID_key);
+        con.query("SELECT * from users where ID_key = ?", id, function(err, results){
+			user = new User();
+			user.local.id		= results[0].ID_key;
+			user.local.email	= results[0].Email;
+			user.local.password	= results[0].Password;
+			done(err, user);
 		});
 	});
 	
@@ -103,6 +106,12 @@ module.exports = function(passport) {
 				return done(null, false, req.flash("loginMessage", "Nombre de usuario o password incorrecto"));				
 			};
 			
+			//Almacenamos las credenciales del usuario en nuestro objeto "User"...			
+			theUser.local.id		= result[0].ID_key;
+			theUser.local.email 	= email;
+			//theUser.local.password = password;
+			
+			
 			//Si la password es incorrecta solicitamos el flashdata con el mensaje de error.
 			if(!theUser.validPassword(password, result[0].Password)){
 				console.log("Password error");
@@ -110,7 +119,7 @@ module.exports = function(passport) {
 			};
 			
 			//Si todo está bien devolvemos el objeto "User" con los datos del usuario.
-			return done(null, result[0].ID_key);
+			return done(null, theUser);
 		});
 	}));
 };
