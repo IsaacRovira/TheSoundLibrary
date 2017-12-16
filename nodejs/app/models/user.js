@@ -6,10 +6,8 @@ var wd 		 = "Y:\\ifp\\semestre4\\proyecto\\codigo\\nodejs\\";
 var bcrypt   = require('bcrypt-nodejs');
 var db       = require(wd+ 'config\\database.js');
 
-module.exports = {};
-
 // define the schema for our user model
-var userSchema = {
+Function userSchema() = {
 
     local            : {
 		name         : String,
@@ -40,11 +38,13 @@ var userSchema = {
 
 // methods ======================
 // generating a hash
-userSchema.generateHash = function(password) {
+userSchema.prototype.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // checking if password is valid
-userSchema.validPassword = function(password) {
-    return bcrypt.compareSync(password, this.local.password);
+userSchema.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(this.local.password, password);
 };
+
+module.exports = userSchema;

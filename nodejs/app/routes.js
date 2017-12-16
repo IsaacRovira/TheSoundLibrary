@@ -1,41 +1,43 @@
 // app/routes.js
 module.exports = function(app, passport) {
 
-    // =====================================
-    // HOME PAGE (with login links) ========
-    // =====================================
+    // +++++++++++++++++++++++++++++++++++++
+    // HOME PAGE
+    // +++++++++++++++++++++++++++++++++++++
     app.get('/', function(req, res) {
         res.render('index.ejs'); // load the index.ejs file
     });
 
-    // =====================================
-    // LOGIN ===============================
-    // =====================================
-    // show the login form
+    // ++++++++++++++++++++++
+    // INICIO de sessión
+    // ++++++++++++++++++++++
     app.get('/login', function(req, res) {
 
-        // render the page and pass in any flash data if it exists
+        // render de la pagina de inicio y passar los flash request.
         res.render('login.ejs', { message: req.flash('loginMessage') }); 
     });
 
-    // process the login form
-    // app.post('/login', do all our passport stuff here);
+    // Procesar el formulario de inicio de sesión.	
+    app.post('/login', {
+			successRedirect	: 'profile',
+			failureRedirect	: '/login', //si falla el inicio de sesión volvemos a mostrar la pagina.
+			failureFlash: true //Mensajes flash activados.
+	}));
 
-    // =====================================
-    // SIGNUP ==============================
-    // =====================================
-    // show the signup form
+    // ++++++++++++++++++++++
+    // REGISTRO de usuarios.
+    // ++++++++++++++++++++++
     app.get('/signup', function(req, res) {
 
-        // render the page and pass in any flash data if it exists
+        // render de la pagina de registro y passar los flash request.
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
     //Procesar el formulario de registro.
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
+        successRedirect : '/login', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesión.
+        failureRedirect : '/signup', // En caso de error mostramos otra vez la página de registro.
+        failureFlash : true // activar los mensajes flash.
     }));
 
     // =====================================
