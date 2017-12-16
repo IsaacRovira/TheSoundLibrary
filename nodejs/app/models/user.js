@@ -7,44 +7,46 @@ var bcrypt   = require('bcrypt-nodejs');
 var db       = require(wd+ 'config\\database.js');
 
 // define the schema for our user model
-function userSchema() {
+module.exports = function () {
 
-    local            = {
-		name         : String,
-		id           : String,	
-        email        : String,
-        password     : String,
+    this.local            = {
+		name         : "",
+		id           : "",	
+        email        : "",
+        password     : "",
     }
-    facebook         = {
-        id           : String,
-        token        : String,
-        name         : String,
-        email        : String
+    this.facebook         = {
+        id           : "",
+        token        : "",
+        name         : "",
+        email        : ""
     },
-    twitter          = {
-        id           : String,
-        token        : String,
-        displayName  : String,
-        username     : String
+    this.twitter          = {
+        id           : "",
+        token        : "",
+        displayName  : "",
+        username     : ""
     },
-    google           = {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
+    this.google           = {
+        id           : "",
+        token        : "",
+        email        : "",
+        name         : ""
     }
+	
+	//************
+	// métodos
+	//************
+	
+	// generar hash
+	this.generateHash = function(password) {
+		return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+	};
+	// password correcto?
+	this.validPassword = function(password) {
+		return bcrypt.compareSync(this.local.password, password);
+	}
+	this.validPassword = function(pass, hash) {
+		return bcrypt.compareSync(pass, hash);
+	}
 };
-
-
-// methods ======================
-// generating a hash
-userSchema.prototype.generateHash = function(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
-// checking if password is valid
-userSchema.prototype.validPassword = function(password) {
-    return bcrypt.compareSync(this.local.password, password);
-};
-
-module.exports = userSchema;

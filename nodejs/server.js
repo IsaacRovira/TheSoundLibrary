@@ -53,4 +53,4 @@ require('./app/routes.js')(app, passport);
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+console.log('Http server working on port ' + port);
