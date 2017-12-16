@@ -13,11 +13,9 @@ USE soundlib;
 CREATE TABLE Users (
     UserID int not null UNIQUE AUTO_INCREMENT,
     Nombre varchar(255),
-    Apellidos varchar(255),
-    Alias varchar(255) not null UNIQUE,
     Email varchar(55) not null UNIQUE,
     Password varchar(255) not null,
-	ID_key varchar(25) not null UNIQUE,
+	ID_key varchar(255) not null UNIQUE,
     PRIMARY KEY (UserID)
 	);
 
