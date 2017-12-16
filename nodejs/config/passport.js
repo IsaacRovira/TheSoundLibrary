@@ -1,8 +1,8 @@
 // config/passport.js
-var nodeDir = "F:\\Program Files\\nodejs\";
+var nodeDir = "F:\\Program Files\\nodejs\\";
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
-
+var mysql			= require('mysql');
 // load up the user model
 var User            = require('../app/models/user');
 
@@ -51,32 +51,29 @@ module.exports = function(passport) {
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
-
+				
         // Verificar si el email recibido existe.
-		
-        User.findOne({ 'database.email' :  email }, function(err, user) {
-            // if there are any errors, return the error
-            if (err)
-                return done(err);
+		con.query("SELECT count(email) as email from Users where email = ?", email, function(err, result, fields){
+			if(err) done(err);
+			if(result[0].email < 1){
+				return done(null, false, req.flash('signupMessage', 'Esta cuenta de correo ya ha sido registrada.'));
+			}else{
+				
+                // Si no existe el usuario, crear el usuario.
+                var newUser = new User();
 
-            // check to see if theres already a user with that email
-            if (user) {
-                return done(null, false, req.flash('signupMessage', 'Esta cuenta de correo ya ha sido registrada.'));
-            } else {
-
-                // if there is no user with that email
-                // create the user
-                var newUser            = new User();
-
-                // set the user's local credentials
+                // Credenciales locles del usuario.
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
-
-                // save the user
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, newUser);
+				//newUser.local.id_key = newUser.generateHash(email);
+				
+                // Guardar los datos en la base de datos.
+				var values = [newUser.locla.email,newUser.local.password,1];
+				
+				con.query("INSERT INTO Users (Email, password, local) values (?,?,?)", values, function (err, result, fileds){
+					if(err)
+						done(err);
+					return done(null, newUser);
                 });
             }
 
