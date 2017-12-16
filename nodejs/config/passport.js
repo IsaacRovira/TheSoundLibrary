@@ -51,7 +51,7 @@ module.exports = function(passport) {
         // asynchronous
         // La función no se activa hasta que llega el dato.
         process.nextTick(function() {
-				
+			
 			// Verificar si el email recibido existe.
 			con.query("SELECT count(email) as email from Users where email = ?", email, function(err, result, fields){
 				if(err) done(err);
@@ -61,14 +61,14 @@ module.exports = function(passport) {
 				}else{				
 					// Si no existe el usuario, crear el usuario.
 					var newUser = new User();
-
+					console.dir(newUser);
 					// Almacenamos las credenciales locles del usuario.
-					newUser.local.email    = email;
-					newUser.local.password = newUser.generateHash(password);
-					newUser.local.id_key = newUser.generateHash(email);
+					newUser.local.email		= email;
+					newUser.local.password	= newUser.generateHash(password);
+					newUser.local.id_key	= newUser.generateHash(email);
 					
 					// y las guardamos en la base de datos.
-					var values = [newUser.locla.email,newUser.local.password, newUser.local.id_key, 1];
+					var values = [newUser.local.email,newUser.local.password, newUser.local.id_key, 1];
 					
 					con.query("INSERT INTO Users (Email, password, id_key,local) values (?,?,?,?)", values, function (err, result, fileds){
 						if(err)
@@ -90,7 +90,7 @@ module.exports = function(passport) {
 		passReqToCallback	: true
 	}, function(req, emial, password, done){ //Este es la función callback.
 	//Buscar en la base de datos el email introducido en el forulario.
-		con.query("SELECT count(email) as email, password from users where email = ?", email, function(err, result,fields){
+		con.query("SELECT count(email) as email, password from users where email = ?", email, function(err, result, fields){
 			if(err){
 				return done(err); //En caso de error salimos.
 			};

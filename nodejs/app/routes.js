@@ -12,14 +12,13 @@ module.exports = function(app, passport) {
     // INICIO de sessión
     // ++++++++++++++++++++++
     app.get('/login', function(req, res) {
-
         // render de la pagina de inicio y passar los flash request.
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        res.render('login.ejs', { message: req.flash('loginMessage')}); 
     });
 
     // Procesar el formulario de inicio de sesión.	
-    app.post('/login', {
-			successRedirect	: 'profile',
+    app.post('/login', passport.authenticate('local-login', {
+			successRedirect	: '/profile',
 			failureRedirect	: '/login', //si falla el inicio de sesión volvemos a mostrar la pagina.
 			failureFlash: true //Mensajes flash activados.
 	}));

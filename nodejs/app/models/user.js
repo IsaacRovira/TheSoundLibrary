@@ -7,27 +7,27 @@ var bcrypt   = require('bcrypt-nodejs');
 var db       = require(wd+ 'config\\database.js');
 
 // define the schema for our user model
-Function userSchema() = {
+function userSchema() {
 
-    local            : {
+    local            = {
 		name         : String,
 		id           : String,	
         email        : String,
         password     : String,
-    },
-    facebook         : {
+    }
+    facebook         = {
         id           : String,
         token        : String,
         name         : String,
         email        : String
     },
-    twitter          : {
+    twitter          = {
         id           : String,
         token        : String,
         displayName  : String,
         username     : String
     },
-    google           : {
+    google           = {
         id           : String,
         token        : String,
         email        : String,
