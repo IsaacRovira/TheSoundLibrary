@@ -1,9 +1,9 @@
 // config/passport.js
-var nodeDir = "F:\\Program Files\\nodejs\\";
+var nodeDir = "F:\\Program Files\\nodejs\\node_modules\\";
 
 //Modulos
-var LocalStrategy   = require('passport-local').Strategy;
-var mysql			= require('mysql');
+var LocalStrategy   = require(nodeDir + 'passport-local').Strategy;
+var mysql			= require(nodeDir + 'mysql');
 
 //Modelo usuario
 var User            = require('../app/models/user');

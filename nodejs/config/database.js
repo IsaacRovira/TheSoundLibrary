@@ -1,5 +1,6 @@
 // config/database.js
-var mysql = require('mysql');
+var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
+var mysql    	= require(nodeDir + 'mysql');
 
 function con(){
 	config = {

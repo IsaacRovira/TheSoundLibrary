@@ -2,9 +2,8 @@
 // load the things we need
 //var mongoose = require('mongoose');
 
-var wd 		 = "Y:\\ifp\\semestre4\\proyecto\\codigo\\nodejs\\";
-var bcrypt   = require('bcrypt-nodejs');
-var db       = require(wd+ 'config\\database.js');
+var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
+var bcrypt   = require(nodeDir + 'bcrypt-nodejs');
 
 // define the schema for our user model
 module.exports = function () {

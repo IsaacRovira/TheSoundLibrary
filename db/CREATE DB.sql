@@ -13,9 +13,12 @@ USE soundlib;
 CREATE TABLE Users (
     UserID int not null UNIQUE AUTO_INCREMENT,
     Nombre varchar(255),
-    Email varchar(55) not null UNIQUE,
+	Username varchar(255) UNIQUE,
+	displayName varchar(255),	
+    Email varchar(255) UNIQUE,
     Password varchar(255) not null,
 	ID_key varchar(255) not null UNIQUE,
+	token varchar(255) UNIQUE,
     PRIMARY KEY (UserID)
 	);
 
@@ -35,7 +38,7 @@ CREATE TABLE Generos(
 /*DISCOS*/
 CREATE TABLE Discos (
     DiscoID int not null UNIQUE AUTO_INCREMENT,    
-    Album varchar(225) not null,
+    Album varchar(255) not null,
     Artista varchar(255),	
 	Año int,
     Genero varchar(255) not null,
@@ -44,7 +47,7 @@ CREATE TABLE Discos (
     Identificadores varchar(255),
 	Discografica varchar(255),
 	Img_cover varchar(255),
-	Img_back varchar(255),
+	Img_backcover varchar(255),
     PRIMARY KEY (DiscoID)
 	);
 
@@ -85,7 +88,7 @@ CREATE TABLE Canciones(
     Pista int,
     Duracion time,
     Artistas TEXT,
-	DiscoID int,
+	DiscoID int not null,
     PRIMARY KEY (CancionID)	
     );
 	

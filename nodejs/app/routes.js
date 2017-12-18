@@ -1,18 +1,33 @@
 // app/routes.js
+var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
+//var path	= require(nodeDir + 'path');
+//var fs		=require(nodeDir + 'fs');
+
+/*
+Cabeceras de contenido:
+200 
+*/
 module.exports = function(app, passport) {
+	
+	app.get('/img', function(req,res){
+		
+	});
 
     // +++++++++++++++++++++++++++++++++++++
     // HOME PAGE
     // +++++++++++++++++++++++++++++++++++++
+
     app.get('/', function(req, res) {
-        res.render('index.ejs'); // load the index.ejs file
+        //res.sendFile(('/index.ejs')); // load the index.html file
+		res.render('index.ejs');
+		//console.log(res);
     });
 
     // ++++++++++++++++++++++
     // INICIO de sessión
     // ++++++++++++++++++++++
     app.get('/login', function(req, res) {
-        // render de la pagina de inicio y passar los flash request.
+        // pagina de inicio y passar los flash request.
         res.render('login.ejs', { message: req.flash('loginMessage')}); 
     });
 

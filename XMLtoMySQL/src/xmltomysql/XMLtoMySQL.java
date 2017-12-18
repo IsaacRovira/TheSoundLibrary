@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.xml.parsers.*;
@@ -176,7 +177,7 @@ public class XMLtoMySQL {
             
             doc.getDocumentElement().normalize();
             
-            System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
             
             NodeList nList = doc.getElementsByTagName("key");
             Album disco = new Album();
@@ -230,22 +231,35 @@ public class XMLtoMySQL {
                     default:break;                                    
                 }
             }            
-            /*
-            for(Songs valor: songs){
-                System.out.println(valor.getSong() + " - " + valor.getPista() + " - "+ valor.getAlbum());                        
-            }
-            */
-            for(Album valor: album){
-                System.out.println("INSERT INTO Discos (Album, Artista, año, Genero, SoporteID, Etiquetado, Identificadores, Discografica, Img_cover, Img_back) VALUES (\""+valor.getAlbum()+"\", \""+valor.albumArtist+"\", \""+valor.getAño()+"\", \""+valor.getGenero()+"\",1,\"\",\"\",\"\",\""+valor.getAlbum()+".jpg\",\"\");");
-            }
             
             System.out.println(album.size());
             System.out.println(songs.size());
             System.out.println(nList.getLength());
-                    
+            
+            ArrayList<String> songList = new ArrayList();
+            ArrayList<String> discosList = new ArrayList();
+            
+            for(Album valor: album){
+                discosList.add("INSERT INTO Discos (Album, Artista, año, Genero, SoporteID, Etiquetado, Identificadores, Discografica, Img_cover, Img_back) VALUES (\""+valor.getAlbum()+"\", \""+valor.albumArtist+"\", \""+valor.getAño()+"\", \""+valor.getGenero()+"\",1,\"\",\"\",\"\",\""+valor.getAlbum()+".jpg\",\"\");");
+            }
+            
+            for(Songs valor: songs){
+                String v1,v2,v3="";
+                v1=valor.getSong();
+                v3=valor.getAlbum();
+                v2=valor.getArtist();                
+                if(v1.contains(""")) v1.replace("\"", "");
+                if(v2.contains(""")) v2.replace("\"", "");
+                if(v3.contains("")) v3.replace("\"", "");
+                
+                System.out.println(MessageFormat.format("INSERT INTO Canciones (Titulo, pista, Artistas, discoID) VALUES (\"{0}\", {1}, \"{2}\", (SELECT DiscoID from Discos where Album = \"{3}\"));",
+                        v1, valor.getPista(), v2, v3));
+
+                songList.add(MessageFormat.format("INSERT INTO Canciones (Titulo, pista, Artistas, discoID) VALUES (\"{0}\", {1}, \"{2}\", (SELECT DiscoID from Discos where Album = \"{3}\"));",
+                        v1, valor.getPista(), v2, v3).toString());                
+            }            
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        
     }    
 }

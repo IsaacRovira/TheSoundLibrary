@@ -2,21 +2,26 @@
 
 // set up ======================================================================
 // get all the tools we need
-//var nodeDir  = "F:\\Program Files\\nodejs\\";
-var express  = require('express');
-var app      = express();
-var port     = process.env.PORT || 8080;
-//var mongoose = require('mongoose');
-var mysql    = require('mysql');
-var passport = require('passport');
-var flash    = require('connect-flash');
+var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
+var mongoose	= require(nodeDir + 'mongoose');
+var express  	= require(nodeDir + 'express');
+var mysql    	= require(nodeDir + 'mysql');
+var passport 	= require(nodeDir + 'passport');
+var flash    	= require(nodeDir + 'connect-flash');
+var morgan      = require(nodeDir + 'morgan');
+var cookieParser= require(nodeDir + 'cookie-parser');
+var bodyParser  = require(nodeDir + 'body-parser');
+var session     = require(nodeDir + 'express-session');
 
-var morgan       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
-var wd 		 = "Y:\\ifp\\semestre4\\proyecto\\codigo\\nodejs\\";
-var configDB = require(wd + '\\config\\database.js');
+var wd			= "Y:\\ifp\\semestre4\\proyecto\\codigo\\nodejs\\";
+var configDB	= require(wd + '\\config\\database.js');
+
+//var http		= require('http');
+
+
+
+var app      	= express();
+var port     	= process.env.PORT || 8080;
 
 // configuration ===============================================================
 //mongoose.connect(configDB.url); // connect to our database
@@ -41,8 +46,16 @@ app.use(bodyParser()); // get information from html forms
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
+app.use(express.static('public'));
+
+
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({
+	secret: 'menudamierdadecurso',// session secret
+	reserve: true,
+	saveUninitialized: true
+}));
+
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
