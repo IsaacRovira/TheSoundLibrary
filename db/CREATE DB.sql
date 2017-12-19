@@ -19,6 +19,10 @@ CREATE TABLE Users (
     Password varchar(255) not null,
 	ID_key varchar(255) not null UNIQUE,
 	token varchar(255) UNIQUE,
+	local int,
+	twitter int,
+	google int,
+	facebook int,	
     PRIMARY KEY (UserID)
 	);
 

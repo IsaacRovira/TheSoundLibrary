@@ -12,19 +12,27 @@ var morgan      = require(nodeDir + 'morgan');
 var cookieParser= require(nodeDir + 'cookie-parser');
 var bodyParser  = require(nodeDir + 'body-parser');
 var session     = require(nodeDir + 'express-session');
-
 var wd			= "Y:\\ifp\\semestre4\\proyecto\\codigo\\nodejs\\";
-var configDB	= require(wd + '\\config\\database.js');
+//var configDB	= require('./config/database.js');
+var router		= require('./app/api_routes.js');
+//+++++++++++++++++++++++++++
+// CONFIGURACIÓN
+//+++++++++++++++++++++++++++
 
-//var http		= require('http');
 
+//******************************************
+var api			= express();
+api.use(cookieParser());
+api.use(bodyParser.json());
+api.use(bodyParser.urlencoded({extended: true}));
+//api.use(upload.array());
+var sql = require('./app/api_routes.js');
+api.use('/api', sql);
 
-
+//**********************************************
 var app      	= express();
 var port     	= process.env.PORT || 8080;
 
-// configuration ===============================================================
-//mongoose.connect(configDB.url); // connect to our database
 var con = mysql.createConnection({
 	host: "127.0.0.1",
 	port: 3360,
@@ -32,22 +40,25 @@ var con = mysql.createConnection({
 	password: "node.js",
 	database: "soundlib"
 });
-con.connect(function(err){
-	if(err) throw err;
-	console.log("Conectado a soundlib");
-});
+
 
 require('./config/passport')(passport); // pass passport for configuration
 
-// set up our express application
+//Función para inforar de los errores.
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+app.use(function(err, req, res, next) {
+   res.status(500);
+   res.send("Oops, something went wrong with db connection.")
+});
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// Configurar app (Express)
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); // get information from html forms
-
+app.use(bodyParser.urlencoded({extended: true})); // get information from html forms
+app.use(bodyParser.json());
 app.set('view engine', 'ejs'); // set up ejs for templating
-
 app.use(express.static('public'));
-
 
 // required for passport
 app.use(session({
@@ -65,5 +76,10 @@ require('./app/routes.js')(app, passport);
 // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
+con.connect(function(err, next){
+	if(err) next(err);
+	console.log("Conectado a soundlib");
+});
 app.listen(port);
 console.log('Http server working on port ' + port);
+api.listen(3030);

@@ -182,7 +182,7 @@ public class XMLtoMySQL {
             NodeList nList = doc.getElementsByTagName("key");
             Album disco = new Album();
             Songs cancion = new Songs();
-            boolean existe = false;
+            boolean existe = true;
             
             for(int i=0; i<nList.getLength(); i++){
                 
@@ -191,46 +191,34 @@ public class XMLtoMySQL {
                 if(nList.item(i).getTextContent().equals("Track ID")){
                     disco = new Album();
                     cancion = new Songs();
-                    existe = false;
+                    existe = true;
                 }
                 switch(nList.item(i).getTextContent()){
                     case "Name": cancion.setSong(nList.item(i).getNextSibling().getTextContent());break;
                     case "Artist": cancion.setArtist(nList.item(i).getNextSibling().getTextContent());break;
                     case "Composer": cancion.setComposer(nList.item(i).getNextSibling().getTextContent());break;
                     case "Album":
-                        cancion.setAlbum(nList.item(i).getNextSibling().getTextContent());
-                        for(Album a: album){
-                            if(a.getAlbum().equals(cancion.getAlbum())){
-                                existe = true;
-                                break;
+                        cancion.setAlbum(nList.item(i).getNextSibling().getTextContent());                        
+                        disco.setAlbum(cancion.getAlbum());                        
+                        break;
+                    case "Genre": disco.setGenero(nList.item(i).getNextSibling().getTextContent()); break;
+                    case "Track Number": cancion.setPista(nList.item(i).getNextSibling().getTextContent()); break;
+                    case "Year": disco.setAño(nList.item(i).getNextSibling().getTextContent()); break;
+                    case "Location":
+                        if(cancion.getAlbum()!=null){
+                            songs.add(cancion);
+                            for(Album a: album){
+                                if(a.getAlbum().equals(cancion.getAlbum())){
+                                    existe=false;
+                                    break;
+                                }
                             }
-                        }
-                        if(!existe){
-                            disco.setAlbum(cancion.getAlbum());
-                        }
+                            if(existe) album.add(disco);
+                        }                        
                         break;
-                    case "Genre":
-                        if(!existe){
-                        disco.setGenero(nList.item(i).getNextSibling().getTextContent());
-                        }
-                        break;
-                    case "Track Number":
-                        cancion.setPista(nList.item(i).getNextSibling().getTextContent());
-                        songs.add(cancion);
-                        break;
-                    case "Year": 
-                        if(!existe){
-                            disco.setAño(nList.item(i).getNextSibling().getTextContent());                                    
-                        }
-                        if(!existe){
-                            album.add(disco);
-                        }else{
-                            existe=true;
-                        }
-                        break;
-                    default:break;                                    
-                }
-            }            
+                    default:break;
+                }                
+            }
             
             System.out.println(album.size());
             System.out.println(songs.size());
@@ -240,24 +228,32 @@ public class XMLtoMySQL {
             ArrayList<String> discosList = new ArrayList();
             
             for(Album valor: album){
-                discosList.add("INSERT INTO Discos (Album, Artista, año, Genero, SoporteID, Etiquetado, Identificadores, Discografica, Img_cover, Img_back) VALUES (\""+valor.getAlbum()+"\", \""+valor.albumArtist+"\", \""+valor.getAño()+"\", \""+valor.getGenero()+"\",1,\"\",\"\",\"\",\""+valor.getAlbum()+".jpg\",\"\");");
+                discosList.add("INSERT INTO Discos (Album, Artista, año, Genero, SoporteID, Etiquetado, Identificadores, Discografica, Img_cover, Img_backcover) VALUES (\""+valor.getAlbum().replaceAll("\"", "\\\"")+"\", \""+valor.albumArtist+"\", \""+valor.getAño()+"\", \""+valor.getGenero()+"\",1,\"\",\"\",\"\",\""+valor.getAlbum().replaceAll("\"", "\\\"")+".jpg\",\"\");");
+                //System.out.println(valor.getAlbum().replaceAll("\"", "\\\""));
             }
-            
-            for(Songs valor: songs){
+            /*
+            discosList.stream().forEach((A) -> {
+                System.out.println(A);
+            });
+            */
+            songs.stream().forEach((valor)->{
                 String v1,v2,v3="";
                 v1=valor.getSong();
                 v3=valor.getAlbum();
                 v2=valor.getArtist();                
-                if(v1.contains(""")) v1.replace("\"", "");
-                if(v2.contains(""")) v2.replace("\"", "");
-                if(v3.contains("")) v3.replace("\"", "");
+                if(v1.contains("\"")) v1.replace("\"", "");
+                if(v2.contains("\"")) v2.replace("\"", "");
+                if(v3.contains("\"")) v3.replace("\"", "");
                 
-                System.out.println(MessageFormat.format("INSERT INTO Canciones (Titulo, pista, Artistas, discoID) VALUES (\"{0}\", {1}, \"{2}\", (SELECT DiscoID from Discos where Album = \"{3}\"));",
-                        v1, valor.getPista(), v2, v3));
+                System.out.println(MessageFormat.format("INSERT INTO Canciones (Titulo, pista, Artistas, discoID) VALUES (\"{0}\", {1}, \"{2}\", (SELECT DiscoID from Discos where Album = \"{3}\"));", v1, valor.getPista(), v2, v3));
 
                 songList.add(MessageFormat.format("INSERT INTO Canciones (Titulo, pista, Artistas, discoID) VALUES (\"{0}\", {1}, \"{2}\", (SELECT DiscoID from Discos where Album = \"{3}\"));",
                         v1, valor.getPista(), v2, v3).toString());                
-            }            
+            });
+            
+            discosList.stream().forEach((D)->{System.out.println(D);});
+            songList.stream().forEach((S)->{System.out.println(S);});
+            
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

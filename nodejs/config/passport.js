@@ -4,13 +4,15 @@ var nodeDir = "F:\\Program Files\\nodejs\\node_modules\\";
 //Modulos
 var LocalStrategy   = require(nodeDir + 'passport-local').Strategy;
 var mysql			= require(nodeDir + 'mysql');
+var express			= require(nodeDir + 'express');
 
 //Modelo usuario
 var User            = require('../app/models/user');
 
 // EXPORTS passport
 module.exports = function(passport) {
-	
+
+	//DB +++++++++++++++++++++++++++++
 	var con = mysql.createConnection({
 		host: "127.0.0.1",
 		port: 3360,
@@ -18,14 +20,15 @@ module.exports = function(passport) {
 		password: "node.js",
 		database: "soundlib"
 	});
-
+	//++++++++++++++++++++++++++++++++++++
+	
     // ********************************************
-    // SESIONES passport
-    // ********************************************    
+    // SESIONES passport    
     // serialize & unserialize
-
-    //serialize
-    passport.serializeUser(function(user, done) {		
+    
+	//serialize
+    passport.serializeUser(function(user, done) {
+		console.log(JSON.stringify(user));
         done(null, user.local.id);
     });
 
@@ -39,10 +42,10 @@ module.exports = function(passport) {
 			done(err, user);
 		});
 	});
+	// ********************************************    
 	
 	// *************************************************************************
-    // Registro LOCAL
-    // *************************************************************************
+    // Registro LOCAL    
     // local-signup para la estrategia de registro con usuario y clave local.  
 
     passport.use('local-signup', new LocalStrategy({        
@@ -57,7 +60,7 @@ module.exports = function(passport) {
         process.nextTick(function() {
 			
 			// Verificar si el email recibido a través del form existe en la BD.
-			con.query("SELECT count(email) as email from Users where email = ?", email, function(err, result, fields){
+			con.query("SELECT count(email) as email from Users where email = ?", email, function(err, result, fields, next){
 				if(err) done(err);
 				console.log(result[0].email);
 				if(result[0].email > 0){//No existe solicitamos signupMessage.				
@@ -68,12 +71,12 @@ module.exports = function(passport) {
 					// Almacenamos las credenciales locles del usuario.
 					newUser.local.email		= email;
 					newUser.local.password	= newUser.generateHash(password);
-					newUser.local.id_key	= newUser.generateHash(email);
+					newUser.local.id	= newUser.generateHash(email);
 					
 					// y las guardamos en la base de datos.
-					var values = [newUser.local.email,newUser.local.password, newUser.local.id_key, 1];
+					var values = [newUser.local.email, newUser.local.password, newUser.local.id, 1];
 					
-					con.query("INSERT INTO Users (Email, password, id_key,local) values (?,?,?,?)", values, function (err, result, fileds){
+					con.query("INSERT INTO Users (Email, password, id_key, local) values (?,?,?,?)", values, function (err, result, fileds){
 						if(err)
 							done(err);
 						return done(null, newUser);
@@ -82,10 +85,10 @@ module.exports = function(passport) {
 			});
 		});
 	}));
+	// *************************************************************************
 	
     // *************************************************************************
-    // Inicio de sesión LOCAL
-    // *************************************************************************
+    // Inicio de sesión LOCAL    
     // local-login para la estrategia de inicio de sesión con usuario y clave local.
 	
 	passport.use('local-login', new LocalStrategy({		
@@ -122,4 +125,5 @@ module.exports = function(passport) {
 			return done(null, theUser);
 		});
 	}));
+	// *************************************************************************
 };

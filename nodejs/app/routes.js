@@ -1,17 +1,7 @@
 // app/routes.js
 var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
-//var path	= require(nodeDir + 'path');
-//var fs		=require(nodeDir + 'fs');
 
-/*
-Cabeceras de contenido:
-200 
-*/
 module.exports = function(app, passport) {
-	
-	app.get('/img', function(req,res){
-		
-	});
 
     // +++++++++++++++++++++++++++++++++++++
     // HOME PAGE
@@ -49,7 +39,7 @@ module.exports = function(app, passport) {
 
     //Procesar el formulario de registro.
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/login', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesión.
+        successRedirect : '/profile', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesión.
         failureRedirect : '/signup', // En caso de error mostramos otra vez la página de registro.
         failureFlash : true // activar los mensajes flash.
     }));
@@ -65,6 +55,10 @@ module.exports = function(app, passport) {
 			
         });
     });
+	
+	app.get('/api', isLoggedIn, function(req, res){
+		res.render('api.ejes');
+	});
 
     // ++++++++++++++++++++++++++++++
     // LOGOUT
