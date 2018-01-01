@@ -1,10 +1,12 @@
 //api.js
 
 // Cargar modulos.
-var express = require('express');
-var bodyParser = require('body-parser');
-var multer = require('multer');
-var upload = multer();
+var config      = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var path    = require(config.modulos + 'path');
+var express     = require(config.modulos + 'express');
+var bodyParser  = require(config.modulos + 'body-parser');
+var multer      = require(config.modulos + 'multer');
+var upload      = multer();
 
 
 var app = express();
@@ -16,9 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array());
 
 //Rutas definidas en api_routes.js
-var discos = require('./app/api_routes.js');
+var discos = require(path.normalizr(config.raiz +'./app/api_routes.js'));
 
-//Use the Router on the sub route /movies
+//Use the Router on the sub route /discos
 app.use('/api', discos);
 
 module.exports = api;

@@ -1,11 +1,14 @@
 //api_routes.js
 
+var config  = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var path    = require(config.modulos + 'path');
+var express = require(config.modulos + 'express');
 
-var nodeDir	= "F:/Program Files/nodejs/node_modules/";
-var express  	= require(nodeDir + 'express');
+var sql     = require(path.normalize(config.raiz + "/config/database.js"));
+
+
+//var wd      = config.raiz;
 //var parser 		= require('http-string-parser');
-var wd			= "Y:/ifp/semestre4/proyecto/codigo/nodejs/";
-var sql	= require(wd+'./config/database.js');
 
 var router	= express.Router();
 

@@ -1,6 +1,7 @@
 // config/database.js
-var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
-var mysql    	= require(nodeDir + 'mysql');
+
+var config      =  require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var mysql    	= require(config.modulos + 'mysql');
 
 
 var sql	= {
@@ -15,61 +16,61 @@ var sql	= {
 	
 	users			
 	:{
-		all					: "select * from Users",
-		by_email			: "select * from Users where email = ?",
-		by_id_key			: "select * from Users where Id_key = ?",
-		by_token			: "select * from Users where token = ?",
-		by_nombre			: "select * from Users where nombre = ?",
-		by_displayName		: "select * from Users where displayName = ?",
-		by_username			: "select * from Users where username = ?",
-		by_id				: "select * from Users where userID = ?"
+		all                 : "select * from Users",
+		by_email            : "select * from Users where email = ?",
+		by_id_key           : "select * from Users where Id_key = ?",
+		by_token            : "select * from Users where token = ?",
+		by_nombre           : "select * from Users where nombre = ?",
+		by_displayName      : "select * from Users where displayName = ?",
+		by_username         : "select * from Users where username = ?",
+		by_id               : "select * from Users where userID = ?"
 	},
 	discos
 	:{
-		all					: "select * from discos",
-		by_id				: "select * from discos where discoID = ?",
-		by_album			: "select * from discos where Album = ?",
-		by_year				: "select * from discos where Year = ?",
-		by_genero			: "select * from discos where Genero = ?",
-		by_soporte			: "select * from discos where SoporteID = ?",
-		by_artista			: "select * from discos where Artista contains ?",
-		by_identificador	: "select * from discos where Identificador contains ?",
-		by_Etiquetado		: "select * from discos where Etiquetado contains ?",
-		all_album_n_artist	: "select discoID, Album, Artista from discos"
+		all                 : "select * from discos",
+		by_id               : "select * from discos where discoID = ?",
+		by_album            : "select * from discos where Album = ?",
+		by_year             : "select * from discos where Year = ?",
+		by_genero           : "select * from discos where Genero = ?",
+		by_soporte          : "select * from discos where SoporteID = ?",
+		by_artista          : "select * from discos where Artista contains ?",
+		by_identificador    : "select * from discos where Identificador contains ?",
+		by_Etiquetado       : "select * from discos where Etiquetado contains ?",
+		all_album_n_artist  : "select discoID, Album, Artista from discos"
 	},
 	generos
 	:{
-		all					: "select * from generos",
-		by_id				: "select * from generos where generoID = ?",
-		by_nombre			: "select * from generos where genero = ?"
+		all                 : "select * from generos",
+		by_id               : "select * from generos where generoID = ?",
+		by_nombre           : "select * from generos where genero = ?"
 	},
 	soportes		
 	:{
-		all					: "select * from soportes",
-		by_id				: "select * from soportes where soporteid = ?",
-		by_tipo				: "select * from soportes where soporteid = ?"		
+		all                 : "select * from soportes",
+		by_id               : "select * from soportes where soporteid = ?",
+		by_tipo             : "select * from soportes where soporteid = ?"		
 	},
 	fonotecas		
 	:{
-		all					: "select * from fonotecas",
-		by_id				: "select * from fonotecas where fonoID = ?",
-		by_nombre			: "select * from fonotecas where nombre = ?",
-		by_userID			: "select * from fonotecas where userID = ?"
+		all                 : "select * from fonotecas",
+		by_id               : "select * from fonotecas where fonoID = ?",
+		by_nombre           : "select * from fonotecas where nombre = ?",
+		by_userID           : "select * from fonotecas where userID = ?"
 	},
 	fonotecasdata
 	:{
-		all					: "select * from fonotecasdata",
-		by_id				: "select * from fonotecasdata where FonotecasDataID = ?",
-		by_discoID			: "select * from fonotecasdata where DiscoID = ?",
-		by_fonoID			: "select * from fonotecasdata where FonoID = ?"
+		all                 : "select * from fonotecasdata",
+		by_id               : "select * from fonotecasdata where FonotecasDataID = ?",
+		by_discoID          : "select * from fonotecasdata where DiscoID = ?",
+		by_fonoID           : "select * from fonotecasdata where FonoID = ?"
 	},
 	canciones
 	:{
-		all					: "select * from canciones",
-		by_id				: "select * from canciones where CancionID = ?",
-		by_artistas			: "select * from canciones where Artistas contains ?",
-		by_discoID			: "select * from canciones where DiscoID = ?",
-		by_titulo			: "select * from canciones where Titulo contains ?"
+		all                 : "select * from canciones",
+		by_id               : "select * from canciones where CancionID = ?",
+		by_artistas         : "select * from canciones where Artistas contains ?",
+		by_discoID          : "select * from canciones where DiscoID = ?",
+		by_titulo           : "select * from canciones where Titulo contains ?"
 	}
 }
 

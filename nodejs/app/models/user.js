@@ -2,18 +2,20 @@
 // load the things we need
 //var mongoose = require('mongoose');
 
-var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
-var bcrypt   = require(nodeDir + 'bcrypt-nodejs');
+//var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
+var config      = require("g:/IFP/Proyecto/codigo/nodejs/config/config.js");
+
+var bcrypt   = require(config.modulos + 'bcrypt-nodejs');
 
 // define the schema for our user model
 module.exports = function () {
 
     this.local            = {
-		name         : "",
-		id           : "",	
+	name         : "",
+	id           : "",	
         email        : "",
-        password     : "",
-    }
+        password     : ""
+    },
     this.facebook         = {
         id           : "",
         token        : "",
@@ -31,7 +33,7 @@ module.exports = function () {
         token        : "",
         email        : "",
         name         : ""
-    }
+    },
 	
 	//************
 	// métodos
@@ -44,8 +46,8 @@ module.exports = function () {
 	// password correcto?
 	this.validPassword = function(password) {
 		return bcrypt.compareSync(this.local.password, password);
-	}
+	};
 	this.validPassword = function(pass, hash) {
 		return bcrypt.compareSync(pass, hash);
-	}
+	};
 };

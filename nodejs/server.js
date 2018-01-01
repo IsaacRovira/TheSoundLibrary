@@ -1,38 +1,28 @@
 // server.js
 
-// set up ======================================================================
-// get all the tools we need
-var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
-var mongoose	= require(nodeDir + 'mongoose');
-var express  	= require(nodeDir + 'express');
-var mysql    	= require(nodeDir + 'mysql');
-var passport 	= require(nodeDir + 'passport');
-var flash    	= require(nodeDir + 'connect-flash');
-var morgan      = require(nodeDir + 'morgan');
-var cookieParser= require(nodeDir + 'cookie-parser');
-var bodyParser  = require(nodeDir + 'body-parser');
-var session     = require(nodeDir + 'express-session');
-var wd			= "Y:\\ifp\\semestre4\\proyecto\\codigo\\nodejs\\";
-//var configDB	= require('./config/database.js');
-var router		= require('./app/api_routes.js');
+
+var config      = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var path        = require(config.modulos + 'path');
+
+console.log(process.cwd());
+
+var mongoose	= require(config.modulos + 'mongoose');
+var express  	= require(config.modulos + 'express');
+var mysql    	= require(config.modulos + 'mysql');
+var passport 	= require(config.modulos + 'passport');
+var flash    	= require(config.modulos + 'connect-flash');
+var morgan      = require(config.modulos + 'morgan');
+var cookieParser= require(config.modulos + 'cookie-parser');
+var bodyParser  = require(config.modulos + 'body-parser');
+var session     = require(config.modulos + 'express-session');
+
+
 //+++++++++++++++++++++++++++
 // CONFIGURACIÓN
 //+++++++++++++++++++++++++++
 
-
-//******************************************
-var api			= express();
-api.use(cookieParser());
-api.use(bodyParser.json());
-api.use(bodyParser.urlencoded({extended: true}));
-//api.use(upload.array());
-var sql = require('./app/api_routes.js');
-api.use('/api', sql);
-
-//**********************************************
-var app      	= express();
-var port     	= process.env.PORT || 8080;
-
+//DB
+//********************************
 var con = mysql.createConnection({
 	host: "127.0.0.1",
 	port: 3360,
@@ -40,17 +30,26 @@ var con = mysql.createConnection({
 	password: "node.js",
 	database: "soundlib"
 });
+//********************************
 
+//API 
+//*************************************************************************************
+var router		= require(path.normalize(config.raiz + '/app/api_routes.js'));
+var sql = require(path.normalize(config.raiz + '/app/api_routes.js'));
 
-require('./config/passport')(passport); // pass passport for configuration
+var api	= express();
 
-//Función para inforar de los errores.
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++
-app.use(function(err, req, res, next) {
-   res.status(500);
-   res.send("Oops, something went wrong with db connection.")
-});
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+api.use(cookieParser());
+api.use(bodyParser.json());
+api.use(bodyParser.urlencoded({extended: true}));
+api.use('/api', sql);
+
+//Express
+//**************************************************************************************
+var app      	= express();
+var port     	= process.env.PORT || 8080;
+
+require(path.normalize(config.raiz + '/config/passport'))(passport); // pass passport for configuration
 
 // Configurar app (Express)
 app.use(morgan('dev')); // log every request to the console
@@ -60,25 +59,45 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs'); // set up ejs for templating
 app.use(express.static('public'));
 
-// required for passport
+// Configura passport
 app.use(session({
-	secret: 'menudamierdadecurso',// session secret
+	secret: 'estecursoesunaestafa',// session secret
 	reserve: true,
 	saveUninitialized: true
 }));
-
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(passport.session());
+app.use(flash()); 
 
-// routes ======================================================================
-require('./app/routes.js')(app, passport);
-// load our routes and pass in our app and fully configured passport
+//Cargar las rutas y el passport.
+require(path.normalize(config.raiz + '/app/routes.js'))(app, passport);
 
-// launch ======================================================================
+//Función para informar de los errores.
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+/*
+app.get('/', function(req, res){
+   //Create an error and pass it to the next function
+   var err = new Error("");
+   next(err);
+});
+*/
+app.use(function(err, req, res, next) {
+    console.error(err);  
+    
+    switch(err.code){
+       case 'ECONNREFUSED': res.status(500).send('Error de conexi�n a la base de datos'); break;
+       default: res.status(500).send('ERROR DESCONOCIDO');
+   }
+});
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// Run node run
 con.connect(function(err, next){
-	if(err) next(err);
-	console.log("Conectado a soundlib");
+	if(err){
+            console.log(err);            
+        }else{
+            console.log("Conectado a soundlib");
+        }	
 });
 app.listen(port);
 console.log('Http server working on port ' + port);

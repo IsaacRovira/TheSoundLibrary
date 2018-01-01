@@ -1,20 +1,21 @@
 // app/routes.js
-var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
+
+var config      = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
 
 module.exports = function(app, passport) {
 
     // +++++++++++++++++++++++++++++++++++++
-    // HOME PAGE
+    // HOME
     // +++++++++++++++++++++++++++++++++++++
 
     app.get('/', function(req, res) {
-        //res.sendFile(('/index.ejs')); // load the index.html file
-		res.render('index.ejs');
-		//console.log(res);
+        //res.sendFile(('/index.ejs'));
+	res.render('index.ejs');
+	//console.log(res);
     });
 
     // ++++++++++++++++++++++
-    // INICIO de sessiÃ³n
+    // INICIO de sessión
     // ++++++++++++++++++++++
     app.get('/login', function(req, res) {
         // pagina de inicio y passar los flash request.

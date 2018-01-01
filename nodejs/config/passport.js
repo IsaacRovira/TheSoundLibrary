@@ -1,13 +1,15 @@
 // config/passport.js
-var nodeDir = "F:\\Program Files\\nodejs\\node_modules\\";
+
 
 //Modulos
-var LocalStrategy   = require(nodeDir + 'passport-local').Strategy;
-var mysql			= require(nodeDir + 'mysql');
-var express			= require(nodeDir + 'express');
+var config          =  require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var path            = require(config.modulos + 'path');
+var LocalStrategy   = require(config.modulos + 'passport-local').Strategy;
+var mysql           = require(config.modulos + 'mysql');
+var express         = require(config.modulos + 'express');
 
 //Modelo usuario
-var User            = require('../app/models/user');
+var User            = require(path.normalize(config.raiz+'/app/models/user'));
 
 // EXPORTS passport
 module.exports = function(passport) {
