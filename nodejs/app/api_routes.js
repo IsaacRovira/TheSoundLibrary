@@ -44,7 +44,8 @@ router.post('/', function(req, res){
 	sql.conectar().query(sql.canciones.all, function(err,result, fields){
 		if(err)
 			error("¡Ups! Algo ha fallado.");
-		console.log(JSON.stringify(req.body));
+		console.log("\n\nConsulta al API realizada:\n");
+                console.log(JSON.stringify(req.body));
 		res.send(JSON.stringify(result));
 	});
 });

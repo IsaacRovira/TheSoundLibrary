@@ -7,8 +7,8 @@ var mysql    	= require(config.modulos + 'mysql');
 var sql	= {
 	config
 	:{
-		host: "127.0.0.1",
-		port: 3360,
+		host: "192.168.1.56",
+		port: 3306,
 		user: "nodejs",
 		password: "node.js",
 		database: "soundlib"

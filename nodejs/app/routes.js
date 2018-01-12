@@ -24,7 +24,7 @@ module.exports = function(app, passport) {
 
     // Procesar el formulario de inicio de sesi贸n.	
     app.post('/login', passport.authenticate('local-login', {
-			successRedirect	: '/profile',
+			successRedirect	: '/mysoundlib',
 			failureRedirect	: '/login', //si falla el inicio de sesi贸n volvemos a mostrar la pagina.
 			failureFlash: true //Mensajes flash activados.
 	}));
@@ -40,7 +40,7 @@ module.exports = function(app, passport) {
 
     //Procesar el formulario de registro.
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesi贸n.
+        successRedirect : '/mysoundlib', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesi贸n.
         failureRedirect : '/signup', // En caso de error mostramos otra vez la p谩gina de registro.
         failureFlash : true // activar los mensajes flash.
     }));
@@ -48,7 +48,7 @@ module.exports = function(app, passport) {
     // ++++++++++++++++++++++++++++++
     // PROFILE
     // ++++++++++++++++++++++++++++++    
-    // we will use route middleware to verify this (the isLoggedIn function)
+    // PAra la verificaci髇 del registro; muestra usario, id y pass.
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
 			
@@ -56,10 +56,24 @@ module.exports = function(app, passport) {
 			
         });
     });
+    
+    // ++++++++++++++++++++++++++++++
+    // Soundlib data
+    // ++++++++++++++++++++++++++++++    
+    // Acceso a los datos de la fonoteca
+    app.get('/mysoundlib', isLoggedIn, function(req, res) {
+        res.render('data.ejs', {
+			
+            user : req.user // Cierra la sesi髇 del usuario.
+			
+        });
+    });
 	
-	app.get('/api', isLoggedIn, function(req, res){
-		res.render('api.ejes');
-	});
+    
+    //TESTING.....
+    app.get('/api', isLoggedIn, function(req, res){
+            res.render('api.ejes');
+    });
 
     // ++++++++++++++++++++++++++++++
     // LOGOUT

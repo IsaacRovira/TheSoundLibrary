@@ -2,6 +2,8 @@ USE soundlib;
 
 INSERT INTO Soportes (Tipo) values ("CD"), ("VINILO"), ("DVD");
 
+INSERT INTO Generos (GeneroNombre) values ("Alt. Rock"), ("Alternative"), ("Blues"), ("Blues/R&B"), ("Britpop"), ("Children's"), ("Clásica"), ("Clásicos pop"), ("Concert"), ("Easy Listening"), ("Electrónica"), ("Desconocido"), ("Indie Rock"), ("Jazz"), ("Jazz Vocal"), ("Latin"), ("OST"), ("Pop"), ("Punk"), ("Punk Rock"), ("R&B"), ("R&B/Soul"), ("Reggae"), ("Rock"), ("Rock & Roll"), ("Rock clásico"), ("Rock duro"), ("Rock/Pop"), ("Soul"), ("Swing"), ("Rock duro"), ("Metal"), ("Dance"), ("Disco"), ("House"), ("Funk"), ("Ska"), ("Hip hop"), ("Folk"), ("Country"), ("Rap"), ("Techno"), ("Garage");
+
 INSERT INTO Discos (Album, Artista, año, Genero, SoporteID, Etiquetado, Identificadores, Discografica, Img_cover, Img_backcover) VALUES ("Back To Black", "", "2006", "Soul",1,"","","","Back To Black.jpg","");
 INSERT INTO Discos (Album, Artista, año, Genero, SoporteID, Etiquetado, Identificadores, Discografica, Img_cover, Img_backcover) VALUES ("Frank", "", "2003", "Pop",1,"","","","Frank.jpg","");
 INSERT INTO Discos (Album, Artista, año, Genero, SoporteID, Etiquetado, Identificadores, Discografica, Img_cover, Img_backcover) VALUES ("Live In Paradiso", "", "2007", "Concert",1,"","","","Live In Paradiso.jpg","");

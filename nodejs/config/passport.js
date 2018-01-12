@@ -2,7 +2,7 @@
 
 
 //Modulos
-var config          =  require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var config          = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
 var path            = require(config.modulos + 'path');
 var LocalStrategy   = require(config.modulos + 'passport-local').Strategy;
 var mysql           = require(config.modulos + 'mysql');
@@ -16,11 +16,11 @@ module.exports = function(passport) {
 
 	//DB +++++++++++++++++++++++++++++
 	var con = mysql.createConnection({
-		host: "127.0.0.1",
-		port: 3360,
-		user: "nodejs",
-		password: "node.js",
-		database: "soundlib"
+		host: config.sql.ip,
+		port: config.sql.port,
+		user: config.sql.user,
+		password: config.sql.pass,
+		database: config.sql.db
 	});
 	//++++++++++++++++++++++++++++++++++++
 	
@@ -112,7 +112,7 @@ module.exports = function(passport) {
 			};
 			
 			//Almacenamos las credenciales del usuario en nuestro objeto "User"...			
-			theUser.local.id		= result[0].ID_key;
+			theUser.local.id	= result[0].ID_key;
 			theUser.local.email 	= email;
 			//theUser.local.password = password;
 			

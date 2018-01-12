@@ -24,11 +24,11 @@ var session     = require(config.modulos + 'express-session');
 //DB
 //********************************
 var con = mysql.createConnection({
-	host: "127.0.0.1",
-	port: 3360,
-	user: "nodejs",
-	password: "node.js",
-	database: "soundlib"
+	host: config.sql.ip,
+	port: config.sql.port,
+	user: config.sql.user,
+	password: config.sql.pass,
+	database: config.sql.db
 });
 //********************************
 
@@ -92,6 +92,7 @@ app.use(function(err, req, res, next) {
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Run node run
+/*
 con.connect(function(err, next){
 	if(err){
             console.log(err);            
@@ -99,6 +100,7 @@ con.connect(function(err, next){
             console.log("Conectado a soundlib");
         }	
 });
+*/
 app.listen(port);
 console.log('Http server working on port ' + port);
 api.listen(3030);
