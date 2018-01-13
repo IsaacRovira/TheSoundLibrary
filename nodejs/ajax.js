@@ -15,7 +15,7 @@ if (window.XMLHttpRequest) {
 }
 
 xhttp.open("POST",url,true);
-xhttp.setRequestHeader("Content-type", "api");
+xmlhttp.setRequestHeader("Content-type", 'application/json');
 xhttp.send("");
 
 

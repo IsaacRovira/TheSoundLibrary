@@ -1,17 +1,17 @@
 // config/database.js
 
-var config      =  require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var config      =  require(process.cwd()+'/config/config.js');
 var mysql    	= require(config.modulos + 'mysql');
 
 
 var sql	= {
 	config
 	:{
-		host: "192.168.1.56",
-		port: 3306,
-		user: "nodejs",
-		password: "node.js",
-		database: "soundlib"
+		host: config.sql.ip,
+		port: config.sql.port,
+		user: config.sql.user,
+		password: config.sql.pass,
+		database: config.sql.db
 	},
 	
 	users			

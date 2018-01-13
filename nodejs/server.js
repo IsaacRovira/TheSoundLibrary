@@ -1,7 +1,7 @@
 // server.js
 
 
-var config      = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var config          = require(process.cwd()+'\\config\\config.js');
 var path        = require(config.modulos + 'path');
 
 console.log(process.cwd());
@@ -104,3 +104,4 @@ con.connect(function(err, next){
 app.listen(port);
 console.log('Http server working on port ' + port);
 api.listen(3030);
+console.log('API listen on port ' + 3030);

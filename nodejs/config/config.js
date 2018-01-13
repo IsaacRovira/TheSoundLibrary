@@ -2,8 +2,8 @@
 
 //PATH
 const RAIZ      = process.cwd();
-const MODULOS   = RAIZ + "/node_modules/";
-const NODE      = "c:\\nodejs\\";
+const MODULOS   = RAIZ + "\\node_modules\\";
+const NODE      = "f:\\Program files\\nodejs\\";
 
 //API
 const APIPORT   = 3000;
@@ -12,8 +12,8 @@ const APIPORT   = 3000;
 const HTTPPORT  = 8080;
 
 //SQL
-const SQLPORT   = 3306;
-const SQLIP     = "192.168.1.56";
+const SQLPORT   = 3360;
+const SQLIP     = "127.0.0.1";
 const SQLUSER   = "nodejs";
 const SQLPASS   = "node.js";
 const SQLDB     = "soundlib";

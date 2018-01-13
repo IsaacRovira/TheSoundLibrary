@@ -1,6 +1,6 @@
 // app/routes.js
 
-var config      = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var config          = require(process.cwd()+'/config/config.js');
 
 module.exports = function(app, passport) {
 
@@ -49,11 +49,9 @@ module.exports = function(app, passport) {
     // PROFILE
     // ++++++++++++++++++++++++++++++    
     // PAra la verificación del registro; muestra usario, id y pass.
-    app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-			
-            user : req.user // get the user out of session and pass to template
-			
+    app.get('/profile', isLoggedIn, function(req, res) {        
+        res.render('profile.ejs', {			
+            user : req.user // get the user out of session and pass to template			
         });
     });
     
@@ -62,11 +60,20 @@ module.exports = function(app, passport) {
     // ++++++++++++++++++++++++++++++    
     // Acceso a los datos de la fonoteca
     app.get('/mysoundlib', isLoggedIn, function(req, res) {
-        res.render('data.ejs', {
-			
+        res.sendFile((config.raiz + '/views/testjs.html'),{
             user : req.user // Cierra la sesión del usuario.
-			
         });
+        /*
+        const fs = require(config.modulos + 'read-file');
+        fs('./views/testjs.html', 'utf8', function(err, text){
+            if(err)
+                error(mensaje, res);
+            res.status(200);
+            res.send(text, {
+                user : req.user // Cierra la sesión del usuario.
+            });
+        });
+         */   
     });
 	
     

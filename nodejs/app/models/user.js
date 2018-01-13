@@ -3,7 +3,7 @@
 //var mongoose = require('mongoose');
 
 //var nodeDir	= "F:\\Program Files\\nodejs\\node_modules\\";
-var config      = require("g:/IFP/Proyecto/codigo/nodejs/config/config.js");
+var config          = require(process.cwd()+'/config/config.js');
 
 var bcrypt   = require(config.modulos + 'bcrypt-nodejs');
 

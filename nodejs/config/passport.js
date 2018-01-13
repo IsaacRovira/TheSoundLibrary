@@ -2,7 +2,7 @@
 
 
 //Modulos
-var config          = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var config          = require(process.cwd()+'/config/config.js');
 var path            = require(config.modulos + 'path');
 var LocalStrategy   = require(config.modulos + 'passport-local').Strategy;
 var mysql           = require(config.modulos + 'mysql');

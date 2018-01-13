@@ -1,7 +1,7 @@
 //api.js
 
 // Cargar modulos.
-var config      = require('g:/IFP/Proyecto/codigo/nodejs/config/config.js');
+var config          = require(process.cwd()+'/config/config.js');
 var path    = require(config.modulos + 'path');
 var express     = require(config.modulos + 'express');
 var bodyParser  = require(config.modulos + 'body-parser');
