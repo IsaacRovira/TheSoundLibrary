@@ -44,7 +44,7 @@ CREATE TABLE Discos (
     DiscoID int not null UNIQUE AUTO_INCREMENT,    
     Album varchar(255) not null,
     Artista varchar(255),	
-	Año int,
+	year int,
     Genero varchar(255) not null,
     SoporteID int not null,
     Etiquetado varchar(255),
