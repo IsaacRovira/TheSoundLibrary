@@ -30,7 +30,7 @@ module.exports = function(passport) {
     
 	//serialize
     passport.serializeUser(function(user, done) {
-		console.log(JSON.stringify(user));
+		//console.log(JSON.stringify(user));
         done(null, user.local.id);
     });
 

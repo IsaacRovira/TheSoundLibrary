@@ -1,10 +1,12 @@
 //api_routes.js
 
 var config          = require(process.cwd()+'/config/config.js');
-var path    = require(config.modulos + 'path');
-var express = require(config.modulos + 'express');
+var path            = require(config.modulos + 'path');
+var express         = require(config.modulos + 'express');
 
-var sql     = require(path.normalize(config.raiz + "/config/database.js"));
+var sql             = require(path.normalize(config.raiz + "/config/database.js"));
+
+
 
 //var wd      = config.raiz;
 //var parser 		= require('http-string-parser');
@@ -60,19 +62,23 @@ router.get('/:generos()', function(req, res){
 //************************************************************************************************************************************************************************
 //FONOTECA CANCIONES
 //************************************************************************************************************************************************************************
+
 router.post('/fonotecas/canciones', function(req, res){
-   //datos del body   
+    console.log("Request fonotecas/canciones");
+   
+   //datos del body  
    var datos=[
        ['cancionId', req.body.cancionId],
        ['artistas', req.body.artistas],       
        ['discoId', req.body.discoId],
        ['duracion', req.body.duracion],
        ['pista', req.body.pista],
-       ['titulo', req.body.titulo],    
+       ['titulo', req.body.titulo],
+       ['userid', req.body.userid]
     ];
     
     //Generamos el string para la consulta SQL
-    var string = req.body.userId;
+    var string = ' ';
     for(var i =0; i < datos.length; i++){
         switch(i){
                 case 0: if(datos[i][1]){
@@ -80,7 +86,9 @@ router.post('/fonotecas/canciones', function(req, res){
                         i=datos.length; //No añadimos más campos.
                     }
                     break;
-                case 2:                    
+                    //Es necesario añadir la tabla para eliminar la ambiguedad en la sentencia SQL.
+                case 2: if(datos[i][1]) string = updateStringEqual(datos[i][1], string, "discos."+datos[i][0]);
+                    break;
                 case 3:
                 case 4: if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
                     break;
@@ -95,50 +103,87 @@ router.post('/fonotecas/canciones', function(req, res){
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
     });
-    console.log(string);
-    //var sqlquery = "SELECT cancionID, canciones.discoID, Artistas, Duracion, Pista, Titulo FROM canciones inner join discos on canciones.discoid = discos.discoid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid = ";
-    if(isBody(datos)){
-        sql.conectar().query(sql.fonotecas.canciones + string, function(err, result){
-           if(err){
-                error("¡Ups! Algo ha fallado.",res);
-                console.log("Error query canciones fonoteca: " + err);
-            }else{
-                if(JSON.stringify(result).length< 3){
-                    res.status(404).json({errors: ['Ninguna coincidencias']});
-                    res.end();
-                }else{                    
-                    res.status(201).json(result);
-                    res.end();
-                }
+        
+    sql.conectar().query(sql.fonotecas.canciones + string, req.body.userid,  function(err, result){
+       if(err){
+            error("¡Ups! Algo ha fallado.",res);
+            console.log("Error query canciones fonoteca: " + err);
+        }else{
+            if(JSON.stringify(result).length< 3){
+                res.status(404).json({errors: ['Ninguna coincidencias']});
+                res.end();
+            }else{                    
+                res.status(201).json(result);
+                res.end();
             }
-        });
-    }else{
-        console.log(req.body.userId);
-        sql.conectar().query(sql.fonotecas.canciones + req.body.userId, function(err, result){
-           if(err){
-                error("¡Ups! Algo ha fallado.",res);
-                console.log("Error query canciones fonoteca: " + err);
-            }else{
-                if(JSON.stringify(result).length< 3){
-                    res.status(404).json({errors: ['Ninguna coincidencias']});
-                    res.end();
-                }else{                    
-                    res.status(201).json(result);
-                    res.end();
-                }
-            }
-        });
-    }
+        }
+    });
 });
 
 //************************************************************************************************************************************************************************
 //FONOTECA DISCOS
 //************************************************************************************************************************************************************************
+router.post('/fonotecas/discos', function(req, res){   
+    console.log("Request fonotecas/discos");
+    //Datos del body
+    var datos=[
+        ['discoId', req.body.discoId],
+        ['album', req.body.album],
+        ['artista', req.body.artista],
+        ['year', req.body.year],
+        ['sello', req.body.sello],
+        ['etiquetado', req.body.etiquetado],
+        ['genero', req.body.genero],
+        ['identificadores', req.body.identificadores],
+        ['tipo', req.body.tipo],
+        ['userid', req.body.userid]
+    ];   
+   
+    var string =" ";
+    for(var i =0; i < datos.length; i++){
+        switch(i){
+                case 0: if(datos[i][1]){
+                        //Es necesario añadir la tabla al campo para eliminar la ambiguedad en la sentencia SQL.
+                        string = updateStringEqual(datos[i][1], string, "discos."+datos[i][0]);
+                        i=datos.length; //No añadimos más campos.
+                    }
+                    break;
+                case 3:  if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
+                    break;
+                case 9: break;
+                default: if(datos[i][1]) string = updateStringLike(datos[i][1], string, datos[i][0]);
+                    break;
+        }
+    }
+        
+    //Encabezado
+    res.set({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+    });
+    
+    sql.conectar().query(sql.fonotecas.discos + string, req.body.userid, function(err, result){
+        if(err){
+            error("¡Ups! Algo ha fallado.",res);
+            console.log("Error query discos: " + err);
+        }else{                
+            if(JSON.stringify(result).length<3){
+                res.status(404).json({errors: ['Ninguna conincidencia']});
+                res.end();
+            }else{    
+                res.status(201).json(result);
+                res.end();
+            }                
+        }                
+    });    
+});
 
 //************************************************************************************************************************************************************************
 //CANCIONES
 //************************************************************************************************************************************************************************
 router.post('/canciones', function(req, res){
+    console.log("Request canciones");
+    console.log(JSON.stringify(req.body));
     //Datos del body
     var datos=[
        ['artistas', req.body.artistas],
@@ -146,7 +191,8 @@ router.post('/canciones', function(req, res){
        ['discoId', req.body.discoId],
        ['duracion', req.body.duracion],
        ['pista', req.body.pista],
-       ['titulo', req.body.titulo]
+       ['titulo', req.body.titulo],
+       ['userid', req.body.userid]
     ];
     
     //Generamos el string para la consulta SQL
@@ -162,6 +208,7 @@ router.post('/canciones', function(req, res){
                 case 3:
                 case 4: if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
                     break;
+                case 6:break;
                 default: if(datos[i][1]) string = updateStringLike(datos[i][1], string, datos[i][0]);
                     break;
         }
@@ -208,9 +255,11 @@ router.post('/canciones', function(req, res){
 // DISCOS
 //************************************************************************************************************************************************************************
 router.post('/discos', function(req, res){   
-    
+    console.log("Request discos");
+    console.log(req.user);
+    console.log(req.body);
     //Datos del body
-    var data=[
+    var datos=[
         ['discoId', req.body.discoId],
         ['album', req.body.album],
         ['artista', req.body.artista],
@@ -219,19 +268,35 @@ router.post('/discos', function(req, res){
         ['etiquetado', req.body.etiquetado],
         ['genero', req.body.genero],
         ['identificadores', req.body.identificadores],
-        ['tipo', req.body.tipo]
+        ['tipo', req.body.tipo],
+        ['userid', req.body.userid]
     ];
     
-    var string = whereSentence(data);
+    var string ="";
+    for(var i =0; i < datos.length; i++){
+        switch(i){
+                case 0: if(datos[i][1]){
+                        string = updateStringEqual(datos[i][1], string, datos[i][0]);
+                        i=datos.length; //No añadimos más campos.
+                    }
+                    break;
+                case 3:  if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
+                    break;
+                case 9: break;
+                default: if(datos[i][1]) string = updateStringLike(datos[i][1], string, datos[i][0]);
+                    break;
+        }
+    }    
     
     //Encabezado
     res.set({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'        
     });
     
-    if(isBody(data)){         
-        sql.conectar().query(sql.discos.by_Any + string, function(err, result,fields){
+    if(isBody(datos)){
+        console.log(string);
+        sql.conectar().query(sql.discos.by_Any + string, function(err, result){
             if(err){
                 error("¡Ups! Algo ha fallado.",res);
                 console.log("Error query discos: " + err);
@@ -250,10 +315,11 @@ router.post('/discos', function(req, res){
             if(err){
                 error("¡Ups! Algo ha fallado.",res);
                 console.log("Error query discos: " + err);
-            }                
-            console.log(result.length);
-            res.status(201).json(result);
-            res.end();
+            }else{
+                //console.log(JSON.stringify(result));
+                res.status(201).json(result);
+                res.end();
+            }            
 	});
     }	
 });
@@ -278,24 +344,6 @@ function updateStringEqual(valor, string, campo){
             string += " and";
         }
     return string += " " + campo + "=" + valor;
-};
-
-function whereSentence(datos){
-    var string = "";
-    for(var i =0; i < datos.length; i++){
-        switch(i){
-                case 0: if(datos[i][1]){
-                        string = updateStringEqual(datos[i][1], string, datos[i][0]);
-                        i=datos.length; //No añadimos más campos.
-                    }
-                    break;
-                case 3:  if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
-                    break;
-                default: if(datos[i][1]) string = updateStringLike(datos[i][1], string, datos[i][0]);
-                    break;
-        }
-    }
-    return string;
 };
 
 function isBody(data){

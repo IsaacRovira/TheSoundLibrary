@@ -34,7 +34,7 @@ module.exports = function(app, passport) {
     // ++++++++++++++++++++++
     app.get('/signup', function(req, res) {
 
-        // render de la pagina de registro y passar los flash request.
+        // enviar la pagina de registro y passar los flash request.
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
@@ -46,36 +46,20 @@ module.exports = function(app, passport) {
     }));
 
     // ++++++++++++++++++++++++++++++
-    // PROFILE
-    // ++++++++++++++++++++++++++++++    
-    // PAra la verificación del registro; muestra usario, id y pass.
-    app.get('/profile', isLoggedIn, function(req, res) {        
-        res.render('profile.ejs', {			
-            user : req.user // get the user out of session and pass to template			
-        });
-    });
-    
-    // ++++++++++++++++++++++++++++++
     // Soundlib data
     // ++++++++++++++++++++++++++++++    
-    // Acceso a los datos de la fonoteca
-    app.get('/mysoundlib', isLoggedIn, function(req, res) {
-        res.sendFile((config.raiz + '/views/testjs.html'),{
+    // Acceso a los datos de la fonoteca;
+    app.get('/mysoundlib', isLoggedIn, function(req, res) {        
+        res.set('Set-Cookie', 'username='+user.local.id+"; path=/mysoundlib");
+        res.sendFile((config.raiz + '/views/main.html'),{            
             user : req.user // Cierra la sesión del usuario.
         });
         /*
-        const fs = require(config.modulos + 'read-file');
-        fs('./views/testjs.html', 'utf8', function(err, text){
-            if(err)
-                error(mensaje, res);
-            res.status(200);
-            res.send(text, {
-                user : req.user // Cierra la sesión del usuario.
-            });
+        res.render('main.ejs', {			
+                user : req.user  
         });
-         */   
-    });
-	
+        */
+    });	
     
     //TESTING.....
     app.get('/api', isLoggedIn, function(req, res){
@@ -91,13 +75,10 @@ module.exports = function(app, passport) {
     });
 };
 
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated())
+// isLoggedIn verifica que el usuario haya iniciado sesión.
+function isLoggedIn(req, res, next) {    
+    if (req.isAuthenticated()) //Verificar si el usuario ha iniciado sesión.
         return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
+    
+    res.redirect('/'); //Usuarios no identificados a la página de inicio.
 }

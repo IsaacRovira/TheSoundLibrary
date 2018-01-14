@@ -26,7 +26,7 @@ var sql = {
             },
     discos
             : {
-                all: "SELECT discoid, album, artista, year, discografica, etiquetado, genero, identificadores, Tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid",
+                all: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid",
                 by_id: "select * from discos where discoID = ?",
                 by_album: "select * from discos where Album = ?",
                 by_year: "select * from discos where year = ?",
@@ -35,7 +35,7 @@ var sql = {
                 by_artista: "select * from discos where Artista like '%?%'",
                 by_identificador: "select * from discos where Identificador like '%?%'",
                 by_Etiquetado: "select * from discos where Etiquetado like '%?%'",
-                by_Any: "SELECT discoid, album, artista, year, discografica, etiquetado, genero, identificadores, Tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid where "
+                by_Any: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid where "
 
             },
     generos
@@ -56,7 +56,8 @@ var sql = {
                 by_id: "select * from fonotecas where fonoID = ?",
                 by_nombre: "select * from fonotecas where nombre = ?",
                 by_userID: "select * from fonotecas where userID = ?",
-                canciones: 'SELECT cancionID, canciones.discoID, Artistas, Duracion, Pista, Titulo FROM canciones inner join discos on canciones.discoid = discos.discoid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid='
+                canciones: 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones inner join discos on canciones.discoid = discos.discoid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?) ',
+                discos: "SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?) "
             },
     fonotecasdata
             : {
@@ -67,14 +68,14 @@ var sql = {
             },
     canciones
             : {
-                all: "select * from canciones",
+                all: "select cancionId, discoId, artistas, duracion, pista, titulo from canciones",
                 by_id: "select * from canciones where CancionID = ?",
                 by_artistas: "select * from canciones where Artistas contains ?",
                 by_discoID: "select * from canciones where DiscoID = ?",
                 by_titulo: "select * from canciones where Titulo contains ?",
-                by_Any: "SELECT cancionID, DiscoID, Artistas, Duracion, Pista, Titulo FROM canciones where "
+                by_Any: "SELECT cancionId, discoId, artistas, duracion, pista, titulo FROM canciones where "
             }
-}
+};
 
 sql.conectar = function () {
     con = mysql.createConnection({
@@ -83,7 +84,7 @@ sql.conectar = function () {
         user: sql.config.user,
         password: sql.config.password,
         database: sql.config.database
-    })
+    });
     return con;
 };
 

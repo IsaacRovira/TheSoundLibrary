@@ -35,7 +35,7 @@ var con = mysql.createConnection({
 //API 
 //*************************************************************************************
 var router		= require(path.normalize(config.raiz + '/app/api_routes.js'));
-var sql = require(path.normalize(config.raiz + '/app/api_routes.js'));
+var sql                 = require(path.normalize(config.raiz + '/app/api_routes.js'));
 
 var api	= express();
 

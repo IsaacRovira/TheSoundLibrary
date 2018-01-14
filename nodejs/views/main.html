@@ -12,35 +12,16 @@
         <link rel="stylesheet" href="../public/css/main.css">
         
         <!--JavaScript-->
-        <script src= "../js/contentGenerator.js" type="text/javascript"></script>
-        <script src= "../js/contentListGen.js" type="text/javascript"></script>
-        <script src= "../js/queryAll.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            let esMosaico = true;
-            
-            function removeElements(){    
-                let mainRowChild = document.getElementById('mainRow').childNodes;
-                while(mainRowChild.length > 0){
-                    document.getElementById('mainRow').removeChild(mainRowChild[0]);
-                }
-            };
-            
-            function changeMode(){
-                removeElements();
-                if(esMosaico){
-                    getAll(genImageList);                    
-                    esMosaico = false;
-                }else{
-                    getAll(genImageMosaico);
-                    esMosaico = true;
-                }
-            };
-            
-            function test(){
-                alert("funcion");
-            }
-        </script>
+        <script src= "./js/contentMosaicGen.js" type="text/javascript"></script>
+        <script src= "./js/contentListGen.js" type="text/javascript"></script>
+        <script src= "./js/queryAll.js" type="text/javascript"></script>
+        <script src= "./js/contentDetailGen.js" type="text/javascript"></script>
+        <script src= "./js/changeView.js" type="text/javascript"></script>
         
+        <script>
+            getUserId();
+        </script>
+            
         <style>
             body{
                 background-color: black;
@@ -64,6 +45,9 @@
                 margin-bottom: 10px;
                 color: white;
             }
+            label{
+                padding: 10px;
+            }
             
         </style>
         
@@ -75,7 +59,7 @@
         <div class="container-fluid" id="nav-bar">
             <div class="row">
                 <div class="col-3" id="icono"><h1>TSL</h1></div>
-                <div class="col-6" id="estado"><h4>ESTADO</h4></div>
+                <div class="col-6" id="estado"><h3>FONOTECA</h3></div>
                 <div class="col-3" id="salir">
                     <a href="/logout">
                         <i class="far fa-times-circle fa-3x" style ="color:white;" aria-hidden="true">&nbsp;</i>
@@ -85,8 +69,8 @@
             <div class='row'>
                 <div class="col-12" id="opciones">
                     <h4>
-                        <label onclick="changeMode()">Cambio</label>
-                        <label>Lista/Imagenes</label>
+                        <label onclick="changeEstado()" id="estado_bttn">Fonoteca</label>
+                        <label onclick="changeMode()" id="modo">Ir a Lista</label>
                         <label>Buscar</label>
                         <label>Opciones</label>
                     </h4>
@@ -98,7 +82,8 @@
             </div>
         </div>
         <script type="text/javascript"> 
-            getAll(genImageMosaico);
+            doQueryAll(url[0]['discos'],genImageMosaico);
+            //getAll(genImageMosaico);
             //getAll(genImageList);
         </script>
     </body>

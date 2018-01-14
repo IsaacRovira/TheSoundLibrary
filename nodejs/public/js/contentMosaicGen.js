@@ -7,16 +7,16 @@
     </figure>
 </div>
  */
+var DIVCLASS = 'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic';
+var PATH = "./img/Caratulas/";
 
-const DIVCLASS = "col-xs-12 col-sm-6 col-md-4 col-lg-3";
-const PATH = "../public/img/Caratulas/";
-
-let divAttrb={
+var divAttrb={
     id      : "id",
-    class   : DIVCLASS
+    class   : DIVCLASS,
+    onclick : ""
 };
 
-let imgAttrb={
+var imgAttrb={
     fileName: "filename",
     path    : PATH,
     src     : "PATH",
@@ -25,7 +25,7 @@ let imgAttrb={
     width   : "225px"
 };
 
-let figcapAttrb={
+var figcapAttrb={
     class: "lead small"
 };
 
@@ -52,9 +52,11 @@ let setAttrbNodes= function(id, fileName){
     divNode.setAttribute('id', divAttrb.id);
     divNode.setAttribute('class', divAttrb.class);
     
+    
     imgNode.setAttribute('src', imgAttrb.src);
     imgNode.setAttribute('class', imgAttrb.class);
     imgNode.setAttribute('alt', imgAttrb.alt);
+    imgNode.setAttribute('onclick', 'openDetails('+id+')');
     //imgNode.setAttribute('width', imgAttrb.width);
     
     figcaptionNode.setAttribute('class', figcapAttrb.class);
@@ -76,13 +78,13 @@ let convineElements = function(valor){
 
 let genImageMosaico = function(data){
     
-    //alert(data);
+   //alert(data);
     data = JSON.parse(data);
     
     for(let i = 0; i < data.length; i++){
         resetNodes();        
-        setAttrbNodes(data[i]['DiscoID'], data[i]['Img_cover']);        
-        divNode = convineElements(data[i]['Album']);
+        setAttrbNodes(data[i]['discoId'], data[i]['img_cover']);        
+        divNode = convineElements(data[i]['album']);
         document.getElementById('mainRow').appendChild(divNode);
     };
 };

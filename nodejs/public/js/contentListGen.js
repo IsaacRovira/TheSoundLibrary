@@ -20,7 +20,6 @@
  *</ul>
  */
 
-//const PATH = "../public/img/Caratulas/";
 
 let imgAtt={
     fileName: "filename",
@@ -131,17 +130,17 @@ let genImageList = function(data){
     ulNode.setAttribute('class', 'list-group');
     
     for(let i = 0; i < data.length; i++){
-        liAtt.id = data[i]['DiscoID'];
+        liAtt.id = data[i]['discoId'];
         
-        imgAtt.src        = PATH + data[i]['Img_cover'];
-        imgAtt.alt        = data[i]['Album'];
-        imgAtt.fileName   = data[i]['Img_cover'];
+        imgAtt.src        = PATH + data[i]['img_cover'];
+        imgAtt.alt        = data[i]['album'];
+        imgAtt.fileName   = data[i]['img_cover'];
         
-        pText.album         = 'Album: ' + data[i]['Album'];
-        pText.artista       = 'Artista: ' + altValue(data[i]['Artista'],'----');
-        pText.sello         = 'Sello: ' + altValue(data[i]['sello'], '----');
-        pText.year          = 'Ano: ' + altValue(data[i]['año'], '----');
-        pText.genero        = 'Genero: ' + altValue(data[i]['genero'], '----');
+        pText.album         = 'album: ' + data[i]['album'];
+        pText.artista       = 'artista: ' + altValue(data[i]['artista'],'----');
+        pText.sello         = 'sello: ' + altValue(data[i]['sello'], '----');
+        pText.year          = 'year: ' + altValue(data[i]['year'], '----');
+        pText.genero        = 'genero: ' + altValue(data[i]['genero'], '----');
         
         let liNode = genLiNode(liAtt)
             liNode.appendChild(genRowColNode(pText, imgAtt));
