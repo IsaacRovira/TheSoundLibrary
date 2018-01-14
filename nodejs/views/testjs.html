@@ -2,18 +2,104 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <script src="../js/queryAll.js" type="text/javascript"></script>
-        <script src="../js/contentGenerator.js" type="text/javascript"></script>
+        <!--Font Awesome-->
+        <script src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+        
+        <!--Bootstrap-->  
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+        
+        <!--CSS-->
+        <link rel="stylesheet" href="../public/css/main.css">
+        
+        <!--JavaScript-->
+        <script src= "../js/contentGenerator.js" type="text/javascript"></script>
+        <script src= "../js/contentListGen.js" type="text/javascript"></script>
+        <script src= "../js/queryAll.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            let esMosaico = true;
+            
+            function removeElements(){    
+                let mainRowChild = document.getElementById('mainRow').childNodes;
+                while(mainRowChild.length > 0){
+                    document.getElementById('mainRow').removeChild(mainRowChild[0]);
+                }
+            };
+            
+            function changeMode(){
+                removeElements();
+                if(esMosaico){
+                    getAll(genImageList);                    
+                    esMosaico = false;
+                }else{
+                    getAll(genImageMosaico);
+                    esMosaico = true;
+                }
+            };
+            
+            function test(){
+                alert("funcion");
+            }
+        </script>
+        
+        <style>
+            body{
+                background-color: black;
+            }
+            
+            figcaption{
+                color: white;
+            }
+            
+            .img-list{
+                width: 125px;
+            }
+            
+            .list-group-item:hover{
+                opacity: 0.75;
+                background-color: whitesmoke;
+            }
+            
+            #nav-bar{
+                border: solid white;
+                margin-bottom: 10px;
+                color: white;
+            }
+            
+        </style>
+        
+        <title>TheSoundLib</title>
         
     </head>
+    
     <body>
-        <div class="container">
-            <p>INSERTAREMOS LAS IMAGENES AQUI</p>
-            <div class="row" id="laFila">                
+        <div class="container-fluid" id="nav-bar">
+            <div class="row">
+                <div class="col-3" id="icono"><h1>TSL</h1></div>
+                <div class="col-6" id="estado"><h4>ESTADO</h4></div>
+                <div class="col-3" id="salir">
+                    <a href="/logout">
+                        <i class="far fa-times-circle fa-3x" style ="color:white;" aria-hidden="true">&nbsp;</i>
+                    </a> 
+                </div>
+            </div>
+            <div class='row'>
+                <div class="col-12" id="opciones">
+                    <h4>
+                        <label onclick="changeMode()">Cambio</label>
+                        <label>Lista/Imagenes</label>
+                        <label>Buscar</label>
+                        <label>Opciones</label>
+                    </h4>
+                </div>
             </div>
         </div>
-        <script type="text/javascript">            
-            getAll(lafuncion);
+        <div class="container" id="mainContainer">
+            <div class="row" id="mainRow">                
+            </div>
+        </div>
+        <script type="text/javascript"> 
+            getAll(genImageMosaico);
+            //getAll(genImageList);
         </script>
     </body>
 </html>

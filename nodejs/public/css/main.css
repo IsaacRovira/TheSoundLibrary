@@ -1,0 +1,21 @@
+.far fa-times-circle{    
+    font-size: 25px;
+    float:right;
+}
+.far fa-times-circle:hover{    
+    opacity: 0.85;
+}
+
+figcaption{
+    margin: 0% 5% 0% 5%;
+}
+
+.img-mosaic{    
+    max-width: 225px;
+}
+.img-mosaic:hover{    
+    position: absolute;
+    z-index: 10;
+    max-width: 250px;
+    opacity: 0.85;
+}

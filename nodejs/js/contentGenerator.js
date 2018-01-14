@@ -20,8 +20,13 @@ let imgAttrb={
     fileName: "filename",
     path    : PATH,
     src     : "PATH",
-    class   : "clase",
-    alt     : "texto"
+    class   : "img-thumbnail rounded mx-auto d-block img-mosaic",
+    alt     : "texto",
+    width   : "225px"
+};
+
+let figcapAttrb={
+    class: "lead small"
 };
 
 let divNode = document.createElement("div");
@@ -50,6 +55,9 @@ let setAttrbNodes= function(id, fileName){
     imgNode.setAttribute('src', imgAttrb.src);
     imgNode.setAttribute('class', imgAttrb.class);
     imgNode.setAttribute('alt', imgAttrb.alt);
+    //imgNode.setAttribute('width', imgAttrb.width);
+    
+    figcaptionNode.setAttribute('class', figcapAttrb.class);
 };
 
 //Convinar los elementos antes de insertarlos.
@@ -66,24 +74,18 @@ let convineElements = function(valor){
     return divNode;
 };
 
-
-let lafuncion = function(data){
+let genImageMosaico = function(data){
     
     //alert(data);
     data = JSON.parse(data);
     
     for(let i = 0; i < data.length; i++){
-        resetNodes();      
+        resetNodes();        
         setAttrbNodes(data[i]['DiscoID'], data[i]['Img_cover']);        
         divNode = convineElements(data[i]['Album']);
-        document.getElementById('laFila').appendChild(divNode);
+        document.getElementById('mainRow').appendChild(divNode);
     };
-    /*
-    let elemP = document.createElement("p");
-    let elemT = document.createTextNode(data.length);
-
-    elemP.appendChild(elemT);
-    document.body.appendChild(elemP);
-    document.getElementById('laFila').appendChild(elemP);
-    */
 };
+
+
+
