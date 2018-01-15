@@ -47,21 +47,21 @@ api.use('/api', sql);
 //Express
 //**************************************************************************************
 var app      	= express();
-var port     	= process.env.PORT || 8080;
+var port     	= process.env.PORT || config.http.port;
 
 require(path.normalize(config.raiz + '/config/passport'))(passport); // pass passport for configuration
 
 // Configurar app (Express)
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser.urlencoded({extended: true})); // get information from html forms
+app.use(morgan('dev')); // log en la consola.
+app.use(cookieParser()); // cookies
+app.use(bodyParser.urlencoded({extended: true})); // html forms
 app.use(bodyParser.json());
-app.set('view engine', 'ejs'); // set up ejs for templating
+app.set('view engine', 'ejs'); 
 app.use(express.static('public'));
 
 // Configura passport
 app.use(session({
-	secret: 'estecursoesunaestafa',// session secret
+	secret: 'encriptalotodo',
 	reserve: true,
 	saveUninitialized: true
 }));
@@ -103,5 +103,5 @@ con.connect(function(err, next){
 */
 app.listen(port);
 console.log('Http server working on port ' + port);
-api.listen(3030);
-console.log('API listen on port ' + 3030);
+api.listen(config.api.port);
+console.log('API listen on port ' + config.api.port);

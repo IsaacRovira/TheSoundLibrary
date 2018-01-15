@@ -9,7 +9,7 @@ const NODE      = "f:\\Program files\\nodejs\\";
 const APIPORT   = 3000;
 
 //HTTP
-const HTTPPORT  = 8080;
+const HTTPPORT  = 80;
 
 //SQL
 const SQLPORT   = 3360;
