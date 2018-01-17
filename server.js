@@ -52,18 +52,13 @@ var port     	= process.env.PORT || config.http.port;
 require(path.normalize(config.raiz + '/config/passport'))(passport); // pass passport for configuration
 
 // Configurar app (Express)
-<<<<<<< HEAD
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.urlencoded({extended: true})); // get information from html forms 
-=======
 app.use(morgan('dev')); // log en la consola.
 app.use(cookieParser()); // cookies
 app.use(bodyParser.urlencoded({extended: true})); // html forms
->>>>>>> a37044ac2231b289df03929b220a523e99c6ae91
 app.use(bodyParser.json());
-app.set('view engine', 'ejs'); 
-app.use(express.static('public'));
+app.set('view engine', 'ejs');      //lanzar EJS
+app.use(express.static('public'));  //public donde estáran todos los ficheros accesibles.
 
 // Configura passport
 app.use(session({
