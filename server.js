@@ -81,14 +81,18 @@ app.get('/', function(req, res){
    next(err);
 });
 */
+
 app.use(function(err, req, res, next) {
-    console.error(err);  
-    
+    console.log("Error: "+ err);    
+    /* SWITCH CON TODOS LOS CÓDIGOS DE ERROR Q VAMOS A GESTIONAR
     switch(err.code){
        case 'ECONNREFUSED': res.status(500).send('Error de conexión a la base de datos'); break;
-       default: res.status(500).send('ERROR DESCONOCIDO');
-   }
+       default: res.status(500).send('ERROR DESCONOCIDO');           
+   }*/
+   //next();
+   next({type: 'TIPO_DE_ERROR', error: 'CUENTANOS ALGO'});
 });
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Run node run

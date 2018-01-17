@@ -24,7 +24,9 @@ module.exports = function(app, passport) {
 
     // Procesar el formulario de inicio de sesión.	
     app.post('/login', passport.authenticate('local-login', {
-			successRedirect	: '/mysoundlib',
+			successRedirect	:
+                                
+                                '/mysoundlib',
 			failureRedirect	: '/login', //si falla el inicio de sesión volvemos a mostrar la pagina.
 			failureFlash: true //Mensajes flash activados.
 	}));
