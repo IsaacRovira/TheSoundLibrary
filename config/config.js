@@ -6,14 +6,14 @@ const MODULOS   = RAIZ + "\\node_modules\\";
 const NODE      = "f:\\Program files\\nodejs\\";
 
 //API
-const APIPORT   = 3000;
+const APIPORT   = 3030;
 
 //HTTP
-const HTTPPORT  = 8080;
+const HTTPPORT  = 80;
 
 //SQL
-const SQLPORT   = 3360;
-const SQLIP     = "127.0.0.1";
+const SQLPORT   = 3306;
+const SQLIP     = "192.168.1.89";
 const SQLUSER   = "nodejs";
 const SQLPASS   = "node.js";
 const SQLDB     = "soundlib";
@@ -33,7 +33,7 @@ module.exports ={
     },
     
     api:{
-        port    : APIPORT,
+        port    : APIPORT
     },
     
     http:{

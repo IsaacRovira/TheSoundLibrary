@@ -243,7 +243,8 @@ router.post('/canciones', function(req, res){
             if(err){
                 error("¡Ups! Algo ha fallado.",res);
                 console.log("Error query canciones: " + err);
-            }else{                
+            }else{
+                console.log(JSON.stringify(result));
                 res.status(201).json(result);
                 res.end();
             }
@@ -256,8 +257,6 @@ router.post('/canciones', function(req, res){
 //************************************************************************************************************************************************************************
 router.post('/discos', function(req, res){   
     console.log("Request discos");
-    console.log(req.user);
-    console.log(req.body);
     //Datos del body
     var datos=[
         ['discoId', req.body.discoId],
@@ -316,7 +315,7 @@ router.post('/discos', function(req, res){
                 error("¡Ups! Algo ha fallado.",res);
                 console.log("Error query discos: " + err);
             }else{
-                //console.log(JSON.stringify(result));
+                console.log(JSON.stringify(result));
                 res.status(201).json(result);
                 res.end();
             }            

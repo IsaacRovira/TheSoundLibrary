@@ -1,7 +1,7 @@
 // server.js
 
 
-var config          = require(process.cwd()+'\\config\\config.js');
+var config          = require(process.cwd()+'\\config\\config.js'); 
 var path        = require(config.modulos + 'path');
 
 console.log(process.cwd());
@@ -47,14 +47,14 @@ api.use('/api', sql);
 //Express
 //**************************************************************************************
 var app      	= express();
-var port     	= process.env.PORT || 8080;
+var port     	= process.env.PORT || config.http.port;
 
 require(path.normalize(config.raiz + '/config/passport'))(passport); // pass passport for configuration
 
 // Configurar app (Express)
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser.urlencoded({extended: true})); // get information from html forms
+app.use(bodyParser.urlencoded({extended: true})); // get information from html forms 
 app.use(bodyParser.json());
 app.set('view engine', 'ejs'); // set up ejs for templating
 app.use(express.static('public'));
@@ -103,5 +103,5 @@ con.connect(function(err, next){
 */
 app.listen(port);
 console.log('Http server working on port ' + port);
-api.listen(3030);
-console.log('API listen on port ' + 3030);
+api.listen(config.api.port);
+console.log('API listen on port ' + config.api.port);
