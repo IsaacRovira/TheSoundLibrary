@@ -1,7 +1,7 @@
 // server.js
 
 
-var config          = require(process.cwd()+'\\config\\config.js');
+var config          = require(process.cwd()+'\\config\\config.js'); 
 var path        = require(config.modulos + 'path');
 
 console.log(process.cwd());
@@ -52,12 +52,13 @@ var port     	= process.env.PORT || config.http.port;
 require(path.normalize(config.raiz + '/config/passport'))(passport); // pass passport for configuration
 
 // Configurar app (Express)
+app.use(bodyParser.urlencoded({extended: true})); // get information from html forms 
 app.use(morgan('dev')); // log en la consola.
 app.use(cookieParser()); // cookies
 app.use(bodyParser.urlencoded({extended: true})); // html forms
 app.use(bodyParser.json());
-app.set('view engine', 'ejs'); 
-app.use(express.static('public'));
+app.set('view engine', 'ejs');      //lanzar EJS
+app.use(express.static('public'));  //public donde estáran todos los ficheros accesibles.
 
 // Configura passport
 app.use(session({

@@ -7,6 +7,73 @@
     </figure>
 </div>
  */
+
+
+/*NUEVA ESTRUCTURA*/
+
+/*
+ * Generar struct q reproduza esta estructura.
+ * 
+ * <div class="col-lo q toque" id="id del album">
+ *  <div class="col-12">
+ *      <img onclick="mostrar detalles" alt="nombre album" src="foto">
+ *  <div>
+ *  <div class="col-12 datos_img"> 
+ *      <h4>Titulo del Album</h4>
+ *  </div>
+ *</div>
+ *  *  
+ */
+//Variable q recoge la estructura donde insertaremos las imágenes.
+var imgContainer    ={
+    mainDiv     :{        
+        node        :   'node',
+        clase       :   'clase',
+        id          :   'id',
+        metodo1     :   'metodo1',
+        metodo2     :   'metodo2'
+    },
+    imgDiv      :{
+        node        :   'node',
+        clase       :   'clase',
+        id          :   'id',
+        metodo1     :   'metodo1',
+        metodo2     :   'metodo2'
+    },
+    imgTag      :{
+        node        :   'node',
+        clase       :   'clase',
+        id          :   'id',
+        alt         :   'alt',
+        src         :   'src',
+        metodo1     :   'metodo1',
+        metodo2     :   'metodo2'        
+    },
+    dataDiv     :{
+        node        :   'node',        
+        clase       :   'clase',
+        id          :   'id',
+        metodo1     :   'metodo1',
+        metodo2     :   'metodo2'
+    },
+    hTag        :{
+        node        :   'node',        
+        clase       :   'clase',
+        id          :   'id',
+        metodo1     :   'metodo1',
+        metodo2     :   'metodo2'        
+    }
+};
+
+
+alert(imgContainer.mainDiv.class)
+alert(imgContainer.imgDiv.class);
+imgContainer.mainDiv.class = 'mainDivClass';
+alert(imgContainer.mainDiv.class)
+alert(imgContainer.imgDiv.class);
+
+
+
 var DIVCLASS = 'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic';
 var PATH = "./img/Caratulas/";
 
