@@ -27,51 +27,31 @@
 //Variable q recoge la estructura donde insertaremos las imágenes.
 var imgContainer    ={
     mainDiv     :{        
-        node        :   'node',
-        clase       :   'clase',
+        node        :   'div',
+        clase       :   'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic',
         id          :   'id',
-        metodo1     :   'metodo1',
-        metodo2     :   'metodo2'
     },
     imgDiv      :{
-        node        :   'node',
-        clase       :   'clase',
-        id          :   'id',
-        metodo1     :   'metodo1',
-        metodo2     :   'metodo2'
+        node        :   'div',
+        clase       :   'col-12',
+        onclick     :   '',
+        onhover     :   ''
     },
     imgTag      :{
-        node        :   'node',
-        clase       :   'clase',
-        id          :   'id',
-        alt         :   'alt',
-        src         :   'src',
-        metodo1     :   'metodo1',
-        metodo2     :   'metodo2'        
+        node        :   'img',
+        clase       :   'col-12',
+        alt         :   '',
+        src         :   '',
     },
     dataDiv     :{
-        node        :   'node',        
-        clase       :   'clase',
-        id          :   'id',
-        metodo1     :   'metodo1',
-        metodo2     :   'metodo2'
+        node        :   'div',        
+        clase       :   'col-12',
     },
     hTag        :{
-        node        :   'node',        
-        clase       :   'clase',
-        id          :   'id',
-        metodo1     :   'metodo1',
-        metodo2     :   'metodo2'        
+        node        :   'h4',        
+        clase       :   '',        
     }
 };
-
-
-alert(imgContainer.mainDiv.class)
-alert(imgContainer.imgDiv.class);
-imgContainer.mainDiv.class = 'mainDivClass';
-alert(imgContainer.mainDiv.class)
-alert(imgContainer.imgDiv.class);
-
 
 
 var DIVCLASS = 'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic';
@@ -96,13 +76,13 @@ var figcapAttrb={
     class: "lead small"
 };
 
-let divNode = document.createElement("div");
-let figureNode = document.createElement("figure");
-let imgNode = document.createElement("img");
-let figcaptionNode = document.createElement("figcaption");
+var divNode = document.createElement("div");
+var figureNode = document.createElement("figure");
+var imgNode = document.createElement("img");
+var figcaptionNode = document.createElement("figcaption");
 
 //Restablecer las variables para los elementos.
-let resetNodes= function(){
+var resetNodes= function(){
     divNode = document.createElement("div");
     figureNode = document.createElement("figure");
     imgNode = document.createElement("img");
@@ -110,7 +90,7 @@ let resetNodes= function(){
 };
 
 //Modificar los atributos de los nodos div e img
-let setAttrbNodes= function(id, fileName){
+var setAttrbNodes= function(id, fileName){
     divAttrb.id = id;
     imgAttrb.fileName = fileName;
     imgAttrb.alt = fileName;
@@ -130,7 +110,7 @@ let setAttrbNodes= function(id, fileName){
 };
 
 //Convinar los elementos antes de insertarlos.
-let convineElements = function(valor){
+var convineElements = function(valor){
     let text = document.createTextNode(valor);
     
     figcaptionNode.appendChild(text);
@@ -143,18 +123,75 @@ let convineElements = function(valor){
     return divNode;
 };
 
-let genImageMosaico = function(data){
+var genImageMosaico = function(data){
     
    //alert(data);
     data = JSON.parse(data);
     
     for(let i = 0; i < data.length; i++){
-        resetNodes();        
-        setAttrbNodes(data[i]['discoId'], data[i]['img_cover']);        
+        resetNodes();
+        
+        setAttrbNodes(data[i]['discoId'], data[i]['img_cover']);
         divNode = convineElements(data[i]['album']);
         document.getElementById('mainRow').appendChild(divNode);
     };
 };
 
+var genImageMosaico2 = function(data){
+    data = JSON.parse(data);
+    
+        
+    for(var i=0; i < data.length; i++){
+        updateImgContainerValues(data);
+        genNodes();
+        buildTheStructure(data);
+    }
+};
 
+//**************************************
+//FUNCIONES AUXILIARES
+//**************************************
 
+//Actualizar valores en imgContainer
+function updateImgContainerValues(datos){
+    for(key in datos){
+        switch(key){
+            case 'discoId':
+                mainDiv.id = datos[key];
+                break;
+            case 'album':
+                imgTag.alt = datos[key];                
+                break;
+            case 'img_cover': 
+                imgTag.src = datos[key];
+                break;
+        }
+    }    
+};
+
+//Función de ayuda para meter todos los aributos asociados a un nodo.
+function setAttributes(elemento){
+    for(var key in elemento){
+        if(key==='node'){
+            elemento.node = document.createElement(elemento[key]);
+        }else{
+            elemento.node.setAttribute(key, elemento[key]);
+    }
+};
+
+//Función de ayuda para generar los nodos con sus datos.
+function genNodes(){
+    for(key in nodes){
+        setAttributes(nodes[key]);
+    }    
+};
+
+function buidlTheStructure(datos){
+    hTag.node   = document.createTextNode(datos['album']);
+    dataDiv.appendChild(hTag.node);
+    
+    imgDiv.node.appendChild(imgTag);
+    
+    mainDiv.node.appendChild(imgDiv.node);
+    mainDiv.node.appendChild(dataDiv);
+};
