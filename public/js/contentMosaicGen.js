@@ -1,16 +1,6 @@
 //contentGenerator.js
-/*
-<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-    <figure>
-            <img src="../public/img/Caratulas/ACME.jpg" alt="ACME" class="img-fluid img-thumbnail">
-            <figcaption>ACME - The John Spencer Blues Explosion</figcaption>
-    </figure>
-</div>
- */
-
 
 /*NUEVA ESTRUCTURA*/
-
 /*
  * Generar struct q reproduza esta estructura.
  * 
@@ -24,12 +14,13 @@
  *</div>
  *  *  
  */
+
 //Variable q recoge la estructura donde insertaremos las imágenes.
 var imgContainer    ={
     mainDiv     :{        
         node        :   'div',
         clase       :   'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic',
-        id          :   'id',
+        id          :   'id'
     },
     imgDiv      :{
         node        :   'div',
@@ -41,21 +32,89 @@ var imgContainer    ={
         node        :   'img',
         clase       :   'col-12',
         alt         :   '',
-        src         :   '',
+        src         :   ''
     },
     dataDiv     :{
         node        :   'div',        
-        clase       :   'col-12',
+        clase       :   'col-12'
     },
     hTag        :{
         node        :   'h4',        
-        clase       :   '',        
+        clase       :   ''   
     }
 };
 
-
-var DIVCLASS = 'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic';
 var PATH = "./img/Caratulas/";
+
+var genImageMosaico = function(data){
+    data = JSON.parse(data);    
+        
+    for(var i=0; i < data.length; i++){
+        updateImgContainerValues(data);
+        genNodes(imgContainer);
+        buidlTheStructure(data);
+    }
+};
+
+//**************************************
+//FUNCIONES AUXILIARES
+//**************************************
+
+//Actualizar valores en imgContainer
+function updateImgContainerValues(datos){
+    for(var key in datos){
+        switch(key){
+            case 'discoId':
+                imgContainer.mainDiv.id = datos[key];
+                break;
+            case 'album':
+                imgContainer.imgTag.alt = datos[key];                
+                break;
+            case 'img_cover': 
+                imgContainer.imgTag.src = datos[key];
+                break;
+        }
+    }    
+};
+
+//Función de ayuda para meter todos los aributos asociados a un nodo.
+function setAttributes(elemento){
+    for(var key in elemento){
+        if(key==='node'){
+            elemento.node = document.createElement(elemento[key]);
+        }else{
+            elemento.node.setAttribute(key, elemento[key]);
+    }
+};
+
+//Función de ayuda para generar los nodos con sus datos.
+function genNodes(nodes){
+    for(var key in nodes){
+        setAttributes(nodes[key]);
+    }    
+};
+
+function buidlTheStructure(datos){
+    imgContainer.hTag.node   = document.createTextNode(datos['album']);
+    imgContainer.dataDiv.appendChild(imgContainer.hTag.node);
+    
+    imgContainer.imgDiv.node.appendChild(imgContainer.imgTag);
+    
+    imgContainer.mainDiv.node.appendChild(imgContainer.imgDiv.node);
+    imgContainer.mainDiv.node.appendChild(imgContainer.dataDiv);
+};
+
+/*
+<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+    <figure>
+            <img src="../public/img/Caratulas/ACME.jpg" alt="ACME" class="img-fluid img-thumbnail">
+            <figcaption>ACME - The John Spencer Blues Explosion</figcaption>
+    </figure>
+</div>
+ */
+
+/*
+ var DIVCLASS = 'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic';
 
 var divAttrb={
     id      : "id",
@@ -136,62 +195,5 @@ var genImageMosaico = function(data){
         document.getElementById('mainRow').appendChild(divNode);
     };
 };
-
-var genImageMosaico2 = function(data){
-    data = JSON.parse(data);
-    
-        
-    for(var i=0; i < data.length; i++){
-        updateImgContainerValues(data);
-        genNodes();
-        buildTheStructure(data);
-    }
-};
-
-//**************************************
-//FUNCIONES AUXILIARES
-//**************************************
-
-//Actualizar valores en imgContainer
-function updateImgContainerValues(datos){
-    for(key in datos){
-        switch(key){
-            case 'discoId':
-                mainDiv.id = datos[key];
-                break;
-            case 'album':
-                imgTag.alt = datos[key];                
-                break;
-            case 'img_cover': 
-                imgTag.src = datos[key];
-                break;
-        }
-    }    
-};
-
-//Función de ayuda para meter todos los aributos asociados a un nodo.
-function setAttributes(elemento){
-    for(var key in elemento){
-        if(key==='node'){
-            elemento.node = document.createElement(elemento[key]);
-        }else{
-            elemento.node.setAttribute(key, elemento[key]);
-    }
-};
-
-//Función de ayuda para generar los nodos con sus datos.
-function genNodes(){
-    for(key in nodes){
-        setAttributes(nodes[key]);
-    }    
-};
-
-function buidlTheStructure(datos){
-    hTag.node   = document.createTextNode(datos['album']);
-    dataDiv.appendChild(hTag.node);
-    
-    imgDiv.node.appendChild(imgTag);
-    
-    mainDiv.node.appendChild(imgDiv.node);
-    mainDiv.node.appendChild(dataDiv);
-};
+    */
+//
