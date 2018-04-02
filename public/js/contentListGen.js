@@ -1,9 +1,8 @@
 //contentListGen.js
 
-//Genera un listado con la consulta devuelta.
+//Genera un listado con la consulta devuelta atendiendo a la estructura siguiente:
 
-//Estructura de referencia
-/*
+/*Estructura de referencia
  * <ul class="list-group">
  * <li class="list-group-item" id="songid">
  * <div class="row">
@@ -20,21 +19,20 @@
  *</ul>
  */
 
-
-let imgAtt={
+ let imgAtt={
     fileName: "filename",
     path    : PATH,
     src     : "PATH",
     class   : "img-list",
     alt     : "texto",
     width   : "225px"
-};
+}
 
 let liAtt={
     class   : 'list-group-item',
     id      : 'discoID',
     onclick : 'test()'
-};
+}
 
 let pText={
     album   : 'album',
@@ -43,13 +41,15 @@ let pText={
     year    : 'year',
     genero  : 'genero',
     class   : 'list-info'
-};
+}
 
 let colClass = {
     img     : 'col-3',
     txt     : 'col-9'
 }
 
+
+//Crea los elementos Li de la estructura.
 let genLiNode = function(valor){
     let liNode = document.createElement('li');
     liNode.setAttribute('class', valor.class);
@@ -59,6 +59,7 @@ let genLiNode = function(valor){
     return liNode;
 };
 
+//Crea los elementos P de la estructura para la inserción de los datos texto.
 let genPNode = function(valor){
     let pNode = document.createElement('p');
     pNode.setAttribute('class', pText.class);
@@ -66,6 +67,7 @@ let genPNode = function(valor){
     return pNode;
 };
 
+//Crea los elementos DIV de la clase column para la inserción de los datos del album.
 let genDivColNode=function(valor){
     let divColNode = document.createElement('div');
     divColNode.setAttribute('class', colClass.txt);
@@ -76,6 +78,7 @@ let genDivColNode=function(valor){
     return divColNode;
 };
 
+//Crea los elementos DIV de la clase column para la inserción de la imágenes.
 let genDivColNodeOne=function(valor){
     let divColNode = document.createElement('div');
     divColNode.setAttribute('class', colClass.txt);
@@ -94,6 +97,8 @@ let listTextStructure = function(valor1, valor2, valor3){
     return divRowNode;
 }
 */
+
+//Crea los elementos IMG para la inserción de las imágenes de los albunes.
 let genImgNode = function(data){
     let img_Node = document.createElement('img');
     img_Node.setAttribute('class', data.class);
@@ -103,6 +108,8 @@ let genImgNode = function(data){
     return img_Node;
 };
 
+
+//Crea los elementos DIV de clase row para la inserción de los elementos DIV de clase COLUMN con los datos y la imágen del album.
 let genRowColNode=function(texto,data){
     let divRowNode = document.createElement('div');
     divRowNode.setAttribute('class', 'row');
@@ -120,10 +127,11 @@ let genRowColNode=function(texto,data){
 let altValue = function(valorOrg,valorAlt){
     if(valorOrg === undefined) return valorAlt;
     return valorOrg;
-}
+};
 
-let genImageList = function(data){
-    //alert(data);    
+//Genera la lista con los albunes atendiendo a la estructura indicada más arriba.
+var genImageList = function(data){
+    //alert(data);
     data = JSON.parse(data);
     
     let ulNode = document.createElement('ul');
@@ -142,9 +150,10 @@ let genImageList = function(data){
         pText.year          = 'year: ' + altValue(data[i]['year'], '----');
         pText.genero        = 'genero: ' + altValue(data[i]['genero'], '----');
         
-        let liNode = genLiNode(liAtt)
-            liNode.appendChild(genRowColNode(pText, imgAtt));
-        ulNode.appendChild(liNode);
+        let liNode = genLiNode(liAtt);
+        liNode.appendChild(genRowColNode(pText, imgAtt));
+        
+		ulNode.appendChild(liNode);
     }
     document.getElementById('mainRow').appendChild(ulNode);
 };

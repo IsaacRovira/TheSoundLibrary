@@ -11,12 +11,14 @@ var url=[
         }
     ];
 
+var fonoData;
+let updateTime = 60000;
 //******************************************************************************
 //
 //QUERIES
 //
 //******************************************************************************
-//destion = /api/subdir
+//destino = /api/subdir
 //queryString = nombre1=valor1&nombre2=valor2
 function doQuery(queryString, destino, callback){
     var xhttp = new XMLHttpRequest();
@@ -33,19 +35,34 @@ function doQuery(queryString, destino, callback){
 };
 
 //Query all the data
-function doQueryAll(destino, callback){
-    var xhttp = new XMLHttpRequest();
-    
+function doQueryAll(destino, callback){    
+	var xhttp = new XMLHttpRequest();    
     xhttp.onreadystatechange = function(){
-        if(this.readyState === 4 && this.status === 201){
+        if(this.readyState === 4 && this.status === 201){			
             callback(this.responseText);
-        }
+        }		
     };
     
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
-    xhttp.send(userid);
+    xhttp.send(userid);	
 };
+
+
+function doQueryAll2(destino, callback){
+	var xhttp = new XMLHttpRequest();    
+    xhttp.onreadystatechange = function(){
+        if(this.readyState === 4 && this.status === 201){			
+            fonoData = this.responseText;
+			callback(fonoData);
+			}
+    };
+	
+    xhttp.open("POST", destino, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
+    xhttp.send(userid);	
+};
+	
 //******************************************************************************
 //******************************************************************************
 

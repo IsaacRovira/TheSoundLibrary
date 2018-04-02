@@ -13,7 +13,7 @@ const HTTPPORT  = 80;
 
 //SQL
 const SQLPORT   = 3306;
-const SQLIP     = "192.168.1.89";
+const SQLIP     = "192.168.8.111";
 const SQLUSER   = "nodejs";
 const SQLPASS   = "node.js";
 const SQLDB     = "soundlib";

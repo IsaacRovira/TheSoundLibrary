@@ -10,24 +10,39 @@ function removeElements(){
     }
 };
 
-function changeMode(){
+function changeMode(data){
     removeElements();
     var childList =document.getElementById('modo').childNodes;
-    if(esGeneral){        
-        if(esMosaico){
+    if(esGeneral){
+        if(esMosaico){			
             var text = document.createTextNode('Ir a Mosaico');
-            document.getElementById('modo').replaceChild(text, childList[0]);            
-            getAll(genImageList);                    
+            document.getElementById('modo').replaceChild(text, childList[0]);
             esMosaico = false;
+			//getAll(genImageList);
+			genImageList(data);
+            
         }else{
             var text = document.createTextNode('Ir a Lista');
             document.getElementById('modo').replaceChild(text, childList[0]);
-            getAll(genImageMosaico);
-            esMosaico = true;            
+            esMosaico = true;
+            //getAll(genImageMosaico);
+			genImageMosaico(data);   
         }
     }else{
-        
-    }
+        if(esMosaico){
+            var text = document.createTextNode('Ir a Mosaico');
+            document.getElementById('modo').replaceChild(text, childList[0]);
+            esMosaico = false;
+            //getAll(genImageList);
+			genImageList(data);
+        }else{
+            var text = document.createTextNode('Ir a Lista');
+            document.getElementById('modo').replaceChild(text, childList[0]);
+            esMosaico = true;
+            //getAll(genImageMosaico);
+			genImageMosaico(data);
+			}
+	}
 };
 
 function changeEstado(){
