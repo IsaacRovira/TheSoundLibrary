@@ -20,21 +20,7 @@ var error = function(mensaje, res){
 
 //con.query("SELECT count(email) as email from Users where email = ?", email, function(err, result, fields, next){
 
-router.get('/', function(req, res){	
-        console.log("Consulta GET recibida"); 
-        //console.log(req);
-	sql.conectar().query(sql.canciones.all, function(err,result,fileds){
-            if(err)
-                error("Ups! Algo ha fallado.",res);
-            
-            res.set({
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            });
-            res.status(201).json(result);
-            res.end();
-	});
-});
+
 router.get('/canciones', function(req, res){
 	sql.conectar().query(sql.canciones.all, function(err,result, fields){
             if(err)
@@ -44,7 +30,7 @@ router.get('/canciones', function(req, res){
             res.send(JSON.stringify(result));
 	});
 });
-router.get('/:generos()', function(req, res){
+router.get('/generos', function(req, res){
 	sql.conectar().query(sql.generos.all, function(err, result, fields){
             if(err)
                 error("¡Ups! Algo ha fallado.",res);
@@ -249,7 +235,7 @@ router.post('/canciones', function(req, res){
                 res.end();
             }
 	});
-    }
+    }    
 });
 
 //************************************************************************************************************************************************************************
@@ -303,7 +289,7 @@ router.post('/discos', function(req, res){
                 if(JSON.stringify(result).length<3){
                     res.status(404).json({errors: ['Disco no encontrado']});
                     res.end();
-                }else{    
+                }else{
                     res.status(201).json(result);
                     res.end();
                 }                

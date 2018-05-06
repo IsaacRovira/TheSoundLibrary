@@ -70,6 +70,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash()); 
 
+app.use('/', sql);
+
 //Cargar las rutas y el passport.
 require(path.normalize(config.raiz + '/app/routes.js'))(app, passport);
 

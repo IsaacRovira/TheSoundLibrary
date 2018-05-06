@@ -44,6 +44,27 @@ figcaption{
     border: solid;
     border-color: white;
 }
+.main-col-mosaic{
+	/*margin: 0.1vw;*/
+	background-color: #e6f2ff;
+    padding: 1%;
+	border: 1vw;
+    border: solid;
+    border-color: black;
+}
+.main-col-mosaic:hover{
+	background-color: white;
+	opacity: 0.75;
+}
+
 .ilTagSong{
-    color:white;
+    color: white;
+}
+.infoText{
+	display: inline;
+	color: black;
+	max-width: 100%;
+	text-align: center;
+	padding: 1%;
+	font-size: 1.0vw;
 }

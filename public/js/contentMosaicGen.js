@@ -15,55 +15,72 @@
  *  
  */
 
-let imgContainer    = {
-    mainDiv     :{        
+var albumDetails ={
+    dataDetailsDiv:{
         node        :   'div',
-        clase       :   'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic',
-        id          :   'id'
+        class       :   'hidden'
     },
-    imgDiv      :{
+    dataSongsDiv:{
         node        :   'div',
-        clase       :   'col-12',
-        onclick     :   'test()',
-        onhover     :   'test()'
+        class       :   'hidden'
     },
-    imgTag      :{
-        node        :   'img',
-        clase       :   'col-12',
-        alt         :   '',
-        src         :   ''
+    albumDataList:{
+        node        :   'ul',
+        class       :   'albumData'
     },
-    dataDiv     :{
-        node        :   'div',        
-        clase       :   'col-12'
-    },
-    hTag        :{
-        node        :   'h4',        
-        clase       :   ''   
+    songDataList:{
+        node        :   'ul',
+        class       :   'songData'
     }
 };
 
-var imgContainerVar = imgContainer;
+var imgContainer;
 
-var genImageMosaico = function(data){
-	alert(data);
+function imgContainerNew(){
+    var img = {
+            mainDiv     :{        
+                node        :   'div',
+                class       :   'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic',
+                id          :   'id'
+            },
+            imgDiv      :{
+                node        :   'div',
+                class       :   'col-12',
+                onclick     :   'test()',
+                onhover     :   '',
+                id          :   'imgDiv'
+            },
+            imgTag      :{
+                node        :   'img',
+                class       :   'col-12',
+                alt         :   '',
+                src         :   '',
+                onerror     :   'this.onerror=null;this.src='+ PATH +'nopic.png',
+                id          :   'img'
+            },
+            dataDiv     :{
+                node        :   'div',
+                class       :   'col-12 infoText',
+                id          :   'dataDiv'
+            },
+            hTag        :{
+                node        :   'h4',        
+                class       :   ''   
+            }
+        };
+    return img;
+};
+
+var genImageMosaico = function(data){    
     data = JSON.parse(data);
-	let n = 0;	
-	
-    for(var i = 0; i < data.length; i++){
-		alert(i + ' ' + data[i]['discoId']);
-		showImgContainer(imgContainerVar);
-		updateImgContainerValues(data[i], imgContainerVar); 
-		genNodes(imgContainerVar);
-		showImgContainer(imgContainerVar);
-		
-		//buildTheStructure(data[i]);
-		
-		//document.getElementById('mainRow').appendChild(imgContainer.mainDiv.node);
-		n++;
-		imgContainerVar = imgContainer;
-	}
-	alert(n);
+    
+    for(var i=0; i < data.length; i++){
+        imgContainer = updateImgContainerValues(data[i], imgContainerNew());        
+        imgContainer = genNodes(imgContainer);        
+        imgContainer = buildTheStructure(data[i], imgContainer);
+        
+        document.getElementById('mainRow').appendChild(imgContainer.mainDiv.node);        
+    }
 };
 
 //**************************************
@@ -80,20 +97,25 @@ function showImgContainer(org){
 };
 
 //Actualizar valores en imgContainer
-function updateImgContainerValues(datos, container){	    
-	for(var key in datos){
+function updateImgContainerValues(datos, container){    
+    for(var key in datos){
         switch(key){
             case 'discoId':				
-                container.mainDiv.id = datos[key];
+                container.mainDiv.id = datos[key];                
+                container.imgDiv.onclick = 'test('+ datos[key]+')';                
+                container.imgDiv.id  += datos[key];
+                container.imgTag.id += datos[key];
+                container.dataDiv.id += datos[key];
                 break;
-            case 'album':                
-				container.imgTag.alt = datos[key];                
+            case 'album':
+                container.imgTag.alt = datos[key];                
                 break;
             case 'img_cover': 
-                container.imgTag.src = datos[key];
+                container.imgTag.src = PATH + datos[key];
                 break;
-        }
+        };
     }
+    return container;
 };
 
 /*Genera los nodos en el campo nodo de cada elemento de imgContainer
@@ -101,35 +123,35 @@ según el valor del elemento node dentro de imgContainer y establace los atribut
 */
 function setAttributes(elemento){
     for(var key in elemento){
-        switch(key){
-			case 'node':				
-				elemento.node = document.createElement(elemento[key]);
-				break;
-			default:				
-				elemento.node.setAttribute(key, elemento[key]);
-				break;
-		}
-	}    
+        //alert(key);
+        switch(key){            
+            case 'node':                
+                elemento.node = document.createElement(elemento[key]);                
+                break;
+            default:                
+                elemento.node.setAttribute(key, elemento[key]);
+                break;
+        };
+    }
+    return elemento;
 };
+
 
 //Recorre los elementos de "imgContainer" y aplica cada subelemento node los atributos definidos para ese elemento en "imgContainer".
 function genNodes(nodes){
-    for(var key in nodes){
-		alert(key);
-        setAttributes(nodes[key]);
+    for(var key in nodes){        
+        nodes[key] = setAttributes(nodes[key]);        
     }
+    return nodes;
 };
 
-function buildTheStructure(datos){    
-	alert('htag');
-	imgContainer.hTag.node = document.createTextNode(datos['album']);
-	alert('appendChild dataDiv');
-	imgContainer.dataDiv.node.appendChild(imgContainer.hTag.node);
-    alert('appendChild imgDiv');
-    imgContainer.imgDiv.node.appendChild(imgContainer.imgTag.node);
-    alert('appendChild mainDiv');
-    imgContainer.mainDiv.node.appendChild(imgContainer.imgDiv.node);
-	alert('appendChild mainDiv2');
-    imgContainer.mainDiv.node.appendChild(imgContainer.dataDiv.node);
-	alert('Done structure');
+function buildTheStructure(datos, contenedor){    
+    contenedor.hTag.node = document.createTextNode(datos['album']);    
+    contenedor.dataDiv.node.appendChild(contenedor.hTag.node);    
+    contenedor.imgDiv.node.appendChild(contenedor.imgTag.node);
+    contenedor.imgDiv.node.appendChild(contenedor.dataDiv.node);
+    contenedor.mainDiv.node.appendChild(contenedor.imgDiv.node);
+    //contenedor.mainDiv.node.appendChild(contenedor.dataDiv.node);
+    
+    return contenedor;
 };
