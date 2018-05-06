@@ -1,8 +1,15 @@
 //albumDetails.js
 
-var id;
+var activeId; //Id de album con detalles activos.
+var activeDiv;
+var id; //Id del album actual.
 
-var songDetails = function songDetails(){
+var songDetails;
+var albumDetails;
+var albumDetailsDiv;
+var songDetailsDiv;
+
+function songDetails(){
     var data = {
         titulo  :   'titulo',
         pista   :   'pista',
@@ -13,7 +20,7 @@ var songDetails = function songDetails(){
     return data;
 };
 
-var albumDetails = function albumDetails(){
+function albumDetails(){
     var data ={
             album   :   'titulo',
             artista :   'artista',
@@ -25,19 +32,21 @@ var albumDetails = function albumDetails(){
     return data;
 };
 
-var albumDetailsDiv = function albumDetailsDiv(){
+function albumDetailsDiv(){
     var data = {
         id  :   'albumDetails',
         class   :   'class',
         onClick :   'onClick()'  
     };
+    return data;
 };
 
-var songDetailsDiv = function songDetailsDiv(){
+function songDetailsDiv(){
     var data = {
       id    :   'songDetails',
       class :   'clase'
     };
+    return data;
 };
 
 function albumDetails(titulo, artista, año, genero, tipo, clase){
@@ -53,8 +62,7 @@ function albumDetails(titulo, artista, año, genero, tipo, clase){
 };
 
 //Generar los Div e insertar los UL
-
-var genAlbumDetails = function (id){
+var genAlbumDetails = function (id, albumData, songsData){
     var albumDiv = document.createElement('div');
     var songDiv  = document.createElement('div');
     
@@ -67,8 +75,23 @@ var genAlbumDetails = function (id){
     albumDiv.appendChild(genAlbumDetailsList(albumData));
     songDiv.appendcChild(genSongList(songsData));
     
-    document.getElementById(id).removeChild('<div class="col-12 infoText">');
-        
+    activeDiv = document.getElementById('dataDiv' + id);
+    document.getElementById(id).removeChild(activeDiv);
+    
+    document.getElementById(id).appendChild(albumDiv);
+    document.getElementById(id).appendChild(songDiv);
+    
+    activeId = id;
+};
+
+var deactivateDiv = function(){
+    if(activeId !== null){
+        var childNodes = document.getElementById(activeId).childNodes;
+        document.getElementById(activeId).replaceChild(childNodes[childNodes.length-1]);
+        document.getElementById(activeId).replaceChild(childNodes[childNodes.length-2]);
+        document.getElementById(activeId).appendChild(activeDiv);
+    }
+    
 };
 
 //Generar en la lista de canciones.
