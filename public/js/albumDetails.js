@@ -3,6 +3,9 @@
 var activeId; //Id de album con detalles activos.
 var activeDiv;
 var id; //Id del album actual.
+var active = false;
+
+
 
 var songDetails;
 var albumDetails;
@@ -15,7 +18,7 @@ function songDetails(){
         pista   :   'pista',
         duracion:   'duracion',
         id      :   'id',
-        class   :   'ilElement'
+        class   :   'songDetails ilElement'
     };
     return data;
 };
@@ -27,7 +30,7 @@ function albumDetails(){
             year     :   'año',
             genero  :   'genero',
             tipo    :   'tipo',
-            class   :   'clase'
+            class   :   'albumDetails'
         };
     return data;
 };
@@ -35,7 +38,7 @@ function albumDetails(){
 function albumDetailsDiv(){
     var data = {
         id  :   'albumDetails',
-        class   :   'class',
+        class   :   'albumDetailsDiv',
         onClick :   'onClick()'  
     };
     return data;
@@ -44,7 +47,8 @@ function albumDetailsDiv(){
 function songDetailsDiv(){
     var data = {
       id    :   'songDetails',
-      class :   'clase'
+      class :   'songDetailsDiv',
+      onClick :   'onClick()'
     };
     return data;
 };
@@ -61,8 +65,13 @@ function albumDetails(titulo, artista, año, genero, tipo, clase){
     return data;
 };
 
+function removeLastChild(id){
+    var nodeChildList = document.getElementById(id).childNodes;
+    return document.getElementById(id).removeChild(nodeChildList[nodeChildList.length-1]);
+};
+
 //Generar los Div e insertar los UL
-var genAlbumDetails = function (id, albumData, songsData){
+var insertAlbumDetails = function (id, albumData, songsData){
     var albumDiv = document.createElement('div');
     var songDiv  = document.createElement('div');
     
@@ -77,28 +86,44 @@ var genAlbumDetails = function (id, albumData, songsData){
     
     activeDiv = document.getElementById('dataDiv' + id);
     document.getElementById(id).removeChild(activeDiv);
+    //activeDiv = removeLastChild(this.id);
     
     document.getElementById(id).appendChild(albumDiv);
     document.getElementById(id).appendChild(songDiv);
     
     activeId = id;
+    active = true;
 };
 
-var deactivateDiv = function(){
-    if(activeId !== null){
-        var childNodes = document.getElementById(activeId).childNodes;
-        document.getElementById(activeId).replaceChild(childNodes[childNodes.length-1]);
-        document.getElementById(activeId).replaceChild(childNodes[childNodes.length-2]);
-        document.getElementById(activeId).appendChild(activeDiv);
-    }
+function restoreDiv(id){    
+    var childNodes = document.getElementById(activeId).childNodes;
+    document.getElementById(id).replaceChild(childNodes[childNodes.length-1]);
+    document.getElementById(id).replaceChild(childNodes[childNodes.length-2]);
+    document.getElementById(id).appendChild(id);
     
+    docuement.getElementById('img'+id).setAttribute('class', imgContainerNew().imgDiv.class);
+};
+
+var deactivateDiv = function(){    
+    if(active & activeId === id){
+        restoreDiv(activeId);        
+        active = false;
+        activeId = null;
+        avtiveDiv = null;
+    }else{
+        if(active){
+            restoreDiv(activeId);
+        }
+        insertAlbumDetails(id, albumData, songsData);        
+    }
 };
 
 //Generar en la lista de canciones.
-var genDetailsList = function(datos){
-  
-  datos = JSON.parse(datos);
+var genDetailsList = function(datosS, datosD){
+    datosS = JSON.parse(datosS);
+    datosD = JSON.parse(datosD);
     
+       
     
 };
 
