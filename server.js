@@ -34,15 +34,15 @@ var con = mysql.createConnection({
 
 //API 
 //*************************************************************************************
-var router		= require(path.normalize(config.raiz + '/app/api_routes.js'));
-var sql                 = require(path.normalize(config.raiz + '/app/api_routes.js'));
+var sql_app		= require(path.normalize(config.raiz + '/app/data_routes.js'));
+var sql_api                 = require(path.normalize(config.raiz + '/app/api_routes.js'));
 
 var api	= express();
 
 api.use(cookieParser());
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({extended: true}));
-api.use('/api', sql);
+api.use('/api', sql_api);
 
 //Express
 //**************************************************************************************
@@ -70,7 +70,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash()); 
 
-app.use('/', sql);
+app.use('/', sql_app);
 
 //Cargar las rutas y el passport.
 require(path.normalize(config.raiz + '/app/routes.js'))(app, passport);
