@@ -46,7 +46,7 @@ function imgContainerNew(){
             imgDiv      :{
                 node        :   'div',
                 class       :   'col-12',
-                onclick     :   'test()',
+                onclick     :   '',
                 onhover     :   '',
                 id          :   'imgDiv'
             },
@@ -72,7 +72,7 @@ function imgContainerNew(){
 };
 
 var genImageMosaico = function(data){    
-    data = JSON.parse(data);
+    //data = JSON.parse(data);
     
     for(var i=0; i < data.length; i++){
         imgContainer = updateImgContainerValues(data[i], imgContainerNew());        
@@ -102,7 +102,7 @@ function updateImgContainerValues(datos, container){
         switch(key){
             case 'discoId':				
                 container.mainDiv.id = datos[key];                
-                container.imgDiv.onclick = 'test('+ datos[key]+')';                
+                container.imgDiv.onclick = 'showDetails('+ datos[key]+')';                
                 container.imgDiv.id  += datos[key];
                 container.imgTag.id += datos[key];
                 container.dataDiv.id += datos[key];

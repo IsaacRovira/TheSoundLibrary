@@ -133,35 +133,33 @@ data_router.post('/fonotecas/discos', function(req, res){
 
 //CANCIONES
 data_router.post('/canciones', function(req, res){
-    console.log("Request canciones");
-    console.log(JSON.stringify(req.body));
     //Datos del body
-    var datos=[
-       ['artistas', req.body.artistas],
-       ['cancionId', req.body.cancionId],
-       ['discoId', req.body.discoId],
-       ['duracion', req.body.duracion],
-       ['pista', req.body.pista],
-       ['titulo', req.body.titulo],
-       ['userid', req.body.userid]
-    ];
+    console.log(req.body);
+    var datos={
+       artistas     : req.body.artistas,
+       cancionId    : req.body.cancionId,
+       discoId      : req.body.discoId,
+       duracion     : req.body.duracion,
+       pista        : req.body.pista,
+       titulo       : req.body.titulo,
+       userid       : req.body.userid,
+       max          : req.body.max
+       };
     
     //Generamos el string para la consulta SQL
     var string = "";
-    for(var i =0; i < datos.length; i++){
-        switch(i){
-                case 1: if(datos[i][1]){
-                        string = updateStringEqual(datos[i][1], string, datos[i][0]);
-                        i=datos.length; //No añadimos más campos.
+    for(var key in datos){
+        switch(key){
+                case 'userid':
+                    //console.log(key + ' = ' + datos[key]);
+                    break;
+                case 'max':
+                    
+                break;
+                default:
+                    if(datos[key]!= null){
+                        string = updateStringLike(datos[key], string, key);
                     }
-                    break;
-                case 2:                    
-                case 3:
-                case 4: if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
-                    break;
-                case 6:break;
-                default: if(datos[i][1]) string = updateStringLike(datos[i][1], string, datos[i][0]);
-                    break;
         }
     }
     
@@ -171,36 +169,56 @@ data_router.post('/canciones', function(req, res){
         'Access-Control-Allow-Origin': '*'
     });
     
-    console.log(JSON.stringify(datos));
-    if(isBody(datos)){
-        console.log(string);
-        //var sqlquery= "SELECT cancionID, DiscoID, Artistas, Duracion, Pista, Titulo FROM canciones where ";
-        sql.conectar().query(sql.canciones.by_Any + string, function(err, result){
-            if(err){
-                error("¡Ups! Algo ha fallado.",res);
-                console.log("Error query canciones: " + err);
-            }else{
-                if(JSON.stringify(result).length< 3){
-                    res.status(404).json({errors: ['Canción no encontrada']});
-                    res.end();
-                }else{                    
+    var consulta = function(cadena){
+        if(cadena.length > 0){
+            console.log('\n' + sql.canciones.by_Any + cadena + '\n');
+            sql.conectar().query(sql.canciones.by_Any + string, function(err, result){
+                if(err){
+                    error("¡Ups! Algo ha fallado.",res);
+                    console.log("Error query canciones: " + err);
+                }else{
+                    if(JSON.stringify(result).length< 3){
+                        res.status(404).json({errors: ['Canción no encontrada']});
+                        res.end();
+                    }else{
+                        res.status(201).json(result);
+                        res.end();
+                    }
+                }            
+            });
+        }else{
+            sql.conectar().query(sql.canciones.all, function(err, result, fields){
+                if(err){
+                    error("¡Ups! Algo ha fallado.",res);
+                    console.log("Error query canciones: " + err);
+                }else{
+                    //console.log(JSON.stringify(result));
                     res.status(201).json(result);
                     res.end();
                 }
-            }            
-        });
-    }else{
-        sql.conectar().query(sql.canciones.all, function(err, result, fields){
+            });
+        }
+    };
+            
+    if(datos['userid']!= null){
+        sql.conectar().query(sql.users.all, function(err,result){
             if(err){
-                error("¡Ups! Algo ha fallado.",res);
-                console.log("Error query canciones: " + err);
-            }else{
-                console.log(JSON.stringify(result));
-                res.status(201).json(result);
+                error("Algo no ha salido bien.", res);
+                console.log("Error query usuarios: " + err);
                 res.end();
-            }
-	});
-    }    
+            }else{
+                for(var key in result){
+                    if(result[key]['ID_key']===datos['userid']){
+                        console.log("\nRequest canciones user: " +result[key]['Email']+'\n');
+                        return consulta(string);
+                    }
+                }
+                error("Error de autenticación");
+                console.log("LogIn error user: " + datos['userid'] + ".");
+                res.end();
+                }
+            });
+        }
 });
 
 // DISCOS
@@ -243,7 +261,7 @@ data_router.post('/discos', function(req, res){
     });
     
     if(isBody(datos)){
-        console.log(string);
+//        console.log(string);
         sql.conectar().query(sql.discos.by_Any + string, function(err, result){
             if(err){
                 error("¡Ups! Algo ha fallado.",res);
@@ -264,7 +282,7 @@ data_router.post('/discos', function(req, res){
                 error("¡Ups! Algo ha fallado.",res);
                 console.log("Error query discos: " + err);
             }else{
-                console.log(JSON.stringify(result));
+//                console.log(JSON.stringify(result));
                 res.status(201).json(result);
                 res.end();
             }            
@@ -283,7 +301,7 @@ function updateStringEqual(valor, string, campo){
     if(string.length > 0){
             string += " and";
         }
-    return string += " " + campo + "=" + valor;
+    return string += " " + campo + "=" +'\"'+ valor + '\"';
 };
 function isBody(data){
     for(var i=0; i< data.length; i++){

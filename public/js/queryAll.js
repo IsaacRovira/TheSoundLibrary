@@ -1,15 +1,27 @@
 //queryALL.js
 var userid;
-var url=[
-    general={
-        'discos'        : "http://127.0.0.1:3030/api/discos",
-        'canciones'     : "http://127.0.0.1:3030/api/canciones"
+var url ={
+    std :{
+        general :{
+            'discos'        : "http://127.0.0.1/discos",
+            'canciones'     : "http://127.0.0.1/canciones"
+        },
+        fonotecas   :{
+                'discos'    :"http://127.0.0.1/fonotecas/discos",
+                'canciones' :"http://127.0.0.1/fonotecas/canciones"
+        }        
     },
-    fonotecas={
-            'discos'    :"http://127.0.0.1:3030/api/fonotecas/discos",
-            'canciones' :"http://127.0.0.1:3030/api/fonotecas/canciones"
+    api :{
+        general :{
+            'discos'        : "http://127.0.0.1:3030/api/discos",
+            'canciones'     : "http://127.0.0.1:3030/api/canciones"
+        },
+        fonotecas   :{
+                'discos'    :"http://127.0.0.1:3030/api/fonotecas/discos",
+                'canciones' :"http://127.0.0.1:3030/api/fonotecas/canciones"
+            }
         }
-    ];
+};
 
 var fonoData;
 var updateTime = 60000;
@@ -38,7 +50,7 @@ function doQuery(queryString, destino, callback){
 function doQueryAll(destino, callback){    
 	var xhttp = new XMLHttpRequest();    
     xhttp.onreadystatechange = function(){
-        if(this.readyState === 4 && this.status === 201){			
+        if(this.readyState === 4 && this.status === 201){            
             callback(this.responseText);
         }		
     };
@@ -95,7 +107,6 @@ var getAll = function (callback){
     xhttp.send();
 };
 
-function getUserId(){
-    
+function getUserId(){    
     userid = JSON.stringify(document.cookie);
 }

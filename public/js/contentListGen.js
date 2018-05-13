@@ -132,7 +132,7 @@ var altValue = function(valorOrg,valorAlt){
 //Genera la lista con los albunes atendiendo a la estructura indicada más arriba.
 var genImageList = function(data){
     //alert(data);
-    data = JSON.parse(data);
+    //data = JSON.parse(data);
     
     var ulNode = document.createElement('ul');
     ulNode.setAttribute('class', 'list-group');

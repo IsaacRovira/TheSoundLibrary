@@ -11,6 +11,12 @@ function removeElements(){
 };
 
 function changeMode(data){
+    //data = JSON.parse(data);
+    
+    activeId = null;
+    avtiveDiv = null;
+    isActive = false;
+    
     removeElements();
     var childList =document.getElementById('modo').childNodes;
     if(esGeneral){
@@ -61,6 +67,10 @@ function changeEstado(){
         esGeneral = true;
         //reloadAll();
     }    
+};
+
+function load(data){
+    changeMode(JSON.parse(data));
 };
 
 var idActivo = '';
