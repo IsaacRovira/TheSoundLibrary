@@ -52,14 +52,13 @@ function doQueryAll(destino, callback){
     xhttp.onreadystatechange = function(){
         if(this.readyState === 4 && this.status === 201){            
             callback(this.responseText);
-        }		
+        }
     };
     
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
-    xhttp.send(userid);	
+    xhttp.send(userid);    
 };
-
 
 function doQueryAll2(destino, callback){
     var xhttp = new XMLHttpRequest();    
@@ -108,5 +107,5 @@ var getAll = function (callback){
 };
 
 function getUserId(){    
-    userid = JSON.stringify(document.cookie);
+    userid = JSON.stringify(document.cookie);    
 }

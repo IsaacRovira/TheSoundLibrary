@@ -71,7 +71,7 @@ app.use(passport.session());
 app.use(flash()); 
 
 app.use('/', sql_app);
-
+//require(path.normalize(config.raiz + '/app/data_routesPass.js'))(app, passport);
 //Cargar las rutas y el passport.
 require(path.normalize(config.raiz + '/app/routes.js'))(app, passport);
 

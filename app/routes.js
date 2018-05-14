@@ -50,7 +50,7 @@ module.exports = function(app, passport) {
     // ++++++++++++++++++++++++++++++    
     // Acceso a los datos de la fonoteca;
     app.get('/mysoundlib', isLoggedIn, function(req, res) {        
-        res.set('Set-Cookie', 'username='+user.local.id+"; path=/mysoundlib");
+        res.set('Set-Cookie', 'userid='+user.local.id+"; path=/mysoundlib");
         res.sendFile((config.raiz + '/views/main.html'),{            
             user : req.user // Cierra la sesión del usuario.
         });

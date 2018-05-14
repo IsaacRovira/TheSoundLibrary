@@ -42,8 +42,6 @@ function updateDataAlbums(newData){
     alert('albums updated');
 };
 
-
-
 /*
 var datosDiscos = {
     datosStored   : '',
