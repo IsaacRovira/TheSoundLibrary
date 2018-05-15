@@ -144,7 +144,7 @@ var generarDivDetalles  =   function(id){
         albumDiv    : genDivStruct(detailNodeStruct('div', 'albumDiv'+id, clases['albumDiv'], funciones(id)['album'], genAlbumDetailsList(dataAlbum, id))),
         songDiv     : genDivStruct(detailNodeStruct('div', 'songsDiv'+id, clases['songsDiv'], funciones(id)['song'], {child0: genSongList(dataSong, id)}))        
     };
-    return genDivStruct(detailNodeStruct('div', id, clases['div'], funciones(id)['Div'], nodeChildList));
+    return genDivStruct(detailNodeStruct('div', id, clases['div'], funciones(id)['div'], nodeChildList));
 };
 
 /*Recorre detailNodeStruct y devuelve el nodo definido en esa estructura.
@@ -195,14 +195,16 @@ function isUpdateF(A,B){
  * @returns {undefined}
  */
 var showDetails = function(id){
-    isUpdate=isUpdateF(dataSong, dataAlbum);
-    if(isUpdate){        
+    if(songsUpdate&albumsUpdate){        
         if(isActive){
             isActive = deactivateDiv(id);
         }else{
-            activeDiv = document.getElementById('mainRow').replaceChild(generarDivDetalles(id), document.getElementById(id));
-            activeId = id;
+            activeDiv = document.getElementById(id).cloneNode(true);
+            document.getElementById('mainRow').replaceChild(generarDivDetalles(id), document.getElementById(id));
+            activeId = id;            
             isActive = true;
+            var pos = $('#imgDiv'+id).position().top;
+            $(window).scrollTop(pos);            
         }
     }else{
         alert('Fetching data. Please try later...');
@@ -216,15 +218,35 @@ var showDetails = function(id){
  */
 var deactivateDiv = function(id){
     document.getElementById("mainRow").replaceChild(activeDiv, document.getElementById(activeId));
+    //document.getElementById('imgDiv'+activeId).appendChild(activeImg);
     if(activeId === id){
-        activeId = null;
-        avtiveDiv = null;
+        activeImg = activeId = activeDiv = null;
         return false;
-    }        
+    }    
+    activeDiv = document.getElementById(id).cloneNode(true);
+    document.getElementById('mainRow').replaceChild(generarDivDetalles(id), document.getElementById(id));
     activeId = id;
+    var pos = $('#imgDiv'+id).position().top;
+    $(window).scrollTop(pos);
     return true;
 };
 
+function seeNodes(node){
+    var newNode = node;
+    var nodeList = node.childNodes;
+    for(var n in nodeList){
+        var nodeChild = document.getElementById(n.getAttribute('id'));
+        
+        newNode.appendChild(nodeChild);
+        seeNodes(n);
+    }
+    return newNode;
+}
+
+function storeElement(id){
+    var nodeList = document.getElementById(id).childNodes;
+       
+};
 /*Devuelve un elemento UL con las canciones en data.
  *Data solo contiene canciones del album. 
  * @param {type} data

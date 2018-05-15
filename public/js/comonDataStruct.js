@@ -3,6 +3,8 @@
 var PATH = "./img/Caratulas/";
 var dataSong;
 var dataAlbum;
+var songsUpdate = false;
+var albumsUpdate = false;
 
 function datosCanciones(callback){
     var datos = '';
@@ -35,11 +37,13 @@ var datosDiscosListener = datosDiscos(function(datos){
 //Funciones que actualizan las variables con los datos.
 function updateDataSongs(newData){
     dataSong = JSON.parse(newData);
-    alert('songs updated');
+    songsUpdate = true;
+    //alert('songs updated');
 };
 function updateDataAlbums(newData){
     dataAlbum = JSON.parse(newData);
-    alert('albums updated');
+    albumsUpdate = true;
+    //alert('albums updated');
 };
 
 /*

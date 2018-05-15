@@ -57,8 +57,8 @@ var sql = {
                 by_id: "select * from fonotecas where fonoID = ?",
                 by_nombre: "select * from fonotecas where nombre = ?",
                 by_userID: "select * from fonotecas where userID = ?",
-                canciones: 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones inner join discos on canciones.discoid = discos.discoid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?) ',
-                discos: "SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?) "
+                canciones: 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones inner join discos on canciones.discoid = discos.discoid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?)',
+                discos: 'SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?)'
             },
     fonotecasdata
             : {

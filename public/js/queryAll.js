@@ -57,7 +57,7 @@ function doQueryAll(destino, callback){
     
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
-    xhttp.send(userid);    
+    xhttp.send(JSON.parse(userid));    
 };
 
 function doQueryAll2(destino, callback){
@@ -71,7 +71,7 @@ function doQueryAll2(destino, callback){
 	
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
-    xhttp.send(userid);
+    xhttp.send(JSON.parse(userid));
 };
 
 function doQuerySongsByAlbum(destino, album, callback){
@@ -107,5 +107,5 @@ var getAll = function (callback){
 };
 
 function getUserId(){    
-    userid = JSON.stringify(document.cookie);    
+    userid = JSON.stringify(document.cookie);
 }

@@ -11,6 +11,9 @@
         <!--CSS-->
         <link rel="stylesheet" href="./css/main.css">
         
+        <!--JQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        
         <!--JavaScript-->
         <script src= "./js/comonDataStruct.js" type="text/javascript"></script>		
         <script src= "./js/contentMosaicGen.js" type="text/javascript"></script>	
@@ -91,8 +94,7 @@
         <script type="text/javascript">
             doQueryAll2(url['std']['general']['discos'], load);
             doQueryAll(url['std']['general']['canciones'], datosCancionesListener.setDatos);
-            doQueryAll(url['std']['general']['discos'], datosDiscosListener.setDatos);
-            
+            doQueryAll(url['std']['general']['discos'], datosDiscosListener.setDatos);            
         </script>
     </body>
 </html>
