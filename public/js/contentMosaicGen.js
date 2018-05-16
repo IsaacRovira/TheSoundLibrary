@@ -56,6 +56,7 @@ function imgContainerNew(){
                 alt         :   '',
                 src         :   '',
                 onerror     :   'this.onerror=null;this.src='+ PATH +'nopic.png',
+                onclick     :   '',
                 id          :   'img'
             },
             dataDiv     :{
@@ -102,7 +103,7 @@ function updateImgContainerValues(datos, container){
         switch(key){
             case 'discoId':				
                 container.mainDiv.id = datos[key];                
-                container.imgDiv.onclick = 'showDetails('+ datos[key]+')';                
+                container.imgTag.onclick = 'detailsOnOff('+datos[key]+')';
                 container.imgDiv.id  += datos[key];
                 container.imgTag.id += datos[key];
                 container.dataDiv.id += datos[key];

@@ -188,7 +188,7 @@ function usrCheck(user, query){
 };
 function buildLimit(datos){
     var string;
-    if(datos['max']) string= " limit "+ datos['max'];    
+    if(datos['max']) string= " limit " + datos['max'];    
     if(string)return string;
     return "";
 }
@@ -239,8 +239,14 @@ function updateStringEqual(valor, string, campo){
 };
 function getBodyData(datos, body){
     var datos;
-    for(var key in datos){
-        if(body[key]){datos[key]=mysql.escape(body[key])};
+    for(var key in datos){        
+        switch(key){
+            case 'userid':
+                if(body[key]){datos[key]=mysql.escape(body[key])};
+                break;
+            default:
+                if(body[key]){datos[key]=body[key]};
+        }
     }
     return datos;
 };

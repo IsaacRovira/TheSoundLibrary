@@ -56,8 +56,8 @@ function doQueryAll(destino, callback){
     };
     
     xhttp.open("POST", destino, true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
-    xhttp.send(JSON.parse(userid));    
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(JSON.parse(userid));
 };
 
 function doQueryAll2(destino, callback){
@@ -65,13 +65,13 @@ function doQueryAll2(destino, callback){
     xhttp.onreadystatechange = function(){
         if(this.readyState === 4 && this.status === 201){			
             fonoData = this.responseText;
-			callback(fonoData);
-			}
+            callback(fonoData);
+        }
     };
 	
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
-    xhttp.send(JSON.parse(userid));
+    xhttp.send(JSON.parse(userid)+"&max=15");
 };
 
 function doQuerySongsByAlbum(destino, album, callback){

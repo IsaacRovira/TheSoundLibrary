@@ -46,6 +46,12 @@ function updateDataAlbums(newData){
     //alert('albums updated');
 };
 
+function load(data){
+    changeMode(JSON.parse(data));
+    doQueryAll(url['std']['general']['canciones'], datosCancionesListener.setDatos);
+    doQueryAll(url['std']['general']['discos'], datosDiscosListener.setDatos);
+};
+
 /*
 var datosDiscos = {
     datosStored   : '',

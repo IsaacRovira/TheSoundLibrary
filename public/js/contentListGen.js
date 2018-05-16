@@ -25,7 +25,8 @@
     src     : "PATH",
     class   : "img-list",
     alt     : "texto",
-    width   : "225px"
+    width   : "225px",
+    onclick : ""
 };
 
 var liAtt={
@@ -54,7 +55,7 @@ var genLiNode = function(valor){
     var liNode = document.createElement('li');
     liNode.setAttribute('class', valor.class);
     liNode.setAttribute('id', valor.id);
-    liNode.setAttribute('onclick', valor.onclick);
+    //liNode.setAttribute('onclick', valor.onclick);
     
     return liNode;
 };
@@ -104,6 +105,7 @@ var genImgNode = function(data){
     img_Node.setAttribute('class', data.class);
     img_Node.setAttribute('alt', data.alt);
     img_Node.setAttribute('src', data.src);
+    img_Node.setAttribute('onclick', data.onclick);
     
     return img_Node;
 };
@@ -125,7 +127,7 @@ var genRowColNode=function(texto,data){
 };
 
 var altValue = function(valorOrg,valorAlt){
-    if(valorOrg === undefined) return valorAlt;
+    if(valorOrg) return valorAlt;
     return valorOrg;
 };
 
@@ -136,6 +138,7 @@ var genImageList = function(data){
     
     var ulNode = document.createElement('ul');
     ulNode.setAttribute('class', 'list-group');
+    ulNode.setAttribute('id', 'mainUl');
     
     for(var i = 0; i < data.length; i++){
         liAtt.id = data[i]['discoId'];
@@ -143,6 +146,7 @@ var genImageList = function(data){
         imgAtt.src        = PATH + data[i]['img_cover'];
         imgAtt.alt        = data[i]['album'];
         imgAtt.fileName   = data[i]['img_cover'];
+        imgAtt.onclick    = 'detailsOnOff('+data[i]['discoId']+')';
         
         pText.album         = 'album: ' + data[i]['album'];
         pText.artista       = 'artista: ' + altValue(data[i]['artista'],'----');

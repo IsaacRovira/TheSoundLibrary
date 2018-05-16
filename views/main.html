@@ -2,11 +2,13 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">        
         <!--Font Awesome-->
         <script src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
         
         <!--Bootstrap-->  
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
         
         <!--CSS-->
         <link rel="stylesheet" href="./css/main.css">
@@ -92,9 +94,7 @@
             </div>
         </div>
         <script type="text/javascript">
-            doQueryAll2(url['std']['general']['discos'], load);
-            doQueryAll(url['std']['general']['canciones'], datosCancionesListener.setDatos);
-            doQueryAll(url['std']['general']['discos'], datosDiscosListener.setDatos);            
+            doQueryAll2(url['std']['general']['discos'], load);                        
         </script>
     </body>
 </html>

@@ -2,6 +2,7 @@
 
 var esGeneral   = true;     //Define si mostraremos la base de datos general.
 var esMosaico   = true;     //Define el modo de visión: mosaico o lista.
+var idActivo = '';
 
 function removeElements(){
     var mainRowChild = document.getElementById('mainRow').childNodes;
@@ -68,12 +69,6 @@ function changeEstado(){
         //reloadAll();
     }    
 };
-
-function load(data){
-    changeMode(JSON.parse(data));
-};
-
-var idActivo = '';
 
 function test(id){
     //alert(id);
