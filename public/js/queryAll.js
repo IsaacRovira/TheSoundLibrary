@@ -1,24 +1,29 @@
 //queryALL.js
+var server = self.location.hostname;
+//self.location.host
+//self.location.hostname
+
+
 var userid;
 var url ={
     std :{
         general :{
-            'discos'        : "http://127.0.0.1/discos",
-            'canciones'     : "http://127.0.0.1/canciones"
+            'discos'        : "http://"+server+"/discos",
+            'canciones'     : "http://"+server+"/canciones"
         },
         fonotecas   :{
-                'discos'    :"http://127.0.0.1/fonotecas/discos",
-                'canciones' :"http://127.0.0.1/fonotecas/canciones"
+                'discos'    :"http://"+server+"/fonotecas/discos",
+                'canciones' :"http://"+server+"/fonotecas/canciones"
         }        
     },
     api :{
         general :{
-            'discos'        : "http://127.0.0.1:3030/api/discos",
-            'canciones'     : "http://127.0.0.1:3030/api/canciones"
+            'discos'        : "http://"+server+":3030/api/discos",
+            'canciones'     : "http://"+server+":3030/api/canciones"
         },
         fonotecas   :{
-                'discos'    :"http://127.0.0.1:3030/api/fonotecas/discos",
-                'canciones' :"http://127.0.0.1:3030/api/fonotecas/canciones"
+                'discos'    :"http://"+server+":3030/api/fonotecas/discos",
+                'canciones' :"http://"+server+":3030/api/fonotecas/canciones"
             }
         }
 };
