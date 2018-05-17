@@ -11,8 +11,8 @@ var bcrypt   = require(config.modulos + 'bcrypt-nodejs');
 module.exports = function () {
 
     this.local            = {
-	name         : "",
-	id           : "",	
+		name         : "",
+		id           : "",	
         email        : "",
         password     : ""
     },

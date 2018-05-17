@@ -24,10 +24,8 @@ module.exports = function(app, passport) {
 
     // Procesar el formulario de inicio de sesión.	
     app.post('/login', passport.authenticate('local-login', {
-			successRedirect	:
-                                
-                                '/mysoundlib',
-			failureRedirect	: '/login', //si falla el inicio de sesión volvemos a mostrar la pagina.
+			successRedirect	:	'/mysoundlib',
+			failureRedirect	:	'/login', //si falla el inicio de sesión volvemos a mostrar la pagina.
 			failureFlash: true //Mensajes flash activados.
 	}));
 
@@ -35,7 +33,7 @@ module.exports = function(app, passport) {
     // REGISTRO de usuarios.
     // ++++++++++++++++++++++
     app.get('/signup', function(req, res) {
-
+		
         // enviar la pagina de registro y passar los flash request.
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
@@ -52,7 +50,7 @@ module.exports = function(app, passport) {
     // ++++++++++++++++++++++++++++++    
     // Acceso a los datos de la fonoteca;
     app.get('/mysoundlib', isLoggedIn, function(req, res) {        
-        res.set('Set-Cookie', 'username='+user.local.id+"; path=/mysoundlib");
+        res.set('Set-Cookie', 'userid='+user.local.id+"; path=/mysoundlib");
         res.sendFile((config.raiz + '/views/main.html'),{            
             user : req.user // Cierra la sesi�n del usuario.
         });

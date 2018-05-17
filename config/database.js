@@ -17,7 +17,7 @@ var sql = {
             : {
                 all: "select * from Users", 
                 by_email: "select * from Users where email = ?",
-                by_id_key: "select * from Users where Id_key = ?",
+                by_id_key: "select * from Users where ID_key = ",
                 by_token: "select * from Users where token = ?",
                 by_nombre: "select * from Users where nombre = ?",
                 by_displayName: "select * from Users where displayName = ?",
@@ -35,7 +35,8 @@ var sql = {
                 by_artista: "select * from discos where Artista like '%?%'",
                 by_identificador: "select * from discos where Identificador like '%?%'",
                 by_Etiquetado: "select * from discos where Etiquetado like '%?%'",
-                by_Any: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid where "
+                by_Any: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid where ",
+                by_max: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid  limit 10"
 
             },
     generos
@@ -56,8 +57,8 @@ var sql = {
                 by_id: "select * from fonotecas where fonoID = ?",
                 by_nombre: "select * from fonotecas where nombre = ?",
                 by_userID: "select * from fonotecas where userID = ?",
-                canciones: 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones inner join discos on canciones.discoid = discos.discoid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?) ',
-                discos: "SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?) "
+                canciones: 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones inner join discos on canciones.discoid = discos.discoid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?)',
+                discos: 'SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid where fonotecas.userid in (select UserID from users where ID_key = ?)'
             },
     fonotecasdata
             : {
@@ -69,10 +70,10 @@ var sql = {
     canciones
             : {
                 all: "select cancionId, discoId, artistas, duracion, pista, titulo from canciones",
-                by_id: "select * from canciones where CancionID = ?",
-                by_artistas: "select * from canciones where Artistas contains ?",
-                by_discoID: "select * from canciones where DiscoID = ?",
-                by_titulo: "select * from canciones where Titulo contains ?",
+                by_id: "select * from canciones where CancionID = ",
+                by_artistas: "select * from canciones where Artistas contains ",
+                by_discoID: "select * from canciones where DiscoID = ",
+                by_titulo: "select * from canciones where Titulo contains ",
                 by_Any: "SELECT cancionId, discoId, artistas, duracion, pista, titulo FROM canciones where "
             }
 };
