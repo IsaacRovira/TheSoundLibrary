@@ -1,7 +1,7 @@
 // server.js
 
 
-var config          = require(process.cwd()+'\\config\\config.js'); 
+var config      = require(process.cwd()+'\\config\\config.js'); 
 var path        = require(config.modulos + 'path');
 
 console.log(process.cwd());

@@ -15,26 +15,12 @@
  *  
  */
 
-var albumDetails ={
-    dataDetailsDiv:{
-        node        :   'div',
-        class       :   'hidden'
-    },
-    dataSongsDiv:{
-        node        :   'div',
-        class       :   'hidden'
-    },
-    albumDataList:{
-        node        :   'ul',
-        class       :   'albumData'
-    },
-    songDataList:{
-        node        :   'ul',
-        class       :   'songData'
-    }
-};
+var commonData  =   require("ommonDataStruct.js");
+var containers  =   require("containers.js");
 
-var imgContainer;
+var albumDetails    = containers.albumDetails;
+
+var imgContainer    = containers.imgContainer;
 
 function imgContainerNew(){
     var img = {
