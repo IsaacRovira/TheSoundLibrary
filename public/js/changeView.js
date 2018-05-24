@@ -1,4 +1,4 @@
-//changeView.js
+//  ./public/js/changeView.js
 
 var esGeneral   = true;     //Define si mostraremos la base de datos general.
 var esMosaico   = true;     //Define el modo de visión: mosaico o lista.

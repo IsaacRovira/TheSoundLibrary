@@ -1,4 +1,4 @@
-//api_routes.js
+//  ./app/api/api_routes.js
 
 var config          = require(process.cwd()+'/config/config.js');
 var path            = require(config.modulos + 'path');
@@ -6,10 +6,8 @@ var express         = require(config.modulos + 'express');
 
 var sql             = require(path.normalize(config.raiz + "/config/database.js"));
 
-
-
-//var wd      = config.raiz;
-//var parser 		= require('http-string-parser');
+//var wd        = config.raiz;
+//var parser    = require('http-string-parser');
 
 var api_router	= express.Router();
 
@@ -30,6 +28,7 @@ api_router.get('/canciones', function(req, res){
             res.send(JSON.stringify(result));
 	});
 });
+
 api_router.get('/generos', function(req, res){
 	sql.conectar().query(sql.generos.all, function(err, result, fields){
             if(err)

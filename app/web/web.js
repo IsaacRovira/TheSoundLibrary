@@ -6,8 +6,8 @@ var path        = require(config.modulos + 'path');
 
 //JS
 var config      = require(process.cwd()+'\\config\\config.js');
-var sql_app	= require(path.normalize(config.raiz + '/app/web/data_routespass.js'));
-//var sql_app	= require(path.normalize(config.raiz + '/app/web/data_routes.js'));
+//var sql_app	= require(path.normalize(config.raiz + '/app/web/data_routespass.js'));
+var sql_app	= require(path.normalize(config.raiz + '/app/web/data_routes.js'));
 var routes      = require(path.normalize(config.raiz + '/app/web/routes.js'));
 var pass    = require(path.normalize(config.raiz + '/config/passport'));
 
