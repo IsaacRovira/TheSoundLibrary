@@ -18,8 +18,8 @@ var urlSettings ={
             'canciones'     : "/canciones"
         },
         fonotecas   :{
-            'discos'    :"/fonotecas/discos",
-            'canciones' :"/fonotecas/canciones"
+            'discos'        :"/fonotecas/discos",
+            'canciones'     :"/fonotecas/canciones"
         }        
     },
     api :{
@@ -28,35 +28,20 @@ var urlSettings ={
             'canciones'     : "/api/canciones"
         },
         fonotecas   :{
-            'discos'    :"/api/fonotecas/discos",
-            'canciones' :"/api/fonotecas/canciones"
+            'discos'        :"/api/fonotecas/discos",
+            'canciones'     :"/api/fonotecas/canciones"
             }
         }
 };
 
-    function load(data){
-        changeMode(JSON.parse(data));
-        doQueryAll(url['std']['general']['canciones'], datosCanciones.set);
-        doQueryAll(url['std']['general']['discos'], datosDiscos.set);
-    };
+function load(data){
+    changeMode(JSON.parse(data));
+    doQueryAll(url['std']['general']['canciones'], datosCanciones.set);
+    doQueryAll(url['std']['general']['discos'], datosDiscos.set);
+};
 
-module.exports = function(){
-    
-    function urlClass(callback){
-        return{
-            get     :   function(modo, origen, tipo){
-                return urlSettings.proto+server.get()+urlSettings[modo][origen][tipo];
-            },
-            set     :   function(modo, origen, tipo, newData){
-                urlSettings[modo][origen][tipo] = newData;
-                callback(urlSettings[modo][origen][tipo]);
-            }
-        };
-    };
-    var url = urlClass(function(dato){return null;});
-    
-    //***************************************************************
-    function pathClass(callback){
+//***************************************************************
+function pathClass(callback){
         return{
             get     :   function (){return PATH;},
             set     :   function (newData){
@@ -65,9 +50,7 @@ module.exports = function(){
             }
         };
     };
-    var path = pathClass(function(dato){return null;});
-    
-    function serverClass(callback){
+function serverClass(callback){
         return{
             get     :   function(){return serverName;},
             set     :   function(newData){
@@ -76,9 +59,7 @@ module.exports = function(){
             }
         };
     };
-    var server = serverClass(function(dato){return null;});
-    
-    function userIdClass(callback){
+function userIdClass(callback){
         return{
             get     : function(){return userId;},
             set     : function(newData){
@@ -87,9 +68,7 @@ module.exports = function(){
             }
         };
     };
-    var userId = userIdClass(function(dato){return null;});
-    
-    function apiPortClass(callback){
+function apiPortClass(callback){
         return{
             get     : function(){return apiPortValue;},
             set     : function(newData){
@@ -98,9 +77,7 @@ module.exports = function(){
             }
         };
     };
-    var apiPort = apiPortClass(function(dato){return null;});
-    
-    function songsUpdateStausClass(callback){
+function songsUpdateStausClass(callback){
         return{
             get     : function(){return songsUpdate;},
             set     : function(newData){
@@ -109,9 +86,7 @@ module.exports = function(){
             }
         };
     };
-    var songsUpdateStaus = songsUpdateStausClass(function(dato){return null;});
-    
-    function albumUpdateStatusClass(callback){
+function albumUpdateStatusClass(callback){
         return{
             get     : function(){return albumUpdate;},
             set     : function(newData){
@@ -120,9 +95,7 @@ module.exports = function(){
             }
         };
     };
-    var albumUpdateStatus = albumUpdateClass(function(dato){return null;});
-    
-    function datosCancionesClass(callback){
+function datosCancionesClass(callback){
         return{
             get  : function() {return dataSong;},
             set  : function(dato) {
@@ -131,11 +104,7 @@ module.exports = function(){
             }
         };
     };
-    var datosCanciones = datosCancionesClass(function(datos){
-        updateDataSongs(datos);
-    });
-
-    function datosDiscosClass(callback){        
+function datosDiscosClass(callback){        
         return{
             get  : function(){return dataAlbum;},
             set  : function(dato){
@@ -144,34 +113,58 @@ module.exports = function(){
             }        
         };
     };
-    var datosDiscos = datosDiscosClass(function(datos){
+function urlClass(callback){
+    return{
+        get     :   function(modo, origen, tipo){
+            return urlSettings.proto+commonData.server.get()+urlSettings[modo][origen][tipo];
+        },
+        set     :   function(modo, origen, tipo, newData){
+            urlSettings[modo][origen][tipo] = newData;
+            callback(urlSettings[modo][origen][tipo]);
+        }
+    };
+};
+
+var commonData = {
+    path                :pathClass(function(dato){return null;}),
+    server              :serverClass(function(dato){return null;}),
+    userId              :userIdClass(function(dato){return null;}),
+    apiPort             :apiPortClass(function(dato){return null;}),
+    songsUpdateStaus    :songsUpdateStausClass(function(dato){return null;}),
+    albumUpdateStatus   :albumUpdateClass(function(dato){return null;}),
+    datosCanciones      :datosCancionesClass(function(datos){
+        updateDataSongs(datos);
+    }),
+    datosDiscos         :datosDiscosClass(function(datos){
         updateDataAlbums(datos);
-    });
-
-    //Funciones que actualizan las variables con los datos.
-    function updateDataSongs(newData){
-        dataSong = JSON.parse(newData);
-        songsUpdate = true;
-        //alert('songs updated');
-    };
-    function updateDataAlbums(newData){
-        dataAlbum = JSON.parse(newData);
-        albumsUpdate = true;
-        //alert('albums updated');
-    };
-
-    function getServer(){
-        return self.location.hostname;
-    //self.location.host
-    //self.location.hostname
-    };
+    }),
+    url                 :urlClass(function(dato){return null;})
+};
 
 
-    //Dejo aquí el userID o lo passo como parámetro a la función export?
-    function getUserId(){
-        userid = JSON.stringify(document.cookie);
-        return userid;
-    };
+//Funciones que actualizan las variables con los datos.
+function updateDataSongs(newData){
+    dataSong = JSON.parse(newData);
+    songsUpdate = true;
+    //alert('songs updated');
+};
+function updateDataAlbums(newData){
+    dataAlbum = JSON.parse(newData);
+    albumsUpdate = true;
+    //alert('albums updated');
+};
+
+function getServer(){
+    return self.location.hostname;
+//self.location.host
+//self.location.hostname
+};
+
+//Dejo aquí el userID o lo passo como parámetro a la función export?
+function getUserId(){
+    userid = JSON.stringify(document.cookie);
+    return userid;
+};
 
     /*
     var datosDiscos = {
@@ -210,5 +203,4 @@ module.exports = function(){
     datosCanciones.Listener(function(datos){
         //Funcion a la que le pasamos el nuveo valor de datosCanciones;
     });
-    */  
-};
+    */

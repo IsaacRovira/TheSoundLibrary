@@ -19,9 +19,9 @@
  *</ul>
  */
 
- var imgAtt={
+var imgAtt={
     fileName: "filename",
-    path    : PATH,
+    path    : commonData.path.get(),
     src     : "PATH",
     class   : "img-list",
     alt     : "texto",

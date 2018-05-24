@@ -15,13 +15,6 @@
  *  
  */
 
-var commonData  =   require("ommonDataStruct.js");
-var containers  =   require("containers.js");
-
-var albumDetails    = containers.albumDetails;
-
-var imgContainer    = containers.imgContainer;
-
 function imgContainerNew(){
     var img = {
             mainDiv     :{        
@@ -41,7 +34,7 @@ function imgContainerNew(){
                 class       :   'col-12',
                 alt         :   '',
                 src         :   '',
-                onerror     :   'this.onerror=null;this.src='+ PATH +'nopic.png',
+                onerror     :   'this.onerror=null;this.src='+ commonData.path.get() +'nopic.png',
                 onclick     :   '',
                 id          :   'img'
             },

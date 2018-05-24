@@ -39,18 +39,18 @@ module.exports = function(app, passport) {
     });
 
     //Procesar el formulario de registro.
-    app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/signup', passport.authenticate('local-signup', {        
         successRedirect : '/mysoundlib', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesión.
         failureRedirect : '/signup', // En caso de error mostramos otra vez la página de registro.
-        failureFlash : true // activar los mensajes flash.
+        failureFlash : true // activar los mensajes flash express.
     }));
 
     // ++++++++++++++++++++++++++++++
     // Soundlib data
     // ++++++++++++++++++++++++++++++    
     // Acceso a los datos de la fonoteca;
-    app.get('/mysoundlib', isLoggedIn, function(req, res) {        
-        res.set('Set-Cookie', 'userid='+user.local.id+"; path=/mysoundlib");
+    app.get('/mysoundlib', isLoggedIn, function(req, res) {
+        res.set('Set-Cookie', 'userid='+ user.local.id+"; path=/mysoundlib");
         res.sendFile((config.raiz + '/views/main.html'),{            
             user : req.user // Cierra la sesi�n del usuario.
         });
