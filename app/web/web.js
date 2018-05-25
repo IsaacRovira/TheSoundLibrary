@@ -46,3 +46,8 @@ routes(app, passport);
 sql_app(app);
 
 module.exports = app;
+
+
+
+//cookieParser
+//var secrets = ['TheBodyFluids', 'SystemRestart', 'RedRossesToo'];

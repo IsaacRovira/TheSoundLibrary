@@ -7,7 +7,8 @@ module.exports = function(app, passport) {
     // +++++++++++++++++++++++++++++++++++++
     // HOME
     // +++++++++++++++++++++++++++++++++++++
-
+    
+ 
     app.get('/', function(req, res) {
         //res.sendFile(('/index.ejs'));
 	res.render('index.ejs');
@@ -18,7 +19,7 @@ module.exports = function(app, passport) {
     // INICIO de sessión
     // ++++++++++++++++++++++
     app.get('/login', function(req, res) {
-        // pagina de inicio y passar los flash request.
+        // pagina de inicio y passar los flash request.        
         res.render('login.ejs', { message: req.flash('loginMessage')}); 
     });
 
@@ -50,7 +51,8 @@ module.exports = function(app, passport) {
     // ++++++++++++++++++++++++++++++    
     // Acceso a los datos de la fonoteca;
     app.get('/mysoundlib', isLoggedIn, function(req, res) {
-        res.set('Set-Cookie', 'userid='+ user.local.id+"; path=/mysoundlib");
+        res.cookie('SoundSet', user.local.id, {maxAge: 2*60, httpOnly: true});
+        //res.set('Set-Cookie', 'userid='+ user.local.id+"; path=/mysoundlib");
         res.sendFile((config.raiz + '/views/main.html'),{            
             user : req.user // Cierra la sesión del usuario.
         });
