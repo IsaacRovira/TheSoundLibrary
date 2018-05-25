@@ -1,4 +1,4 @@
-//dataStruct.js
+//  ./public/js/commonDataStruct.js
 var PATH    ={
     cover       : "./img/Caratulas/",
     backcover   : "./img/backcover/"
@@ -11,33 +11,26 @@ var serverName = getServer();
 var userId = getUserId();
 var apiPortValue = 3030;
 var urlSettings ={
-    proto   : "http://",
     std :{
         general :{
-            'discos'        : "/discos",
-            'canciones'     : "/canciones"
+            'discos'        : "http://"+getServer()+"/discos",
+            'canciones'     : "http://"+getServer()+"/canciones"
         },
         fonotecas   :{
-            'discos'        :"/fonotecas/discos",
-            'canciones'     :"/fonotecas/canciones"
+            'discos'        : "http://"+getServer()+"/fonotecas/discos",
+            'canciones'     : "http://"+getServer()+"/fonotecas/canciones"
         }        
     },
     api :{
         general :{
-            'discos'        : "/api/discos",
-            'canciones'     : "/api/canciones"
+            'discos'        : "http://"+getServer()+apiPortValue+"/api/discos",
+            'canciones'     : "http://"+getServer()+apiPortValue+"/api/canciones"
         },
         fonotecas   :{
-            'discos'        :"/api/fonotecas/discos",
-            'canciones'     :"/api/fonotecas/canciones"
+            'discos'        :"http://"+getServer()+apiPortValue+"/api/fonotecas/discos",
+            'canciones'     :"http://"+getServer()+apiPortValue+"/api/fonotecas/canciones"
             }
         }
-};
-
-function load(data){
-    changeMode(JSON.parse(data));
-    doQueryAll(url['std']['general']['canciones'], datosCanciones.set);
-    doQueryAll(url['std']['general']['discos'], datosDiscos.set);
 };
 
 //***************************************************************
@@ -99,7 +92,7 @@ function datosCancionesClass(callback){
         return{
             get  : function() {return dataSong;},
             set  : function(dato) {
-                dataSong = dato;
+                dataSong = JSON.parse(dato);
                 callback(dataSong);
             }
         };
@@ -108,62 +101,63 @@ function datosDiscosClass(callback){
         return{
             get  : function(){return dataAlbum;},
             set  : function(dato){
-                dataAlbum = dato;
+                dataAlbum = JSON.parse(dato);
                 callback(dataAlbum);
             }        
         };
     };
 function urlClass(callback){
     return{
-        get     :   function(modo, origen, tipo){
-            return urlSettings.proto+commonData.server.get()+urlSettings[modo][origen][tipo];
+        get     :   function(){
+            return urlSettings;
         },
-        set     :   function(modo, origen, tipo, newData){
-            urlSettings[modo][origen][tipo] = newData;
-            callback(urlSettings[modo][origen][tipo]);
+        set     :   function(newData){
+            urlSettings = newData;
+            callback(urlSettings);
         }
     };
 };
 
 var commonData = {
-    path                :pathClass(function(dato){return null;}),
-    server              :serverClass(function(dato){return null;}),
-    userId              :userIdClass(function(dato){return null;}),
-    apiPort             :apiPortClass(function(dato){return null;}),
-    songsUpdateStaus    :songsUpdateStausClass(function(dato){return null;}),
-    albumUpdateStatus   :albumUpdateClass(function(dato){return null;}),
+    path                :pathClass(function(){return null;}),
+    server              :serverClass(function(){return null;}),
+    userId              :userIdClass(function(){return null;}),
+    apiPort             :apiPortClass(function(){return null;}),
+    songsUpdateStaus    :songsUpdateStausClass(function(){return null;}),
+    albumUpdateStatus   :albumUpdateStatusClass(function(){return null;}),
     datosCanciones      :datosCancionesClass(function(datos){
         updateDataSongs(datos);
     }),
     datosDiscos         :datosDiscosClass(function(datos){
         updateDataAlbums(datos);
     }),
-    url                 :urlClass(function(dato){return null;})
+    url                 :urlClass(function(){return null;})
 };
-
 
 //Funciones que actualizan las variables con los datos.
 function updateDataSongs(newData){
-    dataSong = JSON.parse(newData);
-    songsUpdate = true;
-    //alert('songs updated');
+    commonData.songsUpdateStaus.set(true);
+    
 };
 function updateDataAlbums(newData){
-    dataAlbum = JSON.parse(newData);
-    albumsUpdate = true;
-    //alert('albums updated');
+    
+    commonData.albumUpdateStatus.set(true);
 };
-
 function getServer(){
     return self.location.hostname;
 //self.location.host
 //self.location.hostname
 };
-
 //Dejo aquí el userID o lo passo como parámetro a la función export?
 function getUserId(){
     userid = JSON.stringify(document.cookie);
     return userid;
+};
+
+function load(data){
+    changeMode(JSON.parse(data));
+    doQueryAll(urlSettings.std.general.canciones, commonData.datosCanciones.set);
+    doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);
 };
 
     /*

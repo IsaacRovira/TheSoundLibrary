@@ -11,17 +11,7 @@ module.exports = function(data_router) {
 
     //Funciones para el control de errores---PENDIENTE---
     var error = function(){};
-
-    //DB +++++++++++++++++++++++++++++
-    var con = mysql.createConnection({
-            host: config.sql.ip,
-            port: config.sql.port,
-            user: config.sql.user,
-            password: config.sql.pass,
-            database: config.sql.db
-    });
-    //++++++++++++++++++++++++++++++++++++
-
+    
     //***************
     //POST request
     //***************
@@ -83,7 +73,7 @@ module.exports = function(data_router) {
 
             if(string.length > 0) string =" and " + string;        
             console.log("\n"+sql.fonotecas.discos + string + limit + "\n");        
-            sql.conectar().query(sql.fonotecas.discos + mysql.escape(datos['userid']) +" "+string + limit, function(err, result){
+            sql.connect().query(sql.fonotecas.discos + mysql.escape(datos['userid']) +" "+string + limit, function(err, result){
                 if(err){
                     console.error("Error query discos: " + err +"\n");                    
                     return res.status(500).json({error: ['Error conectando a la DB'], code: [500]}).end();
@@ -120,7 +110,7 @@ module.exports = function(data_router) {
             if(string.length > 0) qry='by_Any';
 
             console.log("\n"+sql.canciones[qry] + string + limit + "\n");
-            sql.conectar().query(sql.canciones[qry] + string + limit, function(err, result){                                
+            sql.connect().query(sql.canciones[qry] + string + limit, function(err, result){                                
                 if(err){
                     console.error("Error query canciones: " + err +"\n");                    
                     return res.status(500).json({error: ['Error conectando a la DB'], code: [500]}).end();
@@ -157,7 +147,7 @@ module.exports = function(data_router) {
             if(string.length > 0) qry='by_Any';
 
             console.log("\n"+sql.discos[qry] + string + limit + "\n");
-            sql.conectar().query(sql.discos[qry] + string + limit, function(err, result){                                
+            sql.connect().query(sql.discos[qry] + string + limit, function(err, result){                                
                 if(err){
                     console.error("Error query discos: " + err +"\n");                    
                     return res.status(500).json({error: ['Error conectando a la DB'], code: [500]}).end();
@@ -167,43 +157,28 @@ module.exports = function(data_router) {
             });
         };
 
-        //if(datos.userid){ return usrCheck(datos.userid,qryData);}
-        if(datos.userid){ return usrCheck(datos.userid,qryData2(string, limit, res));}
+        if(datos.userid){ return usrCheck(datos.userid,qryData);}
         return res.status(401).json({error: ['Usuario desconocido'], usuario: [datos.userid], code: [401]}).end();
     });
 };
 
 //FUNCIONES AUX
-function qryData2(err, string, limit, response){
-    if(err){            
-        console.error("\nUuups! error a la vista: ", err, "\n");
-        response.status(err.code).json(err).end();
-    }
-    var qry = 'all';
-    if(string.length > 0) qry='by_Any';
-
-    console.log("\n"+sql.discos[qry] + string + limit + "\n");
-    sql.conectar().query(sql.discos[qry] + string + limit, function(err, result){                                
+function usrCheck(user, callback){
+    var data = null;
+    sql.connect().query(sql.users.by_id_key + user, function(err, result){
         if(err){
-            console.error("Error query discos: " + err +"\n");                    
-            return response.status(500).json({error: ['Error conectando a la DB'], code: [500]}).end();
-        }
-        if(JSON.stringify(result).length < 3) return response.status(404).json({errors: ['Sin resultados'], code:[404]}).end();
-        return response.status(201).json(result).end();
-    });
-};
-function usrCheck(user, next){
-    sql.conectar().query(sql.users.by_id_key + user, function(err,result){
-        if(err){
-            //console.error("@Error query usuarios: " + err);
-            return next({error: ['Error conectando a la BD'], code: [500]});
+            console.error("@Error query usuarios: " + err);
+            data = {error: ['Error conectando a la BD'], code: [500]};
         }            
         if(result.length > 0){
-            //console.log("\nRequest by user: " +result[0]['Email']+'\n');
-            return next();
+            console.log("\nRequest by user: " +result[0]['Email']+'\n');
+            data = null;
+        }else{
+            console.log("\nUsuario desconocido.");
+            data ={error: ['Usuario desconocido'], usuario: [user], code: [401]};
         }
-        return next({error: ['Usuario desconocido'], usuario: [user], code: [401]});
-    }); 
+        return callback(data);
+    });
 };
 function buildLimit(datos){
     var string;
@@ -217,7 +192,7 @@ function logCtrl(req, titulo){
         var text;        
         switch(key){            
             case 'body':
-                for(var n in req[key]){console.log("\n" + key + ": "+ n + ": " + req[key][n])};
+                for(var n in req[key]){console.log("\n" + key + ": "+ n + ": " + req[key][n]);};
                  break;
             case 'sessionID': console.log("\n" + key + ": "+ req[key] + "\n");break;
             default: text+=key+" || ";break;
@@ -306,5 +281,3 @@ function isLoggedIn(req, res, next) {
     
     res.send({error : ("not logged in")}); //Usuarios no identificados a la página de inicio.
 }
-
-function control(){console.log("\n\n ESTOY AQUI\n\n");};

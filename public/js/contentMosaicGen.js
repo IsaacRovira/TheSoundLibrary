@@ -34,7 +34,7 @@ function imgContainerNew(){
                 class       :   'col-12',
                 alt         :   '',
                 src         :   '',
-                onerror     :   'this.onerror=null;this.src='+ commonData.path.get() +'nopic.png',
+                onerror     :   'this.onerror=null;this.src='+ commonData.path.get().cover +'nopic.png',
                 onclick     :   '',
                 id          :   'img'
             },
@@ -91,7 +91,7 @@ function updateImgContainerValues(datos, container){
                 container.imgTag.alt = datos[key];                
                 break;
             case 'img_cover': 
-                container.imgTag.src = PATH + datos[key];
+                container.imgTag.src = commonData.path.get().cover + datos[key];
                 break;
         };
     }

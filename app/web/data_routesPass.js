@@ -54,7 +54,7 @@ module.exports = function(data_router) {
             'Access-Control-Allow-Origin': '*'
         });
 
-        sql.conectar().query(sql.fonotecas.canciones + string, req.body.userid,  function(err, result){
+        sql.connect().query(sql.fonotecas.canciones + string, req.body.userid,  function(err, result){
            if(err){
                 error("¡Ups! Algo ha fallado.",res);
                 console.log("Error query canciones fonoteca: " + err);
@@ -110,7 +110,7 @@ module.exports = function(data_router) {
             'Access-Control-Allow-Origin': '*'
         });
 
-        sql.conectar().query(sql.fonotecas.discos + string, req.body.userid, function(err, result){
+        sql.connect().query(sql.fonotecas.discos + string, req.body.userid, function(err, result){
             if(err){
                 error("¡Ups! Algo ha fallado.",res);
                 console.log("Error query discos: " + err);
@@ -180,7 +180,7 @@ module.exports = function(data_router) {
         var consulta = function(cadena){
             if(cadena.length > 0){
                 console.log('\n' + sql.canciones.by_Any + cadena + '\n');
-                sql.conectar().query(sql.canciones.by_Any + string, function(err, result){
+                sql.connect().query(sql.canciones.by_Any + string, function(err, result){
                     if(err){
                         error("¡Ups! Algo ha fallado.",res);
                         console.log("Error query canciones: " + err);
@@ -195,7 +195,7 @@ module.exports = function(data_router) {
                     }            
                 });
             }else{
-                sql.conectar().query(sql.canciones.all, function(err, result, fields){
+                sql.connect().query(sql.canciones.all, function(err, result, fields){
                     if(err){
                         error("¡Ups! Algo ha fallado.",res);
                         console.log("Error query canciones: " + err);
@@ -209,7 +209,7 @@ module.exports = function(data_router) {
         };
 
         if(datos['userid']!= null){
-            sql.conectar().query(sql.users.all, function(err,result){
+            sql.connect().query(sql.users.all, function(err,result){
                 if(err){
                     error("Algo no ha salido bien.", res);
                     console.log("Error query usuarios: " + err);
@@ -270,7 +270,7 @@ module.exports = function(data_router) {
 
         if(isBody(datos)){
     //        console.log(string);
-            sql.conectar().query(sql.discos.by_Any + string, function(err, result){
+            sql.connect().query(sql.discos.by_Any + string, function(err, result){
                 if(err){
                     error("¡Ups! Algo ha fallado.",res);
                     console.log("Error query discos: " + err);
@@ -285,7 +285,7 @@ module.exports = function(data_router) {
                 }                
             });
         }else{
-            sql.conectar().query(sql.discos.all, function(err, result){
+            sql.connect().query(sql.discos.all, function(err, result){
                 if(err){
                     error("¡Ups! Algo ha fallado.",res);
                     console.log("Error query discos: " + err);
