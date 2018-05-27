@@ -97,7 +97,7 @@ module.exports = function(data_router) {
             'Access-Control-Allow-Origin': '*'
         });
 
-        var datos= getBodyData(dataSet().canciones, req.body);
+        var datos= getBodyData(dataSet().canciones, req);
         var string = buildSqlValues(datos);
         var limit = buildLimit(datos);
 
@@ -127,27 +127,25 @@ module.exports = function(data_router) {
     // Discos
     data_router.post('/discos', isLoggedIn, function(req, res){
         logCtrl(req, "Request Discos.");
-
         //Encabezado
-        res.set({
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json'        
-        });
+        //res.set({'Access-Control-Allow-Origin': '*','Content-Type': 'application/json'});
 
-        var datos= getBodyData(dataSet().discos, req.body);
-        var string = buildSqlValues(datos);
-        var limit = buildLimit(datos);
+        var datos       =getBodyData(dataSet().discos, req);
+        var string      =buildSqlValues(datos);
+        var limit       =buildLimit(datos);
+        var orderby     =orderBy(datos.orderby);
+        //if(req.session.passport.user){datos.userid=mysql.escape(req.session.passport.user);};
 
         function qryData(err){        
             if(err){            
                 console.error("\nUuups! error a la vista: ", err, "\n");
                 return res.status(err.code).json(err).end();
             }
-            var qry = 'all';
-            if(string.length > 0) qry='by_Any';
+            var qry = 'by_Any';
+//            if(string.length > 0) qry='by_Any';
 
-            console.log("\n"+sql.discos[qry] + string + limit + "\n");
-            sql.connect().query(sql.discos[qry] + string + limit, function(err, result){                                
+            console.log("\n"+sql.discos[qry] + string + limit + orderby + "\n");
+            sql.connect().query(sql.discos[qry], string + limit + orderby, function(err, result){
                 if(err){
                     console.error("Error query discos: " + err +"\n");                    
                     return res.status(500).json({error: ['Error conectando a la DB'], code: [500]}).end();
@@ -158,6 +156,7 @@ module.exports = function(data_router) {
         };
 
         if(datos.userid){ return usrCheck(datos.userid,qryData);}
+        console.error(JSON.stringify({error: ['Usuario desconocido'], usuario: [datos.userid], code: [401]})+"\n");
         return res.status(401).json({error: ['Usuario desconocido'], usuario: [datos.userid], code: [401]}).end();
     });
 };
@@ -195,27 +194,37 @@ function logCtrl(req, titulo){
                 for(var n in req[key]){console.log("\n" + key + ": "+ n + ": " + req[key][n]);};
                  break;
             case 'sessionID': console.log("\n" + key + ": "+ req[key] + "\n");break;
+            case 'session': console.log("\n" + key + ": "+ req[key].passport.user + "\n");break;
             default: text+=key+" || ";break;
         }        
     }
    //console.log(text);
 };
+//Serializa los datos del body para poder pasarselos al SQL.
 function buildSqlValues(datos){    
     var string;
     for(var key in datos){
         switch(key){
             case 'userid':
             case 'max':
-                //var max;
-                //if(datos[key]){max = " limit " + mysql.escape(datos[key])};
                 break;
+            case 'orderby':
+                //if(datos[key])orderby = ' order by ' + datos[key];
+                break;                
             default:
                 if(datos[key]){string = updateStringLike(datos[key], string, key);}
         }
     };
-    
-    if(string){return string;}    
+    if(string){return 'where ' + string;}    
     return '';
+};
+//Si el exite dato para order by devuelve el valor del parámetro pecedido de " order by", si no devuelve una cadena vacia..
+function orderBy(dato){
+    if(dato){
+        return ' order by ' + dato;
+    }else{
+        return '';
+    }    
 };
 function updateStringLike(valor, string, campo){
     if(string){
@@ -231,18 +240,19 @@ function updateStringEqual(valor, string, campo){
     }
     return campo + " = " + mysql.escape(valor);    
 };
-function getBodyData(datos, body){
-    var datos;
+function getBodyData(datos, req){
+    var data;
     for(var key in datos){        
         switch(key){
-            case 'userid':
-                if(body[key]){datos[key]=mysql.escape(body[key])};
+            case 'userid':                
+                if(req.session.passport.user) data[key]=mysql.escape(req.session.passport.user);
                 break;
             default:
-                if(body[key]){datos[key]=body[key]};
+                if(req.body[key]){data[key]=req.body[key];};
         }
     }
-    return datos;
+    
+    return data;
 };
 function dataSet(){
     var data={
@@ -258,7 +268,8 @@ function dataSet(){
             identificadores   :"",
             tipo              :"",
             userid            :"",
-            max               :""
+            max               :"",
+            orderby           :""
         },
         canciones   :{
             artistas            :"",
@@ -268,7 +279,8 @@ function dataSet(){
             pista               :"",
             titulo              :"",
             userid              :"",
-            max                 :""
+            max                 :"",            
+            orderby             :""
         }
     };
     return data;

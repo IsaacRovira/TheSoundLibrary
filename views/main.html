@@ -89,10 +89,14 @@
                 </div>
             </div>
         </div>
-        <div class="container" id="mainContainer">
-            <div class="row" id="mainRow">
-            </div>
-        </div>
+        <!--<div class="container" id="mainContainer">-->
+            <div class="row">
+                <div class="col-1 hidden" id="sideMenu"></div>
+                <div class="col-11" id="dataContainer">
+                    <div class="row" id="mainRow"></div>
+                </div>
+            </div>            
+        <!--</div>-->
         <script type="text/javascript">
             doQueryAll2(commonData.url.get()['std']['general']['discos'], load);                        
         </script>

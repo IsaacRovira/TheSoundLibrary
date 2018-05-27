@@ -32,9 +32,8 @@ var sql = {
                 by_artista: "select * from discos where Artista like '%?%'",
                 by_identificador: "select * from discos where Identificador like '%?%'",
                 by_Etiquetado: "select * from discos where Etiquetado like '%?%'",
-                by_Any: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid where ",
-                by_max: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid  limit 10"
-
+                by_Any: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid ?",
+                by_max: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid  limit ?"
             },
     generos     : {
                 all: "select * from generos",

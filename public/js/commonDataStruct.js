@@ -70,7 +70,7 @@ function apiPortClass(callback){
             }
         };
     };
-function songsUpdateStausClass(callback){
+function songsUpdateStatusClass(callback){
         return{
             get     : function(){return songsUpdate;},
             set     : function(newData){
@@ -79,7 +79,7 @@ function songsUpdateStausClass(callback){
             }
         };
     };
-function albumUpdateStatusClass(callback){
+function albumsUpdateStatusClass(callback){
         return{
             get     : function(){return albumUpdate;},
             set     : function(newData){
@@ -123,8 +123,8 @@ var commonData = {
     server              :serverClass(function(){return null;}),
     userId              :userIdClass(function(){return null;}),
     apiPort             :apiPortClass(function(){return null;}),
-    songsUpdateStaus    :songsUpdateStausClass(function(){return null;}),
-    albumUpdateStatus   :albumUpdateStatusClass(function(){return null;}),
+    songsUpdateStatus    :songsUpdateStatusClass(function(){return null;}),
+    albumsUpdateStatus   :albumsUpdateStatusClass(function(){return null;}),
     datosCanciones      :datosCancionesClass(function(datos){
         updateDataSongs(datos);
     }),
@@ -136,12 +136,12 @@ var commonData = {
 
 //Funciones que actualizan las variables con los datos.
 function updateDataSongs(newData){
-    commonData.songsUpdateStaus.set(true);
+    commonData.songsUpdateStatus.set(true);
     
 };
 function updateDataAlbums(newData){
     
-    commonData.albumUpdateStatus.set(true);
+    commonData.albumsUpdateStatus.set(true);
 };
 function getServer(){
     return self.location.hostname;
@@ -150,6 +150,7 @@ function getServer(){
 };
 //Dejo aquí el userID o lo passo como parámetro a la función export?
 function getUserId(){
+    console.log(JSON.stringify(document.cookie));
     userid = JSON.stringify(document.cookie);
     return userid;
 };

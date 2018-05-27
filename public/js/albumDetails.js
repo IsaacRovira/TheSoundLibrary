@@ -24,21 +24,22 @@ var funciones = function(id){
 };
 var nodeSets   ={
     div             :{
-        class       :'row main-col-mosaic',
+        class       :'col-12 main-col-mosaic',
         tag         :'div'        
     },
     imgDiv          :{
-        class       :'col-xs-12 col-sm-3 col-md-4',
+        class       :'col-xs-12 col-sm-2 col-md-3',
         tag         :'div'      
     },
-    albumDiv        :{
-        class       :'col-xs-12 col-sm-9 col-md-8',
+    songsDiv        :{
+        class       :'col-xs-12 col-sm-10 col-md-9',
         tag         :'div'
     },
-    songsDiv        :{
+    albumDiv        :{
         class       :'col-12',
         tag         :'div'
     },
+
     liSongDetails   :{
         class       :'songDetails ilElement list-group-item',
         tag         :'li'
@@ -231,11 +232,16 @@ function mosaicDetails(id){
         setActiveNode(id);
         isActive = true;
     }
-    var pos = $('#imgDiv'+id).position().top;
-    $(window).scrollTop(pos-5);
+    if(isActive){
+        var pos = $('#imgDiv'+id).position().top;
+        $(window).scrollTop(pos-5);        
+    }else{
+        var pos = $(id).position().top;
+        $(window).scrollTop(pos);
+    }
 };
 function detailsOnOff(id){
-    if(songsUpdate&albumsUpdate){
+    if(commonData.songsUpdateStatus.get()&commonData.albumsUpdateStatus.get()){
         if(esMosaico){
             mosaicDetails(id);
         }else{
@@ -359,8 +365,8 @@ function genAlbumDetailsList(data, id){
     return nodeList;
 };
 
-
-//Detalles mode lista.
+//*****************************************************************************************************************************************************
+//MODO LISTA detalles.
 /*DESACTIVA LA VENTANA CON LOS DETALLES Y ACTIVA LA NUEVA VENTANA EN CASO DE QUE SE HAYA SELECCIONADO OTRA.
  * 
  * @param {type} id
@@ -380,7 +386,7 @@ function getChildToAppendNode(id, funcion){
     var newNode = document.getElementById(id).firstChild;
     return newNode.appendChild(funcion);    
 };
-//Reemplaza el elemento un elemento por otro. Detalles por no detalles y viceversa.
+//Reemplaza un elemento por otro. Detalles por no detalles y viceversa.
 function setActiveElement(id){
         activeDiv = document.getElementById(id).cloneNode(true);
         activeId = id;        
