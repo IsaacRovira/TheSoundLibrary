@@ -15,7 +15,7 @@ var sql = {
     users       : {
                 all: "select * from users",
                 by_email: "select * from users where email = ?",
-                by_id_key: "select * from users where ID_key = ",
+                by_id_key: "select * from users where ID_key = ?",
                 by_token: "select * from users where token = ?",
                 by_nombre: "select * from users where nombre = ?",
                 by_displayName: "select * from users where displayName = ?",

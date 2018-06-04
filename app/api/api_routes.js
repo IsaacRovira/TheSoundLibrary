@@ -5,6 +5,7 @@ var path            = require(config.modulos + 'path');
 var aux         = require(path.normalize(config.raiz + '/app/misc/misc.js'))
 var express         = require(config.modulos + 'express');
 var sql             = require(path.normalize(config.raiz + "/config/database.js"));
+var mysql           = require(config.modulos + 'mysql');
 
 //var wd        = config.raiz;
 //var parser    = require('http-string-parser');
@@ -54,15 +55,15 @@ function userCheck(qry, res, user, callback){
 	if(!user){
 				return callback({code:[401], errorRes:["Falta ID de usuario."], errorLog:["Error (api_router>>canciones). User = "+user]},qry,res);
 	};
-    sql.connect().query(sql.users.by_id_key + user, function(err, result){
+    sql.connect().query(sql.users.by_id_key, mysql.escape(user), function(err, result){
         if(err){
 					return callback({errorRes: ['Vaya, no conseguimos conectar con la BD'], code: [500], errorLog: ["Error (userCheck): " + err]}, qry, res);
         }
         if(result.length > 0){
-            console.log("\tRequest by user: " +result[0]['Email']);
+            console.log("\tRequest by user: " + result[0]['Email']);
 						return callback(null, qry, res);
         }else{
-					return callack({errorRes:['Ususario desconocido'], code:[401], errorLog:['Error (api_router>canciones). Unknown user: '+ user]}, qry, res);
+					return callback({errorRes:['Ususario desconocido'], code:[401], errorLog:['Error (api_router>canciones). Unknown user: '+ user]}, qry, res);
 				}
     });
 };
