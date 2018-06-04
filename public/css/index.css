@@ -1,0 +1,32 @@
+/*
+Estilo de las pagina de bienvendia y las de registo e inicio de sesión.
+*/
+
+    body{
+        padding-top: 25%;
+        background: black;
+            
+        height: 100%;
+        background-image: URL(https://j.gifs.com/qYA3V3.gif);
+
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position-x:center;
+        
+        
+    }
+    
+    .transparent{
+        background:rgba(0,0,100,0.8);
+        background: radial-gradient(rgba(0,0,100,0.8),rgba(0,0,50,0.2),rgba(0,0,0,0.00));
+        border-radius: 10px;
+    }
+
+    /*
+    .transparent:hover{
+        background:rgba(25,25,25,0.9);
+    }
+    */
+    .white{
+        color:white;
+    }
