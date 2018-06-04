@@ -100,6 +100,7 @@ module.exports = function(data_router) {
         var datos= getBodyData(dataSet().canciones, req);
         var string = buildSqlValues(datos);
         var limit = buildLimit(datos);
+        var orderby     =orderBy(datos.orderby);
 
         function qryData(err){        
             if(err){            
@@ -109,8 +110,8 @@ module.exports = function(data_router) {
             var qry = 'all';
             if(string.length > 0) qry='by_Any';
 
-            console.log("\n"+sql.canciones[qry] + string + limit + "\n");
-            sql.connect().query(sql.canciones[qry] + string + limit, function(err, result){                                
+            console.log("\n"+sql.canciones[qry] + string + limit + orderby +"\n");
+            sql.connect().query(sql.canciones[qry] + string + limit + orderby, function(err, result){
                 if(err){
                     console.error("Error query canciones: " + err +"\n");                    
                     return res.status(500).json({error: ['Error conectando a la DB'], code: [500]}).end();
@@ -121,6 +122,7 @@ module.exports = function(data_router) {
         };
 
         if(datos.userid){ return usrCheck(datos.userid,qryData);}
+        console.error(JSON.stringify({error: ['Usuario desconocido'], usuario: [datos.userid], code: [401]})+"\n");
         return res.status(401).json({error: ['Usuario desconocido'], usuario: [datos.userid], code: [401]}).end();
     });//Fin data_router.post Canciones
 
@@ -134,6 +136,7 @@ module.exports = function(data_router) {
         var string      =buildSqlValues(datos);
         var limit       =buildLimit(datos);
         var orderby     =orderBy(datos.orderby);
+        
         //if(req.session.passport.user){datos.userid=mysql.escape(req.session.passport.user);};
 
         function qryData(err){        
@@ -145,7 +148,7 @@ module.exports = function(data_router) {
 //            if(string.length > 0) qry='by_Any';
 
             console.log("\n"+sql.discos[qry] + string + limit + orderby + "\n");
-            sql.connect().query(sql.discos[qry], string + limit + orderby, function(err, result){
+            sql.connect().query(sql.discos[qry] + string + limit + orderby, function(err, result){
                 if(err){
                     console.error("Error query discos: " + err +"\n");                    
                     return res.status(500).json({error: ['Error conectando a la DB'], code: [500]}).end();
@@ -241,8 +244,8 @@ function updateStringEqual(valor, string, campo){
     return campo + " = " + mysql.escape(valor);    
 };
 function getBodyData(datos, req){
-    var data;
-    for(var key in datos){        
+    var data = datos;
+    for(var key in data){        
         switch(key){
             case 'userid':                
                 if(req.session.passport.user) data[key]=mysql.escape(req.session.passport.user);

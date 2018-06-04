@@ -1,0 +1,10 @@
+/*---CREAR EL USUARIO NODEJS---*/
+
+CREATE USER 'nodejs'@'localhost' IDENTIFIED BY '***';
+
+GRANT SELECT , INSERT , UPDATE , DELETE ON `soundlib` . * TO 'nodejs'@'localhost';
+
+/*
+ON * . * TO 'nodejs'@'localhost' IDENTIFIED BY '***' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+*/
+

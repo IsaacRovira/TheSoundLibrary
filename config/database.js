@@ -13,14 +13,14 @@ var sql = {
                 database: config.sql.db
             },
     users       : {
-                all: "select * from Users", 
-                by_email: "select * from Users where email = ?",
-                by_id_key: "select * from Users where ID_key = ",
-                by_token: "select * from Users where token = ?",
-                by_nombre: "select * from Users where nombre = ?",
-                by_displayName: "select * from Users where displayName = ?",
-                by_username: "select * from Users where username = ?",
-                by_id: "select * from Users where userID = ?"                
+                all: "select * from users",
+                by_email: "select * from users where email = ?",
+                by_id_key: "select * from users where ID_key = ",
+                by_token: "select * from users where token = ?",
+                by_nombre: "select * from users where nombre = ?",
+                by_displayName: "select * from users where displayName = ?",
+                by_username: "select * from users where username = ?",
+                by_id: "select * from users where userID = ?"
             },
     discos      : {
                 all: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid",
@@ -32,7 +32,7 @@ var sql = {
                 by_artista: "select * from discos where Artista like '%?%'",
                 by_identificador: "select * from discos where Identificador like '%?%'",
                 by_Etiquetado: "select * from discos where Etiquetado like '%?%'",
-                by_Any: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid ?",
+                by_Any: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid ",
                 by_max: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid  limit ?"
             },
     generos     : {
@@ -70,11 +70,11 @@ var sql = {
     connect     :
                 function(){
                     con = mysql.createConnection({
-                        host: sql.config.host,
-                        port: sql.config.port,
-                        user: sql.config.user,
-                        password: sql.config.password,
-                        database: sql.config.database
+                        host: config.sql.ip,
+                        port: config.sql.port,
+                        user: config.sql.user,
+                        password: config.sql.pass,
+                        database: config.sql.db
                     });
                     return con;
                 }

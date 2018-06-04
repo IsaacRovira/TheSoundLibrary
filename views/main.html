@@ -2,71 +2,71 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--Font Awesome-->
         <script src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
-        
-        <!--Bootstrap-->  
+
+        <!--Bootstrap-->
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
-        
+
         <!--CSS-->
         <link rel="stylesheet" href="./css/main.css">
-        
+
         <!--JQuery-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        
+
         <!--JavaScript-->
-        <script src= "./js/commonDataStruct.js" type="text/javascript"></script>		
-        <script src= "./js/contentMosaicGen.js" type="text/javascript"></script>	
+        <script src= "./js/commonDataStruct.js" type="text/javascript"></script>
+        <script src= "./js/contentMosaicGen.js" type="text/javascript"></script>
         <script src= "./js/contentListGen.js" type="text/javascript"></script>
 	<script src= "./js/contentDetailGen.js" type="text/javascript"></script>
-        <script src= "./js/changeView.js" type="text/javascript"></script>		
+        <script src= "./js/changeView.js" type="text/javascript"></script>
 	<script src= "./js/queryAll.js" type="text/javascript"></script>
         <script src= "./js/albumDetails.js" type="text/javascript"></script>
-	<script type="text/javascript">getUserId();</script>
-            
+	<!--<script type="text/javascript">getUserId();</script>-->
+
         <style>
             body{
                 background-color: black;
             }
-            
+
             figcaption{
                 color: white;
             }
-            
+
             .img-list{
                 width: 125px;
             }
-            
+
             .list-group-item:hover{
                 opacity: 0.75;
                 background-color: whitesmoke;
             }
-            
+
             #nav-bar{
                 border: solid white;
                 margin-bottom: 10px;
                 color: white;
             }
-			
+
             label{
                 padding: 10px;
             }
-			
+
 			#estado_bttn:hover{
 				text-decoration: underline;
 			}
-			
+
 			#modo:hover{
 				text-decoration: underline;
 			}
         </style>
-        
+
         <title>TheSoundLib</title>
-        
+
     </head>
-    
+
     <body>
         <div class="container-fluid" id="nav-bar">
             <div class="row">
@@ -75,7 +75,7 @@
                 <div class="col-3" id="salir">
                     <a href="/logout">
                         <i class="far fa-times-circle fa-3x" style ="color:white;" aria-hidden="true">&nbsp;</i>
-                    </a> 
+                    </a>
                 </div>
             </div>
             <div class='row'>
@@ -95,10 +95,10 @@
                 <div class="col-11" id="dataContainer">
                     <div class="row" id="mainRow"></div>
                 </div>
-            </div>            
+            </div>
         <!--</div>-->
         <script type="text/javascript">
-            doQueryAll2(commonData.url.get()['std']['general']['discos'], load);                        
+            doQueryAll2(commonData.url.get()['std']['general']['discos'], load);
         </script>
     </body>
 </html>

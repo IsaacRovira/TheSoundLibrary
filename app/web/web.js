@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');      //lanzar EJS
 // Configura passport
 app.use(session({
 	secret: 'encriptalotodo',
-	reserve: true,
+	resave: true,
 	saveUninitialized: true
 }));
 

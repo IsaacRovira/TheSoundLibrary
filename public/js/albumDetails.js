@@ -25,11 +25,11 @@ var funciones = function(id){
 var nodeSets   ={
     div             :{
         class       :'col-12 main-col-mosaic',
-        tag         :'div'        
+        tag         :'div'
     },
     imgDiv          :{
         class       :'col-xs-12 col-sm-2 col-md-3',
-        tag         :'div'      
+        tag         :'div'
     },
     songsDiv        :{
         class       :'col-xs-12 col-sm-10 col-md-9',
@@ -74,9 +74,9 @@ function songDetails(){
         duracion    :   'duracion',
         cancionId   :   'songId',
         artistas    :   'artistas',
-        class       :   nodeSets.liSongDetails.class  
+        class       :   nodeSets.liSongDetails.class
         };
-    return songDetails;    
+    return songDetails;
 };
 function albumDetails(){
     var albumDetails    ={
@@ -97,7 +97,7 @@ var nodeStruct = function(tag, id, clase){
             id          :   id,
             class       :   clase,
             functions   :   {
-                onClick     :   '',            
+                onClick     :   '',
                 onHover     :   ''
             },
             childNodes  :   {
@@ -117,12 +117,12 @@ var nodeStructure  ={
 
 //Funciones que almacenan los detalles de la estructura de un nodo.
 var detailNodeStruct = function(){
-    var nodeList    ={        
+    var nodeList    ={
         nodeTag     :   'div',
         id          :   '',
         class       :   'col-12',
         functions   :   {
-            onClick     :   '',            
+            onClick     :   '',
             onHover     :   ''
         },
         childNodes  :   {
@@ -134,7 +134,7 @@ var detailNodeStruct = function(){
     return nodeList;
 };
 var detailNodeStruct = function(tag, id, clase, funcion1, funcion2, child1, child2, child3){
-    var nodeList    ={        
+    var nodeList    ={
         nodeTag     :   tag,
         id          :   id,
         class       :   clase,
@@ -150,9 +150,10 @@ var detailNodeStruct = function(tag, id, clase, funcion1, funcion2, child1, chil
     };
     return nodeList;
 };
+
 //Funciones y childs son un array de funciones y nodos hijos.
 var detailNodeStruct = function(tag, id, clase, funciones, childs){
-    var nodeList    ={        
+    var nodeList    ={
         nodeTag     :   tag,
         id          :   id,
         class       :   clase,
@@ -164,7 +165,7 @@ var detailNodeStruct = function(tag, id, clase, funciones, childs){
 
 //Funciones
 /*Recorre las estructuras de datos y devuelve un div con los detalles. Reemplazara al div con el mismo ID.
- * 
+ *
  * @param {type} id
  * @returns {Element|genDivStruct.nodeDiv}
  */
@@ -174,7 +175,7 @@ function generarDivDetalles(id){
         switch(sets){
             case 'imgDiv':
                 nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, sets+id, nodeSets[sets].class, funciones(id)[sets],{child0:document.getElementById('img'+id)}));
-                break;                
+                break;
             case 'albumDiv':
                 nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, sets+id, nodeSets[sets].class, funciones(id)[sets],genAlbumDetailsList(dataAlbum,id)));
                 break;
@@ -187,7 +188,7 @@ function generarDivDetalles(id){
     return genDivStruct(detailNodeStruct(nodeSets.div.tag, id, nodeSets.div.class, funciones(id)['div'], nodeChildList));
 };
 /*Recorre detailNodeStruct y devuelve el nodo definido en esa estructura.
- * 
+ *
  * @param {type} detailNodeStruct
  * @returns {Element|genDivStruct.nodeDiv}
  */
@@ -214,27 +215,27 @@ function genDivStruct(detailNodeStruct){
                     nodeDiv.appendChild(detailNodeStruct[key][chNs]);
                 }
                 break;
-            default:                
+            default:
         }
     }
     return nodeDiv;
 };
 /*FUNCION A LA QUE LLAMAREMOS DESDE EL EVENTO ONCLICK
- * 
- * 
+ *
+ *
  * @param {identificacion del div} id
  * @returns {undefined}
  */
 function mosaicDetails(id){
     if(isActive){
-        isActive = deactivateDivMosaic(id);        
+        isActive = deactivateDivMosaic(id);
     }else{
         setActiveNode(id);
         isActive = true;
     }
     if(isActive){
         var pos = $('#imgDiv'+id).position().top;
-        $(window).scrollTop(pos-5);        
+        $(window).scrollTop(pos-5);
     }else{
         var pos = $(id).position().top;
         $(window).scrollTop(pos);
@@ -252,7 +253,7 @@ function detailsOnOff(id){
     }
 };
 /*DESACTIVA LA VENTANA CON LOS DETALLES Y ACTIVA LA NUEVA VENTANA EN CASO DE QUE SE HAYA SELECCIONADO OTRA.
- * 
+ *
  * @param {type} id
  * @returns {Boolean}
  */
@@ -271,33 +272,33 @@ function setActiveNode(id){
     activeId = id;
 };
 /*Devuelve un elemento UL con las canciones en data.
- *Data solo contiene canciones del album. 
+ *Data solo contiene canciones del album.
  * @param {type} data
  * @returns {Element|genSongList.ulNode}
  */
 function genSongList(data){
     var ulNode = document.createElement(nodeSets.ulSongDetails.tag);
     ulNode.setAttribute('class', nodeSets.ulSongDetails.class);
-    
+
     var song = songDetails();
     for(var i=0; i < data.length; i++){
         var liNode = document.createTextNode('li');
         liNode.setAttribute('class', nodeSets.liSongDetails.class);
-        
+
         for(var key in song){
             song[key] = data[i][key];
-        }       
-        
+        }
+
         liNode.setAttribute('id', 'song' + song.id);
         liNode.appendChild(document.createTextNode(song.pista + ' - ' + song.titulo + ' - ' + song.duracion));
         ulNode.appendChild(liNode);
-        
+
         song = songDetails();
-    }    
+    }
     return ulNode;
 };
 /*Devuelve un elemento UL con las canciones en data.
- *Data contiene canciones de todos los albumes. 
+ *Data contiene canciones de todos los albumes.
  * @param {type} data
  * @param {type} id
  * @returns {Element|genSongList.ulNode}
@@ -306,9 +307,9 @@ function genSongList(data, id){
     var liNode;
     var ulNode = document.createElement('ul');
     ulNode.setAttribute('class', nodeSets.ulSongDetails.class);
-    
+
     var song = songDetails();
-    
+
     for(var i=0; i < data.length; i++){
         if(data[i].discoId === id){
             liNode = document.createElement('li');
@@ -321,25 +322,25 @@ function genSongList(data, id){
                         break;
                     default:
                         song[key] = data[i][key];
-                }                
+                }
             }
-            
+
             liNode.setAttribute('id', song.cancionId);
             liNode.setAttribute('class', song.class);
             liNode.appendChild(document.createTextNode(song.pista + ' - ' + song.titulo + ' - ' + song.duracion));
-            ulNode.appendChild(liNode);            
-        }        
+            ulNode.appendChild(liNode);
+        }
     }
     return ulNode;
 };
 /*Devuelve un elemento UL con los datos del album.
- * 
+ *
  */
 function genAlbumDetailsList(data, id){
    var nodeList={};
    var pNode;
    var album = albumDetails();
-    
+
     for(var i=0; i < data.length; i++){
         if(data[i].discoId === id){
             for(var key in album){
@@ -350,15 +351,15 @@ function genAlbumDetailsList(data, id){
             break;
         }
     }
-    
-    for(var key in album){   
+
+    for(var key in album){
         switch(key){
             case 'class':
                 break;
             default:
                 pNode = document.createElement('p');
                 pNode.setAttribute('class', album.class);
-                pNode.appendChild(document.createTextNode(key + ': ' + album[key]));                
+                pNode.appendChild(document.createTextNode(key + ': ' + album[key]));
                 nodeList[key] = pNode;
         }
     }
@@ -368,12 +369,12 @@ function genAlbumDetailsList(data, id){
 //*****************************************************************************************************************************************************
 //MODO LISTA detalles.
 /*DESACTIVA LA VENTANA CON LOS DETALLES Y ACTIVA LA NUEVA VENTANA EN CASO DE QUE SE HAYA SELECCIONADO OTRA.
- * 
+ *
  * @param {type} id
  * @returns {Boolean}
  */
 function deactivateDivList(id){
-    document.getElementById("mainUl").replaceChild(activeDiv, document.getElementById(activeId));    
+    document.getElementById("mainUl").replaceChild(activeDiv, document.getElementById(activeId));
     if(activeId === id){
         activeImg = activeId = activeDiv = null;
         return false;
@@ -384,14 +385,14 @@ function deactivateDivList(id){
 //Retorna un nuevo nodo hijo del nodo ID con los detalles del album.
 function getChildToAppendNode(id, funcion){
     var newNode = document.getElementById(id).firstChild;
-    return newNode.appendChild(funcion);    
+    return newNode.appendChild(funcion);
 };
 //Reemplaza un elemento por otro. Detalles por no detalles y viceversa.
 function setActiveElement(id){
         activeDiv = document.getElementById(id).cloneNode(true);
-        activeId = id;        
-        
-        var newNode = getChildToAppendNode(id, getDivDetailsList(id));        
+        activeId = id;
+
+        var newNode = getChildToAppendNode(id, getDivDetailsList(id));
         document.getElementById('id').replaceChild(newNode, document.getElementById(id).firstChild);
 };
 //Activa los detalles del elemento seleccionado y desactiva el elemento que mostraba los detalles si lo hubiese.
@@ -402,7 +403,7 @@ function listDetails(id){
         setActiveElement(id);
         isActive = true;
     }
-    if(isActive){        
+    if(isActive){
         var pos = $('#divList'+activeId).position().top;
         $(window).scrollTop(pos);
     }
@@ -411,19 +412,19 @@ function listDetails(id){
 function getDivDetailsList(id){
     newNode = genDivDetailList(setNewStruct(nodeSets.divList, id));
     newNode = genSongsList(newNode, id);
-    
+
     return newNode;
 };
-//Devuelve una structura con los datos para crear el DIV q contendrá los detalles.
+//Devuelve una structura con los datos para crear el DIV q contendrï¿½ los detalles.
 function setNewStruct(set, id){
     var newNodeStruct = nodeStructure;
     newNodeStruct.id = set+id;
     newNodeStruct.nodeTag = set.tag;
     newNodeStruct.class = set.class;
-  
+
     return newNodeStruct;
 };
-//Devuelve un nuevo nodo para insertar los detalles de la canción en el modo lista con los valores pasados a la función mediante la variable nodeStruct
+//Devuelve un nuevo nodo para insertar los detalles de la canciï¿½n en el modo lista con los valores pasados a la funciï¿½n mediante la variable nodeStruct
 function genDivDetailList(nS){
     var newfunciones = funciones(id);
     var newNode = document.createElement(nS.nodeTag);
@@ -433,11 +434,11 @@ function genDivDetailList(nS){
     for(var f in newfunciones.divList){
         newNode.setAttribute(f, newfunciones.divList[f]);
     }
-    
+
     return newNode;
 };
-//Inserta un nodo hijo por cada canción en el nodo que se la pasa a la función.
-function genSongsList(node, id){    
+//Inserta un nodo hijo por cada canciï¿½n en el nodo que se la pasa a la funciï¿½n.
+function genSongsList(node, id){
     for(var key in songDetails){
         if(songDetails[key]['discoId'] === id) {
             for(var song in songDetails[key]){
@@ -445,15 +446,15 @@ function genSongsList(node, id){
             }
         }
     }
-    
+
     return node;
 };
-//Genera un nodo P con la pista y el título de la canción pasada a la función.
+//Genera un nodo P con la pista y el tï¿½tulo de la canciï¿½n pasada a la funciï¿½n.
 function genSongListElementNode(songData){
     var nodeP = document.createElement('p');
     nodeP.setAttribute('class', clases.pListElm);
     nodeP.setAttribute('id', 'songElement'+songData.id);
     nodeP.appendChild(document.createTextNode(songData.pista+ '-'+songData.titulo));
-    
-    return nodeP;    
+
+    return nodeP;
 };
