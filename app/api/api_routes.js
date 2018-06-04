@@ -13,7 +13,7 @@ var api_router	= express.Router();
 
 //con.query("SELECT count(email) as email from Users where email = ?", email, function(err, result, fields, next){
 
-api_router.get('/canciones', function(req, userCheck, res){
+api_router.get('/canciones', function(req, res){
 	logCtrl(req,'Api Canciones request from');
 
 	var datos		= setParamsAsObj(getParamsFromUrl(req.url));
