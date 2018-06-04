@@ -56,7 +56,7 @@ var imgAt  =   {
         mosaic  :   '',
         details :   ''
     },
-    path:   PATH,
+    path:   commonData.path.get().cover,
     onclick :   {
         mosaic  :   '',
         details :   ''

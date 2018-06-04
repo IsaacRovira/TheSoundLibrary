@@ -11,13 +11,13 @@ const APIPORT   = 3030;
 //HTTP
 const HTTPPORT  = 80;
 
+
 //SQL
-const SQLPORT   = 3306;//3360
-const SQLIP     = "192.168.0.110"//"127.0.0.1";
+const SQLPORT   = 3360;
+const SQLIP     = "127.0.0.1";
 const SQLUSER   = "nodejs";
 const SQLPASS   = "node.js";
 const SQLDB     = "soundlib";
-
 
 module.exports ={
     modulos     : MODULOS,

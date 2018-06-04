@@ -19,9 +19,9 @@
  *</ul>
  */
 
- var imgAtt={
+var imgAtt={
     fileName: "filename",
-    path    : PATH,
+    path    : commonData.path.get().cover,
     src     : "PATH",
     class   : "img-list",
     alt     : "texto",
@@ -143,7 +143,7 @@ var genImageList = function(data){
     for(var i = 0; i < data.length; i++){
         liAtt.id = data[i]['discoId'];
         
-        imgAtt.src        = PATH + data[i]['img_cover'];
+        imgAtt.src        = commonData.path.get().cover + data[i]['img_cover'];
         imgAtt.alt        = data[i]['album'];
         imgAtt.fileName   = data[i]['img_cover'];
         imgAtt.onclick    = 'detailsOnOff('+data[i]['discoId']+')';

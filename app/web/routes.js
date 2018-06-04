@@ -1,13 +1,22 @@
 // app/routes.js
 
 var config          = require(process.cwd()+'/config/config.js');
+var cookie  ={
+    domain:     'TheSoundLibrary',
+    path:       '/mysoundlib',
+    secure:     false,
+    userid:     'user.local.id',
+    expires:    new Date(Date.now()+ 600000),
+    httpOnly:   true
+};
 
 module.exports = function(app, passport) {
 
     // +++++++++++++++++++++++++++++++++++++
     // HOME
     // +++++++++++++++++++++++++++++++++++++
-
+    
+ 
     app.get('/', function(req, res) {
         //res.sendFile(('/index.ejs'));
 	res.render('index.ejs');
@@ -18,7 +27,7 @@ module.exports = function(app, passport) {
     // INICIO de sessión
     // ++++++++++++++++++++++
     app.get('/login', function(req, res) {
-        // pagina de inicio y passar los flash request.
+        // pagina de inicio y passar los flash request.        
         res.render('login.ejs', { message: req.flash('loginMessage')}); 
     });
 
@@ -39,18 +48,20 @@ module.exports = function(app, passport) {
     });
 
     //Procesar el formulario de registro.
-    app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/signup', passport.authenticate('local-signup', {        
         successRedirect : '/mysoundlib', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesiÃ³n.
         failureRedirect : '/signup', // En caso de error mostramos otra vez la pÃ¡gina de registro.
-        failureFlash : true // activar los mensajes flash.
+        failureFlash : true // activar los mensajes flash express.
     }));
 
     // ++++++++++++++++++++++++++++++
     // Soundlib data
     // ++++++++++++++++++++++++++++++    
     // Acceso a los datos de la fonoteca;
-    app.get('/mysoundlib', isLoggedIn, function(req, res) {        
-        res.set('Set-Cookie', 'userid='+user.local.id+"; path=/mysoundlib");
+    app.get('/mysoundlib', isLoggedIn, function(req, res) {
+        //res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
+        //res.cookie('userid', user.local.id, {path: '/mysoundlib', secure: false, expires: new Date(Date.now()+ 600000), httpOnly: true});
+        //res.set('Set-Cookie', 'userid='+ user.local.id+"; path=/mysoundlib");
         res.sendFile((config.raiz + '/views/main.html'),{            
             user : req.user // Cierra la sesión del usuario.
         });
