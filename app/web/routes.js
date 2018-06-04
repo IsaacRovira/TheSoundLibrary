@@ -24,17 +24,17 @@ module.exports = function(app, passport) {
     });
 
     // ++++++++++++++++++++++
-    // INICIO de sessi髇
+    // INICIO de sessi贸n
     // ++++++++++++++++++++++
     app.get('/login', function(req, res) {
         // pagina de inicio y passar los flash request.        
         res.render('login.ejs', { message: req.flash('loginMessage')}); 
     });
 
-    // Procesar el formulario de inicio de sesi贸n.	
+    // Procesar el formulario de inicio de sesi脙鲁n.	
     app.post('/login', passport.authenticate('local-login', {
 			successRedirect	:	'/mysoundlib',
-			failureRedirect	:	'/login', //si falla el inicio de sesi贸n volvemos a mostrar la pagina.
+			failureRedirect	:	'/login', //si falla el inicio de sesi脙鲁n volvemos a mostrar la pagina.
 			failureFlash: true //Mensajes flash activados.
 	}));
 
@@ -49,8 +49,8 @@ module.exports = function(app, passport) {
 
     //Procesar el formulario de registro.
     app.post('/signup', passport.authenticate('local-signup', {        
-        successRedirect : '/mysoundlib', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesi贸n.
-        failureRedirect : '/signup', // En caso de error mostramos otra vez la p谩gina de registro.
+        successRedirect : '/mysoundlib', // una vez registrado el usuario lo enviamos a la pagina de inicio de sesi脙鲁n.
+        failureRedirect : '/signup', // En caso de error mostramos otra vez la p脙隆gina de registro.
         failureFlash : true // activar los mensajes flash express.
     }));
 
@@ -63,18 +63,13 @@ module.exports = function(app, passport) {
         //res.cookie('userid', user.local.id, {path: '/mysoundlib', secure: false, expires: new Date(Date.now()+ 600000), httpOnly: true});
         //res.set('Set-Cookie', 'userid='+ user.local.id+"; path=/mysoundlib");
         res.sendFile((config.raiz + '/views/main.html'),{            
-            user : req.user // Cierra la sesi髇 del usuario.
+            user : req.user // Cierra la sesi贸n del usuario.
         });
         /*
         res.render('main.ejs', {			
                 user : req.user  
         });
         */
-    });	
-    
-    //TESTING.....
-    app.get('/api', isLoggedIn, function(req, res){
-            res.render('api.ejes');
     });
 
     // ++++++++++++++++++++++++++++++
@@ -86,10 +81,10 @@ module.exports = function(app, passport) {
     });
 };
 
-// isLoggedIn verifica que el usuario haya iniciado sesi髇.
+// isLoggedIn verifica que el usuario haya iniciado sesi贸n.
 function isLoggedIn(req, res, next) {    
-    if (req.isAuthenticated()) //Verificar si el usuario ha iniciado sesi髇.
+    if (req.isAuthenticated()) //Verificar si el usuario ha iniciado sesi贸n.
         return next();
     
-    res.redirect('/'); //Usuarios no identificados a la p醙ina de inicio.
+    res.redirect('/'); //Usuarios no identificados a la p谩gina de inicio.
 }
