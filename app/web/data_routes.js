@@ -8,13 +8,7 @@ var sql             = require(path.normalize(config.raiz + "/config/database.js"
 
 
 module.exports = function(data_router) {
-
-    //Funciones para el control de errores---PENDIENTE---
-    var error = function(){};
-    
-    //***************
-    //POST request
-    //***************
+   
     //Canciones por fonoteca
     data_router.post('/fonotecas/canciones', isLoggedIn, function(req, res){
         console.log("Request fonotecas/canciones");
@@ -167,15 +161,18 @@ module.exports = function(data_router) {
 //FUNCIONES AUX
 function usrCheck(user, callback){
     var data = null;
-    sql.connect().query(sql.users.by_id_key + user, function(err, result){
+    sql.connect().query(sql.users.by_id_key, user, function(err, result){ 
         if(err){
             console.error("@Error query usuarios: " + err);
             data = {error: ['Error conectando a la BD'], code: [500]};
-        }            
+        }
+        
         if(result.length > 0){
+            console.log(user +"\n" + result[0].ID_key);
             console.log("\nRequest by user: " +result[0]['Email']+'\n');
             data = null;
         }else{
+            
             console.log("\nUsuario desconocido.");
             data ={error: ['Usuario desconocido'], usuario: [user], code: [401]};
         }
@@ -221,7 +218,7 @@ function buildSqlValues(datos){
     if(string){return 'where ' + string;}    
     return '';
 };
-//Si el exite dato para order by devuelve el valor del parámetro pecedido de " order by", si no devuelve una cadena vacia..
+//Si el exite dato para order by devuelve el valor del parï¿½metro pecedido de " order by", si no devuelve una cadena vacia..
 function orderBy(dato){
     if(dato){
         return ' order by ' + dato;
@@ -248,7 +245,7 @@ function getBodyData(datos, req){
     for(var key in data){        
         switch(key){
             case 'userid':                
-                if(req.session.passport.user) data[key]=mysql.escape(req.session.passport.user);
+                if(req.session.passport.user) data[key]=req.session.passport.user;
                 break;
             default:
                 if(req.body[key]){data[key]=req.body[key];};
@@ -288,11 +285,18 @@ function dataSet(){
     };
     return data;
 };
-
-// isLoggedIn verifica que el usuario haya iniciado sesión.
+// isLoggedIn verifica que el usuario haya iniciado sesiï¿½n.
 function isLoggedIn(req, res, next) {    
-    if (req.isAuthenticated()) //Verificar si el usuario ha iniciado sesión.
+    if (req.isAuthenticated()) //Verificar si el usuario ha iniciado sesiï¿½n.
         return next();
     
-    res.send({error : ("not logged in")}); //Usuarios no identificados a la página de inicio.
+    res.send({error : ("not logged in")}); //Usuarios no identificados a la pï¿½gina de inicio.
 }
+//Envia los mensajes de error a la consola y como respuesta.
+function error(err, res) {
+//console.log("\n"+"\x1b[31m"+ mensaje+"\x1b[0m"+"\n");
+    console.log("\n" + aux.ahora() + " \x1b[31m" + err.errorLog + "\x1b[0m" + "\n");
+    res.status(err.code);
+    return res.json(err.errorRes);
+}
+;
