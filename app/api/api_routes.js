@@ -36,7 +36,6 @@ module.exports = function (api_router) {
 };
 
 
-
 //module.exports = api_router;
 
 //Funciones AUXILIARES
@@ -64,6 +63,7 @@ function userCheck(qry, res, user, callback) {
         if (err) {
             return callback({errorRes: ['Vaya, no conseguimos conectar con la BD'], code: [500], errorLog: ["Error (userCheck): " + err]}, qry, res);
         }
+        for(var key in result){console.log(result[key].ID_key + " " + user + "\n" +result[key].ID_key + " " + mysql.escape(user));};
         if (result.length > 0) {
             console.log("\tRequest by user: " + result[0]['Email']);
             return callback(null, qry, res);
