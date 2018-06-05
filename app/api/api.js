@@ -11,9 +11,11 @@ var bodyParser  = require(config.modulos + 'body-parser');
 var morgan      = require(config.modulos + 'morgan');
 //var multer      = require(config.modulos + 'multer');
 //var upload      = multer();
+
 //Rutas definidas en api_routes.js
 var data = require(path.normalize(config.raiz + '/app/api/api_routes.js'));
 var api = express();
+
 //Configuración
 api.use(morgan('dev'));
 api.use(cookieParser());
@@ -23,5 +25,5 @@ api.use(bodyParser.urlencoded({ extended: true }));
 
 //Use the Router on the sub route /discos
 //api.use('/api', data);
-api('/api', data);
+data(api);
 module.exports = api;
