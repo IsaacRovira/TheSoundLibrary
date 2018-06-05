@@ -23,5 +23,5 @@ api.use(bodyParser.urlencoded({ extended: true }));
 
 //Use the Router on the sub route /discos
 //api.use('/api', data);
-data(api);
+api('/api', data);
 module.exports = api;
