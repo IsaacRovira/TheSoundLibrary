@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //api_routes.js
 
 var config  = require(process.cwd() + '/config/config.js');
@@ -13,6 +14,25 @@ var aux     = require(path.normalize(config.raiz + '/app/misc/misc.js'));
 //var api_router = express.Router();
 module.exports = function(api_router){
     api_router.get('api/canciones', function (req, res) {
+=======
+//  ./app/api/api_routes.js
+
+var config = require(process.cwd() + '/config/config.js');
+var path = require(config.modulos + 'path');
+var aux = require(path.normalize(config.raiz + '/app/misc/misc.js'));
+var express = require(config.modulos + 'express');
+var sql = require(path.normalize(config.raiz + "/config/database.js"));
+var mysql = require(config.modulos + 'mysql');
+
+//var wd        = config.raiz;
+//var parser    = require('http-string-parser');
+
+//var api_router	= express.Router();
+//con.query("SELECT count(email) as email from Users where email = ?", email, function(err, result, fields, next){
+
+module.exports = function (api_router) {
+    api_router.get('/api/canciones', function (req, res) {
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
         logCtrl(req, 'Api Canciones request from');
 
         var datos = setParamsAsObj(getParamsFromUrl(req.url));
@@ -22,7 +42,11 @@ module.exports = function(api_router){
         userCheck(qry, res, datos['userid'], queryDb);
     });
 
+<<<<<<< HEAD
     api_router.get('api/discos', function (req, res) {
+=======
+    api_router.get('/api/discos', function (req, res) {
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
         logCtrl(req, 'Api Discos request from');
 
         var datos = setParamsAsObj(getParamsFromUrl(req.url));
@@ -33,6 +57,12 @@ module.exports = function(api_router){
     });
 };
 
+<<<<<<< HEAD
+=======
+
+//module.exports = api_router;
+
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
 //Funciones AUXILIARES
 //Consulta a la base de datos.
 function queryDb(err, qry, callback) {
@@ -54,6 +84,7 @@ function userCheck(qry, res, user, callback) {
         return callback({code: [401], errorRes: ["Falta ID de usuario."], errorLog: ["Error (api_router>>canciones). User = " + user]}, qry, res);
     }
     ;
+<<<<<<< HEAD
     //sql.connect().query(sql.users.by_id_key, user, function (err, result) {
     sql.connect().query(sql.users.by_id_key, user, function(err, result){ 
         if (err) {
@@ -68,6 +99,17 @@ function userCheck(qry, res, user, callback) {
             return callback(null, qry, res);
         }
         else {
+=======
+    sql.connect().query(sql.users.by_id_key, mysql.escape(user), function (err, result) {
+        if (err) {
+            return callback({errorRes: ['Vaya, no conseguimos conectar con la BD'], code: [500], errorLog: ["Error (userCheck): " + err]}, qry, res);
+        }
+        for(var key in result){console.log(result[key].ID_key + " " + user + "\n" +result[key].ID_key + " " + mysql.escape(user));};
+        if (result.length > 0) {
+            console.log("\tRequest by user: " + result[0]['Email']);
+            return callback(null, qry, res);
+        } else {
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
             return callback({errorRes: ['Ususario desconocido'], code: [401], errorLog: ['Error (api_router>canciones). Unknown user: ' + user]}, qry, res);
         }
     });
@@ -78,8 +120,12 @@ function getUserIdFromUrl(req) {
     console.log(req.url);
     var data = setParamsAsObj(getParamsFromUrl(req.url));
     for (var key in data) {
+<<<<<<< HEAD
         if (key == 'userid') {
             userid = mysql.escape(data[key]);
+=======
+        if (key === 'userid') {
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
             return data[key];
         }
     }
@@ -87,17 +133,26 @@ function getUserIdFromUrl(req) {
 }
 ;
 //Devuelve la cadena de parámetros de la url.
+<<<<<<< HEAD
+=======
+//Pueden los param de la url contener un simbolo de interrogación("?")?
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
 function getParamsFromUrl(url) {
 
     var params = '';
     for (var i = 0; i < url.length; i++) {
+<<<<<<< HEAD
         if (url[i] == '?') {
+=======
+        if (url[i] === '?') {
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
             params = url.substring(i + 1);
             break;
         }
     }
     return params;
 }
+<<<<<<< HEAD
 ;//Pueden los param de la url contener un simbolo de interrogación("?")?
 //Dada una cadena de la forma param1=valor1&param2=valor2&paramN=valorN devuelve un object con los parámetros de la cadena.
 function setParamsAsObj(string) {
@@ -106,10 +161,24 @@ function setParamsAsObj(string) {
     for (var i = 0; i < paramArray.length; i++) {
         var value = paramArray[i].split('=');
         obj[value[0]] = mysql.escape(value[1]);
+=======
+;
+//Dada una cadena de la forma param1=valor1&param2=valor2&paramN=valorN devuelve un object con los parámetros de la cadena.
+function setParamsAsObj(string) {
+    var obj = {}; //Declaramos  un obj vacio.
+    paramArray = string.split('&'); // "&" es el separador de la cadena de param url.
+    for (var i = 0; i < paramArray.length; i++) {
+        var value = paramArray[i].split('=');
+        obj[value[0]] = value[1];
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
     }
     return obj;
 }
 ;
+<<<<<<< HEAD
+=======
+//Genera una cadena con la clausala SQL limit para el query.
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
 function buildLimit(datos) {
     var string;
     if (datos['max'])
@@ -118,6 +187,11 @@ function buildLimit(datos) {
         return string;
     return "";
 }
+<<<<<<< HEAD
+=======
+;
+//Muestra en consola un registro con los datos del request.
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
 function logCtrl(req, titulo) {
     console.log(aux.ahora() + ' \x1b[36m' + titulo + " " + req['ip'].split(':')[3] + '\x1b[0m');
     for (var key in req) {
@@ -170,12 +244,20 @@ function buildSqlValues(datos) {
 function orderBy(dato) {
     if (dato) {
         return ' order by ' + dato;
+<<<<<<< HEAD
     }
     else {
+=======
+    } else {
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
         return '';
     }
 }
 ;
+<<<<<<< HEAD
+=======
+//Genera una cadena con los datos obtenidos del request para el query al sql en la que los parámetros se compararn cun un like.
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
 function updateStringLike(valor, string, campo) {
     if (string) {
         string += " and ";
@@ -184,6 +266,10 @@ function updateStringLike(valor, string, campo) {
     return campo + " like " + mysql.escape("%" + valor + "%");
 }
 ;
+<<<<<<< HEAD
+=======
+//Genera una cadena con los datos obtenidos del request para el query al sql en la que los parámetros se compararn cun un =.
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
 function updateStringEqual(valor, string, campo) {
     if (string) {
         string += " and ";
@@ -192,6 +278,10 @@ function updateStringEqual(valor, string, campo) {
     return campo + " = " + mysql.escape(valor);
 }
 ;
+<<<<<<< HEAD
+=======
+//Obtiene los datos del body.
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
 function getBodyData(datos, req) {
     var data = datos;
     for (var key in data) {
@@ -210,6 +300,10 @@ function getBodyData(datos, req) {
     return data;
 }
 ;
+<<<<<<< HEAD
+=======
+//Devuelve un objeto vacio para almacenar los datos del request que es capaz de aceptar nuestra app. Los demas los ingnoramos.
+>>>>>>> 15e42c08854bde5f7c38b44c9de29958febfbb75
 function dataSet() {
     var data = {
         discos: {
