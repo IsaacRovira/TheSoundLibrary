@@ -44,6 +44,10 @@
 }
 
 /*General style*/
+#dataContainer{
+    margin-top: 3em;
+    margin-left: 4em;
+}
 body{
     background-color: black;
 }
@@ -63,36 +67,62 @@ svg:hover{
     font-size: 200%;
 }
 #sideMenu{
-    padding: 0%;
+    padding: 2%;
+    margin: 0%;
+    position:fixed;
+    left: 1em;
+    top: 4em;
 }
 
 /*Manu horizontal estilo*/
 #icono{
     color: white;
     font-weight: 900;
+    position: fixed;    
 }
 
 /*List style*/
+.div-list-img{
+    margin: 0;
+    padding: 1%;
+    border: 0;
+}
+.div-list-text{
+    margin: 0;
+    padding: 1%;
+    border: 0;
+}
+.row-list-item{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
 .ilTagSong{
     color: white;
 }
 .img-list{
-    width: 100%;
-    height: auto;
+    margin: 1%;
+    padding: 0%;
+    width: auto;
+    height: 5em;
 }
 .list-group{
-    padding: 1%;
+    padding: 0%;
     margin: 1%;
 }
 .list-group-item{
-    padding: 0.5%;
+    border: 0;
+    margin: 0;
+    padding: 1%;
+    background: linear-gradient(to right, whitesmoke , transparent);
 }
 .list-group-item:hover{
-    opacity: 0.75;
-    background-color: whitesmoke;
+    opacity: 1;    
+    color: whitesmoke;
 }
 .list-info{
-    margin: 0px;
+    margin: 1px;
 }
 .textalbum{
     font-weight: bold;

@@ -45,8 +45,8 @@ var pText = {
 };
 
 var colClass = {
-    img: 'col-3',
-    txt: 'col-9'
+    img: 'col-2 div-list-img',
+    txt: 'col-8 div-list-text'
 };
 
 
@@ -113,7 +113,7 @@ var genImgNode = function (data) {
 //Crea los elementos DIV de clase row para la inserciÃ³n de los elementos DIV de clase COLUMN con los datos y la imÃ¡gen del album.
 var genRowColNode = function (texto, data) {
     var divRowNode = document.createElement('div');
-    divRowNode.setAttribute('class', 'row');
+    divRowNode.setAttribute('class', 'row row-list-item');
 
     var divColNode = document.createElement('div');
     divColNode.setAttribute('class', colClass.img);
