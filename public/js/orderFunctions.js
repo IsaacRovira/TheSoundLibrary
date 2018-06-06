@@ -1,8 +1,6 @@
 //  ./public/js/orderFunction.js
 
 
+function ordenar() {
 
-
-function ordenar(){
-    
 }

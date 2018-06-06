@@ -10,6 +10,8 @@ module.exports = function (api_router) {
     api_router.get('/api/canciones', function (req, res) {
         logCtrl(req, 'Api Canciones request from');
 
+        res.set({'Access-Control-Allow-Origin': '*','Content-Type': 'application/json'});
+
         var datos   = setParamsAsObj(getParamsFromUrl(req.url));
         var string  =buildSqlValues(datos);
         var qry     =sql.canciones.all + string;
@@ -20,6 +22,8 @@ module.exports = function (api_router) {
     api_router.get('/api/discos', function (req, res) {
         logCtrl(req, 'Api Discos request from');
 
+        res.set({'Access-Control-Allow-Origin': '*','Content-Type': 'application/json'});
+        
         var datos = setParamsAsObj(getParamsFromUrl(req.url));
         var string = buildSqlValues(datos);
         var qry = sql.discos.all + string;

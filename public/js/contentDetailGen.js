@@ -6,70 +6,70 @@
 //
 //******************************************************************************
 
-var classSet =  {
-    ulTag : {
-        class   : 'list-group'
+var classSet = {
+    ulTag: {
+        class: 'list-group'
     },
-    ilTag :     {
-        class   : 'ilTag'
+    ilTag: {
+        class: 'ilTag'
     },
-    ilTagSong : {
-        class   : 'ilTagSong'
+    ilTagSong: {
+        class: 'ilTagSong'
     },
-    songCol :   {
-        class   : 'col-12 col-songList-detail'
+    songCol: {
+        class: 'col-12 col-songList-detail'
     },
-    imgTag :    {
-        class   : 'img_mosaic_detail'
+    imgTag: {
+        class: 'img_mosaic_detail'
     },
-    imgCol :    {
-        class   : 'col-xs-12 col-sm-3 col-md-4 col-img-mosaic-detail'
+    imgCol: {
+        class: 'col-xs-12 col-sm-3 col-md-4 col-img-mosaic-detail'
     },
-    albumDataCol:{
-        class   : 'col-xs-12 col-sm-9 col-md-8 col-albumData-detail'
+    albumDataCol: {
+        class: 'col-xs-12 col-sm-9 col-md-8 col-albumData-detail'
     },
-    ilTagAlbum  :{
-        class   : 'ilTagAlbum'
+    ilTagAlbum: {
+        class: 'ilTagAlbum'
     },
-    h6Tag   :   {
-        class   : 'album-title-detail'
+    h6Tag: {
+        class: 'album-title-detail'
     },
-    mainCol :   {
-        class   :   {
-            details :   'col-12 main-col-detail',
-            mosaic  :   'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic'
+    mainCol: {
+        class: {
+            details: 'col-12 main-col-detail',
+            mosaic: 'col-xs-12 col-sm-6 col-md-4 col-lg-3 main-col-mosaic'
         }
     },
-    mainRow :   {
-        class   : 'row main-row-detail'
+    mainRow: {
+        class: 'row main-row-detail'
     },
-    figcap  :   {
-        class   : 'lead small'
+    figcap: {
+        class: 'lead small'
     }
 };
 
-var imgAt  =   {
-    src :   '',
-    alt :   '',
-    id  :   '',
-    class:{
-        mosaic  :   '',
-        details :   ''
+var imgAt = {
+    src: '',
+    alt: '',
+    id: '',
+    class: {
+        mosaic: '',
+        details: ''
     },
-    path:   commonData.path.get().cover,
-    onclick :   {
-        mosaic  :   '',
-        details :   ''
+    path: commonData.path.get().cover,
+    onclick: {
+        mosaic: '',
+        details: ''
     }
 };
 
 var discoData = {
-    id      :   '',
-    titulo  :   '',
-    soporte :   '',
-    cover   :   '',
-    genero  :   '',
-    artista :   ''
+    id: '',
+    titulo: '',
+    soporte: '',
+    cover: '',
+    genero: '',
+    artista: ''
 };
 
 //Genera div con los detalles de cada disco.
@@ -85,83 +85,86 @@ var discoData = {
  *          <ul>canciones
  */
 //MOSTRAMOS LOS DETALLES DEL DISCO MODIFICAONDO EL DOM.
-function getDiscDetails(datos){    
+function getDiscDetails(datos) {
     var datosDisco = JSON.parse(datos);
-    
+
     updateDiscoData(datosDisco[0]); //Actualizamos las variables con los datos del disco.
-    
+
     //Eliminamos los child del DIV que contiene la info del album
     //antes de generar la nueva estructura.
-    removeChildElements(discoData.id);    
-        
+    removeChildElements(discoData.id);
+
     var divNodeRow = document.createElement('div');
     divNodeRow.setAttribute('class', classSet.mainRow.class);
-    divNodeRow.setAttribute('id','row_'+ discoData.id);
-    
+    divNodeRow.setAttribute('id', 'row_' + discoData.id);
+
     divNodeRow.appendChild(genImgCol(imgAt));
-    divNodeRow.appendChild(genAlbumDataList(datosDisco[0]));    
-    
+    divNodeRow.appendChild(genAlbumDataList(datosDisco[0]));
+
     document.getElementById(discoData.id).setAttribute('class', classSet.mainCol.class.details);
     document.getElementById(discoData.id).appendChild(divNodeRow);
-    
-    //Llamammos a la funciÛn que har· el query de las canciones y
-    //que llamar· luego a la funciÛn q las insertar· en el DOM.
+
+    //Llamammos a la funci√≥n que har√° el query de las canciones y
+    //que llamar√° luego a la funci√≥n q las insertar√° en el DOM.
     //var param =[{'discoId':datosDisco[0]['discoId']}];
     var param = 'discoId=' + discoData.id;
     //alert(param);
     doQuery(param, url[0]['canciones'], addDiscDetailsSongs);
-};
+}
+;
 
 ///INTRODUCIMOS LAS CANCIONES.
-function addDiscDetailsSongs(datos){
+function addDiscDetailsSongs(datos) {
     var datosCanciones = JSON.parse(datos);
     //alert(JSON.stringify(datosCanciones));
-    document.getElementById('row_'+ datosCanciones[0]['discoId']).appendChild(genSongsList(datosCanciones));    
-};
+    document.getElementById('row_' + datosCanciones[0]['discoId']).appendChild(genSongsList(datosCanciones));
+}
+;
 
-var removeDiscDetails = function(datos){
-    datosDisco=JSON.parse(datos);    
-    
+var removeDiscDetails = function (datos) {
+    datosDisco = JSON.parse(datos);
+
     updateDiscoData(datosDisco[0]);     //Actualizamos las variables con los datos del disco.       
     removeChildElements(discoData.id);  //Eliminamos todos los childs del DIV con la id del disco.
-    
+
     var node = genDiscMosaicStruct();   //Generamosun figure node para insertarlo en el div con el id = discoId
-    
+
     document.getElementById(discoData.id).appendChild(node);
-    document.getElementById(discoData.id).setAttribute('class', classSet.mainCol.class.mosaic);    
+    document.getElementById(discoData.id).setAttribute('class', classSet.mainCol.class.mosaic);
 };
 
-function genDiscMosaicStruct(){
-    var text            = document.createTextNode(discoData.titulo);
-    var figcaptionNode  = document.createElement('figcaption');
-    var figureNode      = document.createElement('figure');
-    var imgNode         = document.createElement('img');
-    
-    imgNode.setAttribute('src', imgAt.src);    
-    imgNode.setAttribute('alt', imgAt.alt);    
+function genDiscMosaicStruct() {
+    var text = document.createTextNode(discoData.titulo);
+    var figcaptionNode = document.createElement('figcaption');
+    var figureNode = document.createElement('figure');
+    var imgNode = document.createElement('img');
+
+    imgNode.setAttribute('src', imgAt.src);
+    imgNode.setAttribute('alt', imgAt.alt);
     imgNode.setAttribute('onclick', imgAt.onclick.mosaic);
     imgNode.setAttribute('class', imgAt.class.mosaic);
-    
+
     figcaptionNode.setAttribute('class', classSet.figcap.class);
-    
-    figcaptionNode.appendChild(text);    
+
+    figcaptionNode.appendChild(text);
     figureNode.appendChild(imgNode);
     figureNode.appendChild(figcaptionNode);
-    
-    return figureNode;
-};
 
-//ONCLICK FUNCTION: llamaremos a esta funciÛn para abrir
-//los detalles de los discos en modo mos·ico.
-var openDetails = function(valor){    
+    return figureNode;
+}
+;
+
+//ONCLICK FUNCTION: llamaremos a esta funci√≥n para abrir
+//los detalles de los discos en modo mos√°ico.
+var openDetails = function (valor) {
     //var param =[{'discoId':valor}];
-    var param = 'discoId='+valor;    
+    var param = 'discoId=' + valor;
     doQuery(param, url[0]['discos'], getDiscDetails);
 };
 
-var closeDetails = function(valor){
+var closeDetails = function (valor) {
     ////var param =[{'discoId':valor}];
-    var param = 'discoId='+valor;    
+    var param = 'discoId=' + valor;
     doQuery(param, url[0]['discos'], removeDiscDetails);
 };
 
@@ -171,105 +174,107 @@ var closeDetails = function(valor){
 //
 //******************************************************************************
 //Elimina todos los hijos de un node y devuelve el node vacio.
-function removeChildElements(id){    
+function removeChildElements(id) {
     var nodeChilds = document.getElementById(id).childNodes;
-    while(nodeChilds.length > 0){        
+    while (nodeChilds.length > 0) {
         document.getElementById(id).removeChild(nodeChilds[0]);
     }
-};
+}
+;
 
 //Actualizar datos imgAtt y discoData
-function updateDiscoData(datosDisco){
-    discoData.id        = datosDisco['discoId'];
-    discoData.titulo    = datosDisco['album'];
-    discoData.cover     = datosDisco['img_cover'];
-    discoData.soporte   = datosDisco['tipo'];
-    discoData.artista   = datosDisco['artista'];
-    
-    imgAt.src               = imgAt.path + datosDisco['img_cover'];
-    imgAt.alt               = datosDisco['album'];
-    imgAt.onclick.details   = 'closeDetails('+discoData.id+')';
-    imgAt.onclick.mosaic    = 'openDetails('+discoData.id+')';
-    imgAt.class.details     = 'img-thumbnail rounded mx-auto d-block img_mosaic_detail';
-    imgAt.class.mosaic      = 'img-thumbnail rounded mx-auto d-block img-mosaic';
-};
+function updateDiscoData(datosDisco) {
+    discoData.id = datosDisco['discoId'];
+    discoData.titulo = datosDisco['album'];
+    discoData.cover = datosDisco['img_cover'];
+    discoData.soporte = datosDisco['tipo'];
+    discoData.artista = datosDisco['artista'];
+
+    imgAt.src = imgAt.path + datosDisco['img_cover'];
+    imgAt.alt = datosDisco['album'];
+    imgAt.onclick.details = 'closeDetails(' + discoData.id + ')';
+    imgAt.onclick.mosaic = 'openDetails(' + discoData.id + ')';
+    imgAt.class.details = 'img-thumbnail rounded mx-auto d-block img_mosaic_detail';
+    imgAt.class.mosaic = 'img-thumbnail rounded mx-auto d-block img-mosaic';
+}
+;
 
 //GENERA COLUMNA CON IMAGEN DEL ALBUM
-var genImgCol = function (imgAttrb){
+var genImgCol = function (imgAttrb) {
     var colNode = document.createElement('div');
     colNode.setAttribute('class', classSet.imgCol.class);
-    
+
     var imgNode = document.createElement('img');
     imgNode.setAttribute('src', imgAttrb.src);
     imgNode.setAttribute('alt', imgAttrb.alt);
-    imgNode.setAttribute('onclick', imgAttrb.onclick.details);  //Funcion que deshar· la vista detalle..
+    imgNode.setAttribute('onclick', imgAttrb.onclick.details);  //Funcion que deshar√° la vista detalle..
     imgNode.setAttribute('class', classSet.imgTag.class);
-        
+
     colNode.appendChild(imgNode);
     return colNode;
 };
 
 //GENERA COLUMNA CON LISTADO DE CANCIONES. ATENCION: OBTENER LISTA ORDENADA POR NUM PISTA.
-var genSongsList = function(canciones){
+var genSongsList = function (canciones) {
     var colNode = document.createElement('div');
     colNode.setAttribute('class', classSet.songCol.class);
-    
+
     //Titulo del album
     var h5Node = document.createElement('h5');
     h5Node.setAttribute('class', classSet.h6Tag.class);
     h5Node.appendChild(document.createTextNode(discoData.titulo));
     colNode.appendChild(h5Node);
-    
+
     var ulNode = document.createElement('ul');
     ulNode.setAttribute('class', classSet.ulTag.class);
-    
-    for(var i = 0; i < canciones.length; i++){
-        var text = document.createTextNode(canciones[i]['pista'] +". "+ canciones[i]['titulo']); //No tengo datos de duraciÛn.
+
+    for (var i = 0; i < canciones.length; i++) {
+        var text = document.createTextNode(canciones[i]['pista'] + ". " + canciones[i]['titulo']); //No tengo datos de duraci√≥n.
         var ilNode = document.createElement('il');
         ilNode.setAttribute('class', classSet.ilTagSong.class);
         ilNode.setAttribute('id', canciones[i]['cancionId']);
         ilNode.appendChild(text);
         ulNode.appendChild(ilNode);
     }
-    
+
     colNode.appendChild(ulNode);
     return colNode;
 };
 
 //GENERA COLUMNA CON LOS DATOS DEL ALBUM
-var genAlbumDataList = function(albumData){
+var genAlbumDataList = function (albumData) {
     var colNode = document.createElement('div');
-    colNode.setAttribute('class',classSet.albumDataCol.class);
-    
+    colNode.setAttribute('class', classSet.albumDataCol.class);
+
     var ulNode = document.createElement('ul');
-    ulNode.setAttribute('class', classSet.ulTag.class);    
-    
-        
+    ulNode.setAttribute('class', classSet.ulTag.class);
+
+
     var text = document.createTextNode(albumData['album']);
     var ilNode = document.createElement('il');
     ilNode.setAttribute('class', classSet.ilTagAlbum.class);
-        
-    ulNode.appendChild(genListItem('Artista',albumData['artista']));
-    ulNode.appendChild(genListItem('Genero',albumData['genero']));
-    ulNode.appendChild(genListItem('Soporte',albumData['tipo']));
-    
+
+    ulNode.appendChild(genListItem('Artista', albumData['artista']));
+    ulNode.appendChild(genListItem('Genero', albumData['genero']));
+    ulNode.appendChild(genListItem('Soporte', albumData['tipo']));
+
     colNode.appendChild(ulNode);
-    
+
     return colNode;
 };
 
 //GENERA UN ELEMENTO IL PARA LISTA DATOS ALBUM
-var genListItem = function(nombre,valor){
-    var text = document.createTextNode(nombre +": " + valor);
+var genListItem = function (nombre, valor) {
+    var text = document.createTextNode(nombre + ": " + valor);
     var ilNode = document.createElement('il');
-    ilNode.setAttribute('class', classSet.ilTagAlbum.class);    
+    ilNode.setAttribute('class', classSet.ilTagAlbum.class);
     ilNode.appendChild(text);
-    
+
     return ilNode;
 };
 
 
 //GENERA COLUMNA CON LOS DATOS DEL ETIQUETADO DEL ALBUM
-var genAlbumLabelDataList = function(AlbumLabel){
-    
+var genAlbumLabelDataList = function (AlbumLabel) {
+
 };

@@ -6,65 +6,94 @@
     opacity: 0.85;
 }
 
-figcaption{
+/*Mosaic style*/
+
+#mainRow{
+    padding: 0.001%;
+    margin: 0.001%;
+}
+.infoText{
+    display: inline;
+    color: black;
+    max-width: 100%;
     text-align: center;
-    margin: 0% 5% 0% 5%;
-}
-
-.img-mosaic{    
-    max-width: 225px;
-}
-.img-mosaic:hover{  
-    position: relative;
-    margin: 10px 10px 10px 10px;
-    left: 0px;
-    top: 0px;    
-    max-width: 205px;
-    opacity: 0.85;
-}
-
-.img_mosaic_detail{
-    width: available;
-}
-
-.col-albumData-detail{
-    align-content: center;
-    color: white;
-    padding: 5px;
-}
-
-.col-songList-detail{
-    color: white;
-    margin-top: 5px;
-}
-
-.main-col-detail{
-    padding: 10px;
-    margin: 15px 0px 15px 0px;
-    border: solid;
-    border-color: white;
-}
-.main-col-mosaic{
-	/*margin: 0.1vw;*/
-	background-color: #e6f2ff;
     padding: 1%;
-	border: 1vw;
-    border: solid;
-    border-color: black;
-}
-.main-col-mosaic:hover{
-	background-color: white;
-	opacity: 0.75;
+    font-size: 1.0vw;
 }
 
+.mainDivMosaic{
+    padding:0%;
+    margin: 0%;
+}
+.dataDivMosaic{                
+    padding:0%;
+    margin: 0%;
+    color: white;
+}
+.imgDivMosaic{                
+    padding:2%;
+    margin: 0%;
+}
+.imgTagMosaic{                
+    padding:0%;
+    margin: 0%;
+    border-radius: 10%;
+}
+#dataContainer{
+    padding: 1%;
+}
+
+/*General style*/
+body{
+    background-color: black;
+}
+.mainDataRowContainer{
+    margin: 1% 0.5% 1% 0.5%;
+    padding: 1% 0% 1% 0%;
+    align-self: center;
+}
+
+/*Menú vertical*/
+svg{
+    color: white;
+    font-size: 150%;
+}
+svg:hover{
+    opacity: 0.65;
+    font-size: 200%;
+}
+#sideMenu{
+    padding: 0%;
+}
+
+/*Manu horizontal estilo*/
+#icono{
+    color: white;
+    font-weight: 900;
+}
+
+/*List style*/
 .ilTagSong{
     color: white;
 }
-.infoText{
-	display: inline;
-	color: black;
-	max-width: 100%;
-	text-align: center;
-	padding: 1%;
-	font-size: 1.0vw;
+.img-list{
+    width: 100%;
+    height: auto;
+}
+.list-group{
+    padding: 1%;
+    margin: 1%;
+}
+.list-group-item{
+    padding: 0.5%;
+}
+.list-group-item:hover{
+    opacity: 0.75;
+    background-color: whitesmoke;
+}
+.list-info{
+    margin: 0px;
+}
+.textalbum{
+    font-weight: bold;
 }
