@@ -8,6 +8,9 @@
         <link type="text/css" href="./fontawesome/css/fontawesome-all.css" rel="stylesheet">
         <script src="./fontawesome/js/fontawesome-all.js"></script>
         
+        <!--JQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        
         <!--Bootstrap-->
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">-->
         <link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
@@ -15,58 +18,85 @@
         
         <!--CSS-->
         <link rel="stylesheet" type="text/css" href="./css/main.css">
-
-        <!--JQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+        
         <!--JavaScript-->
         <script src= "./js/commonDataStruct.js" type="text/javascript"></script>
+        <script src= "./js/queryAll.js" type="text/javascript"></script>
         <script src= "./js/contentMosaicGen.js" type="text/javascript"></script>
         <script src= "./js/contentListGen.js" type="text/javascript"></script>
 	<script src= "./js/contentDetailGen.js" type="text/javascript"></script>
-        <script src= "./js/changeView.js" type="text/javascript"></script>
-	<script src= "./js/queryAll.js" type="text/javascript"></script>
+        <script src= "./js/changeView.js" type="text/javascript"></script>	
         <script src= "./js/albumDetails.js" type="text/javascript"></script>
+        <script src= "./js/navFunctions.js" type="text/javascript"></script>
 	<!--<script type="text/javascript">getUserId();</script>-->
-
         <title>TheSoundLibrary</title>
 
     </head>
 
     <body>
-        <div class="container-fluid" id="nav-bar">
-            <div class="row">
-                <div class="col-12 titleBar">
-                    <a href="/">
-                        <h1 id="icono">TSL</h1></div>
-                    </a>                    
+        <div class="header" id="head">
+            <div class="row title-row">
+                
+                <div class="title-text">                    
+                    <h1 id="title"><i id="menu-btn" class="fas fa-bars" onclick="openNav()"></i>The Sound Library</h1>
+                </div>                
             </div>
         </div>
+        <div class="search-form" id="search-form">
+            <a href="javascript:void(0)" class="closebtn" onclick="openSearch()">&times;</a>
+            <br><br>
+            <form class="form-list" id="formSearchAlbum">
+                <fieldset><legend>Discos</legend>
+                    <ul class="form-list list-group">
+                        <li class="list-group-item-text"><input type="text" name="album" value="Album"></li>            
+                        <li class="list-group-item-text"><input type="text" name="artista" value="Artista"></li>
+                        <li class="list-group-item-text"><input type="text" name="year" value="Año"></li>
+                        <li class="list-group-item-text"><input type="text" name="genero" value="Genero"></li>                    
+                    </ul>
+                </fieldset>
+                <fieldset><legend>Canciones</legend>
+                    <ul class="form-list list-group">
+                        <li class="list-group-item-text"><input type="text" name="cancion" value="Canión"></li>
+                        <li class="list-group-item-text"><input type="text" name="artista" value="Artista"></li>
+                    </ul>
+                </fieldset>
+                <input type="button" onclick="searchAlbum()" value="Buscar">
+            </form>
+        </div>
+        <div class="orderBy-form" id="orderBy-form">
+            <a href="javascript:void(0)" class="closebtn" onclick="openOrderBy()">&times;</a>
+            <br><br>
+            <form class="form-check-input" id="formOrderByAlbum">
+                <ul class="form-list list-group">
+                    <li class="list-group-item-text"><input type="radio" name="filter" value="album">Título.</li>
+                    <li class="list-group-item-text"><input type="radio" name="filter" value="artista">Artista.</li>
+                    <li class="list-group-item-text"><input type="radio" name="filter" value="Year">Año de edición.</li>
+                    <li class="list-group-item-text"><input type="radio" name="filter" value="Genero">Genero.</li>
+                    <li class="list-group-item-text"><input type="radio" name="filter" value="Soporte">Soporte.</li>
+                </ul>
+                    <input type="button" onclick="orderBy()" value="Ordenar">
+            </form>
+        </div>
+        <div class="sidenav" id="sideMenu">
+            <ul class="list-group">
+                <li class="list-group-item-text"><i id="modo" onclick="changeMode(dataAlbum)" class="far fa-newspaper"></i></li>
+                <li class="list-group-item-text"><i class="fas fa-redo" onclick="refreshData()"></i></li>
+                <li class="list-group-item-text"><i class="fas fa-search" onclick="openSearch()"></i></li>
+                <li class="list-group-item-text"><i class="fas fa-filter" onclick="openOrderBy()"></i></li>
+                <li class="list-group-item-text"><i class="fas fa-plus" onclick="working()"></i></li>
+                <li class="list-group-item-text"><i class="fas fa-edit" onclick="working()"></i></li>
+                <li class="list-group-item-text"><a href="/logout"><i class="fas fa-sign-out-alt"></i></a></li>
+            </ul>
+        </div>
         <!--<div class="container" id="mainContainer">-->
-            <div class="row mainDataRowContainer">
-                <div class="col-1 hidden" id="sideMenu">
-                    <div id="modoDiv">
-                        <i id="modo" onclick="changeMode(dataAlbum)" class="far fa-newspaper"></i>
-                    </div>
-                    <div><i class="fas fa-redo"></i></div>
-                    <div><i class="fas fa-bars"></i></div>
-                    <div><i class="fas fa-search"></i></div>
-                    <div><i class="fas fa-filter"></i></div>
-                    <div><i class="fas fa-plus"></i></div>
-                    <div><i class="fas fa-edit"></i></div>
-                    <div>
-                        <a href="/logout">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
-                    </div>                    
-                </div>
-                <div class="col-11" id="dataContainer">
-                    <div class="row" id="mainRow"></div>
-                </div>
+        <div class="row mainDataRowContainer">                
+            <div class="container" id="dataContainer">
+                <div class="row" id="mainRow"></div>
             </div>
+        </div>
         <!--</div>-->
         <script type="text/javascript">
-            doQueryAll(commonData.url.get()['std']['general']['discos'], load);
+            load();
         </script>
     </body>
 </html>

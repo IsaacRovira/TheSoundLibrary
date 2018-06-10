@@ -65,7 +65,7 @@ var sql = {
                 by_artistas: "select * from canciones where Artistas contains ",
                 by_discoID: "select * from canciones where DiscoID = ",
                 by_titulo: "select * from canciones where Titulo contains ",
-                by_Any: "SELECT cancionId, discoId, artistas, duracion, pista, titulo FROM canciones where "
+                by_Any: "SELECT cancionId, discoId, artistas, duracion, pista, titulo FROM canciones "
             },
     connect     :
                 function(){

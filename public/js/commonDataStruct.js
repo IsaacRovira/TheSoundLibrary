@@ -32,6 +32,12 @@ var urlSettings = {
         }
     }
 };
+var esMosaico = true;
+var idActivo = '';
+var activeId; //Id de album con detalles activos.
+var isActive = false; //
+var activeDiv;
+
 
 //***************************************************************
 function pathClass(callback) {
@@ -113,7 +119,7 @@ function datosCancionesClass(callback) {
         },
         set: function (dato) {
             dataSong = JSON.parse(dato);
-            callback(dataSong);
+            callback(JSON.parse(dato));
         }
     };
 }
@@ -125,7 +131,7 @@ function datosDiscosClass(callback) {
         },
         set: function (dato) {
             dataAlbum = JSON.parse(dato);
-            callback(dataAlbum);
+            callback(JSON.parse(dato));
         }
     };
 }
@@ -142,33 +148,109 @@ function urlClass(callback) {
     };
 }
 ;
+function esMosaicoClass(callback){
+    return{
+        get: function (){
+            return esMosaico;
+        },
+        set: function(newData){
+            esMosaico = newData;
+            callback(newData);
+        }
+    };
+}
+;
+function idActivoClass(callback){
+    return{
+        get: function(){
+            return idActivo;
+        },
+        set: function(newData){
+            idActivo = newData;
+            callback(newData);
+        }
+    };    
+}
+;
+function activeIdClass(callback){
+    return{
+        get: function(){
+            return activeId;            
+        },
+        set: function(newData){
+            activeId=newData;
+            callback(newData);
+        }
+    };
+}
+;
+function isActiveClass(callback){
+    return{
+        get: function(){
+            return isActive;
+        },
+        set: function(newData){
+            isActive = newData;
+            callback(newData);
+        }
+    };
+}
+;
+function activeDivClass(callback){
+    return{
+        get: function(){
+            return activeDiv;
+        },
+        set: function(newData){
+            activeDiv = newData;
+            callback(newData);
+        }
+    };
+}
+;
 
+//**************************************************************
 var commonData = {
-    path: pathClass(function () {
+    path:               pathClass(function () {
         return null;
     }),
-    server: serverClass(function () {
+    server:             serverClass(function () {
         return null;
     }),
-    userId: userIdClass(function () {
+    userId:             userIdClass(function () {
         return null;
     }),
-    apiPort: apiPortClass(function () {
+    apiPort:            apiPortClass(function () {
         return null;
     }),
-    songsUpdateStatus: songsUpdateStatusClass(function () {
+    songsUpdateStatus:  songsUpdateStatusClass(function () {
         return null;
     }),
     albumsUpdateStatus: albumsUpdateStatusClass(function () {
         return null;
     }),
-    datosCanciones: datosCancionesClass(function (datos) {
+    datosCanciones:     datosCancionesClass(function (datos) {
         updateDataSongs(datos);
     }),
-    datosDiscos: datosDiscosClass(function (datos) {
+    datosDiscos:        datosDiscosClass(function (datos) {        
         updateDataAlbums(datos);
     }),
-    url: urlClass(function () {
+    url:                urlClass(function () {
+        return null;
+    }),
+    esMosaico:          esMosaicoClass(function(){
+        return null;
+    }),
+    idActivo:           idActivoClass(function(){
+        return null;
+    }),
+    activeId:           activeIdClass(function(){
+        return null;
+    }),
+    isActive:           isActiveClass(function(){
+        return null;
+    }),
+    activeDiv:          activeDivClass(function(){
         return null;
     })
 };
@@ -176,12 +258,16 @@ var commonData = {
 //Funciones que actualizan las variables con los datos.
 function updateDataSongs(newData) {
     commonData.songsUpdateStatus.set(true);
-
 }
 ;
-function updateDataAlbums(newData) {
-
+function updateDataAlbums(newData) {    
     commonData.albumsUpdateStatus.set(true);
+    removeElements();
+    if(esMosaico){
+        genImageMosaico(newData);
+    }else{
+        genImageList(newData);        
+    }
 }
 ;
 function getServer() {
@@ -197,9 +283,8 @@ function getUserId() {
     return userid;
 }
 ;
-
-function load(data) {
-    changeMode(JSON.parse(data));
+function load() {
+    //changeMode(JSON.parse(data));
     doQueryAll(urlSettings.std.general.canciones, commonData.datosCanciones.set);
     doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);
 }

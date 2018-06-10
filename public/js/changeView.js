@@ -1,7 +1,7 @@
 //  ./public/js/changeView.js
 
-var esMosaico = true;     //Define el modo de visión: mosaico o lista.
-var idActivo = '';
+//var esMosaico = true;     //Define el modo de visión: mosaico o lista.
+//var idActivo = '';
 
 
 //Elimina todos los elementos del mainRow
@@ -19,11 +19,11 @@ function changeMode(data) {
     isActive = false;
 
     removeElements();
-    if (esMosaico) {
+    if (commonData.esMosaico.get()) {
         //f302
         //<i class="far fa-newspaper"></i>
         document.getElementById('modo').setAttribute('class',"far fa-newspaper" );
-        esMosaico = false;
+        commonData.esMosaico.set(false);
         //getAll(genImageList);
         genImageList(data);
 
@@ -32,7 +32,7 @@ function changeMode(data) {
         //f022
         //<i class="far fa-list-alt"></i>
         document.getElementById('modo').setAttribute('class',"far fa-list-alt");
-        esMosaico = true;
+        commonData.esMosaico.set(true);
         //getAll(genImageMosaico);
         genImageMosaico(data);
     }
