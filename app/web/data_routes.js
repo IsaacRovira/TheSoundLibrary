@@ -75,14 +75,14 @@ function queryDb(err, qry, callback) {
     if (err) {
         return error(err, callback);
     }
-    console.log(qry);
+    //console.log(qry);
     sql.connect().query(qry, function (err, result) {
         if (err) {
             return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (data_router): " + err]}, callback);
         }
         callback.setHeader('Content-Type', 'application/json');
         callback.status(201);
-        console.log(JSON.stringify(result));
+        //console.log(JSON.stringify(result));
         callback.send(result);
     });
 }

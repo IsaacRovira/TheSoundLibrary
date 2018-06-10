@@ -35,11 +35,13 @@
 
     <body>
         <div class="header" id="head">
-            <div class="row title-row">
-                
-                <div class="title-text">                    
-                    <h1 id="title"><i id="menu-btn" class="fas fa-bars" onclick="openNav()"></i>The Sound Library</h1>
-                </div>                
+            <div class="row title-row">                
+                <div class="title-text" id="titleFull">
+                    <h1 class="title"><i id="menu-btn" class="fas fa-bars" onclick="openNav()"></i>The Sound Library</h1>                    
+                </div>
+                <div class="title-text" id="titleSmall">
+                    <h1 class="title"><i id="menu-btn" class="fas fa-bars" onclick="openNav()"></i>TSL</h1>
+                </div>
             </div>
         </div>
         <div class="search-form" id="search-form">
@@ -84,7 +86,7 @@
             </form>
         </div>
         <div class="sidenav" id="sideMenu">
-            <ul class="list-group">
+            <ul class="list-group" id="list-group-sidenav">
                 <li class="list-group-item-text"><i id="modo" onclick="changeMode(dataAlbum)" class="far fa-newspaper"></i></li>
                 <li class="list-group-item-text"><i class="fas fa-redo" onclick="refreshData()"></i></li>
                 <li class="list-group-item-text"><i class="fas fa-search" onclick="openSearch()"></i></li>

@@ -11,7 +11,7 @@ function openNav() {
         closeSubMenus();
         document.getElementById("sideMenu").style.height = "0";        
     }else{
-        document.getElementById("sideMenu").style.height = "225px";
+        document.getElementById("sideMenu").style.height = "275px";
     }                
 }
 ;
@@ -70,7 +70,7 @@ function openOrderBy(){
     var id = "orderBy-form";
     width = document.getElementById(id).offsetWidth;
     if(width > 0){
-        document.getElementById(id).style.width = "0";        
+        document.getElementById(id).style.width = "0";
     }else{
         closeSubMenus();
         document.getElementById(id).style.width = "150px";
@@ -84,6 +84,7 @@ function orderBy(){
     //alert(valor);
     //alert(JSON.stringify(commonData.dataToSearch.get()));
     doQuerySearch(commonData.url.get()['std']['general']['discos'],commonData.dataToSearch.get(), 0, valor, commonData.datosDiscos.set);
+    document.getElementById("orderBy-form").style.width = "0";
 }
 ;
 

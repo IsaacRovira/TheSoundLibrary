@@ -41,13 +41,14 @@ function queryType(string){
         return 'by_Any';
     }
     return 'all';
-};
+}
+;
 //Consulta a la base de datos.
 function queryDb(err, qry, callback) {
     if (err) {
         return error(err, callback);
     }
-    console.log("\n"+qry+"\n");
+    //console.log("\n"+qry+"\n");
     sql.connect().query(qry, function (err, result) {
         if (err) {
             return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (api_router>>discos): " + err]}, callback);
@@ -134,10 +135,12 @@ function logCtrl(req, titulo) {
         var text;
         switch (key) {
             case 'body':
+                /*
                 for (var n in req[key]) {
                     console.log("\n" + key + ": " + n + ": " + req[key][n]);
                 }
                 ;
+                */
                 break;
             case 'sessionID':
                 console.log("\n" + key + ": " + req[key] + "\n");
