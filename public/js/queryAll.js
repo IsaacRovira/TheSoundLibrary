@@ -36,7 +36,7 @@ function doQueryAll(destino, callback) {
     xhttp.send();
 }
 ;
-//Envía un post los parámetros insertados en "conditionOBJ" y el valor limite.
+//Envía un post los parámetros insertados en "conditionOBJ", el valor limite y el orderby.
 //Para el filtro y la búsqueda.
 function doQuerySearch(destino, conditionsObj, limitINT, callback) {
     var xhttp = new XMLHttpRequest();
@@ -64,6 +64,19 @@ function doQuerySearch(destino, conditionsObj, callback) {
     xhttp.send(buildSearchString(conditionsObj));
 }
 ;
+function doQuerySearch(destino, conditionsObj, limitINT, orderby, callback) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 201) {
+            callback(this.responseText);
+        }
+    };
+
+    xhttp.open("POST", destino, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(buildSearchString(conditionsObj, limitINT, orderby));
+}
+;
 function doQuerySongsByAlbumId(destino, albumId, callback) {    
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {        
@@ -77,6 +90,20 @@ function doQuerySongsByAlbumId(destino, albumId, callback) {
     xhttp.send('discoId=' + albumId);
 }
 ;
+//Serializa el objeto dataObject de tipo clave=valor y añade el valor maxInt al final.
+function buildSearchString(dataObject, maxInt, ordby){
+    var string='';    
+    var max = maxInt || 0;
+    var ord = ordby || '';
+    
+    for(var key in dataObject){
+        if(dataObject[key]) string+= key + "=" + dataObject[key] + "&";
+    }
+        
+    return string+="limit=" + max + "&orderby=" + ord;
+}
+;
+//To test. No usada.
 var getAll = function (callback) {
     var url = "http://127.0.0.1:3030/api/discos";
     var xhttp = new XMLHttpRequest();
@@ -91,13 +118,24 @@ var getAll = function (callback) {
     xhttp.send();
 }
 ;
-//Serializa el objeto dataObject de tipo clave=valor y añade el valor maxInt al final.
-function buildSearchString(dataObject, maxInt){
-    var string='';    
-    var max = maxInt || 0;
-    for(var key in dataObject){
-        if(dataObject[key]) string+= key + "=" + dataObject[key] + "&";
+//No lo voy a usar. OrderBy como un objeto q admite varios criterios de ordenación.
+function getOrderByString(orderObjct){
+    var string = '';
+    for(var key in orderObjct){
+        switch(orderObjct[key]){
+            case 0:
+                if(string > 0) string += ", ";
+                string += key + " asc";
+                break;
+            case 1:
+                if(string > 0) string += ", ";
+                string += key + " desc";
+                break;
+            default:
+                if(string > 0) string += ", ";
+                string += key;
+        }
     }    
-    return string+="limit=" + max;
+    return string;
 }
 ;

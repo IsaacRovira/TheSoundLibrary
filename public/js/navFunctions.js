@@ -11,18 +11,19 @@ function openNav() {
         closeSubMenus();
         document.getElementById("sideMenu").style.height = "0";        
     }else{
-        document.getElementById("sideMenu").style.height = "250px";
+        document.getElementById("sideMenu").style.height = "225px";
     }                
 }
 ;
-/*Refrescar contenido
- * Volver a consultar la base de datos y acutlaizar el contenido mostrado según el modo seleccionado, lista o mosaico
- */
+//Refrescar contenido
+ /* Volver a consultar la base de datos y acutlaizar el contenido mostrado según el modo seleccionado, lista o mosaico*/
 function refreshData(){
     doQueryAll(commonData.url.get()['std']['general']['discos'], commonData.datosDiscos.set);
+    commonData.dataToSearch.set({});
+    commonData.orderByField.set('discoId');
 }
 ;
-/*Buscar*/
+//Buscar
 function openSearch(){
     var id = "search-form";
     width = document.getElementById(id).offsetWidth;
@@ -50,20 +51,21 @@ function searchAlbum(){
                 break;
             default:
                 if(elements[key].value) dataToSearch[elements[key].name] = elements[key].value;
-        }        
+        }
     }
+    commonData.dataToSearch.set(dataToSearch);
     //alert(JSON.stringify(dataToSearch));
     
-    doQuerySearch(commonData.url.get()['std']['general']['discos'], dataToSearch, commonData.datosDiscos.set);
+    doQuerySearch(commonData.url.get()['std']['general']['discos'], dataToSearch, 0, commonData.orderByField.get(), commonData.datosDiscos.set);
     openSearch();
 }
 ;
-//Busca discos q contengan canciones q conincidan con los criterios.
+//Busca canciones q conincidan con los criterios. (Secundario)
 function searchSong(){
     
 }
 ;
-/*Ordenar*/
+//Ordenar
 function openOrderBy(){
     var id = "orderBy-form";
     width = document.getElementById(id).offsetWidth;
@@ -71,12 +73,18 @@ function openOrderBy(){
         document.getElementById(id).style.width = "0";        
     }else{
         closeSubMenus();
-        document.getElementById(id).style.width = "175px";
+        document.getElementById(id).style.width = "150px";
         openSubMenus[id] = true;
     }
 }
 ;
-function orderBy(){}
+function orderBy(){    
+    var valor = document.getElementById('select-orderBy').value;    
+    commonData.orderByField.set(valor);
+    //alert(valor);
+    //alert(JSON.stringify(commonData.dataToSearch.get()));
+    doQuerySearch(commonData.url.get()['std']['general']['discos'],commonData.dataToSearch.get(), 0, valor, commonData.datosDiscos.set);
+}
 ;
 
 /*Cerrar menús*/

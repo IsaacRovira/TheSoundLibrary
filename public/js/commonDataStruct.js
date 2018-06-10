@@ -37,7 +37,8 @@ var idActivo = '';
 var activeId; //Id de album con detalles activos.
 var isActive = false; //
 var activeDiv;
-
+var orderByField = "discoid";
+var dataToSearch={};
 
 //***************************************************************
 function pathClass(callback) {
@@ -208,7 +209,30 @@ function activeDivClass(callback){
     };
 }
 ;
-
+function orderByFieldClass(callback){
+    return{
+        get: function(){
+            return orderByField;
+        },
+        set: function(newData){
+            orderByField = newData;
+            callback(newData);
+        }
+    };
+}
+;
+function dataToSearchClass(callback){
+    return{
+        get:    function(){
+            return dataToSearch;
+        },
+        set:    function(newData){
+            dataToSearch=newData;
+            callback(newData);
+        }
+    };
+}
+;
 //**************************************************************
 var commonData = {
     path:               pathClass(function () {
@@ -251,6 +275,12 @@ var commonData = {
         return null;
     }),
     activeDiv:          activeDivClass(function(){
+        return null;
+    }),
+    orderByField:       orderByFieldClass(function(){
+        return null;
+    }),
+    dataToSearch:       dataToSearchClass(function(){
         return null;
     })
 };

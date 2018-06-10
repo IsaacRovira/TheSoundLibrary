@@ -46,6 +46,9 @@ body{
 }
 
 /*Mosaic style*/
+#mainRow{
+    margin-top: 10px;
+}
 .infoText{
     display: inline;
     color: black;
@@ -75,18 +78,19 @@ body{
 /*OrderBy Form*/
 .orderBy-form{
     background-color: green;
-    border-radius: 2em 2em 2em 2em;
-    height: 500px;
+    border-radius: 0em 2em 0em 2em;
+    margin:4px;
+    height: 23px;
     width: 0;
     position: fixed;
     z-index: 1;
-    top: 75px; /*ajustar posición mas altura */
-    left: 85px;    
-    overflow-x: hidden; /*scroll horizontal*/
+    top: 125px; /*ajustar posición mas altura */
+    left: 55px;    
+    overflow: hidden; /*scroll horizontal*/
     padding-top: auto; /*ajustar posición vertical*/
     transition: 0.5s;
     font-size: 0.75em;
-    text-align: center;
+    text-align: center;    
 }
 .orderBy-form .closebtn {
     color:black;
@@ -104,15 +108,16 @@ body{
 }
 /*Search Form*/
 .search-form{
-    background-color: green;
+    background-color: transparent;
     border-radius: 2em 2em 2em 2em;
-    height: 500px;
+    padding-top: 15px;
+    height: 405px;
     width: 0;
     position: fixed;
     z-index: 1;
-    top: 75px; /*ajustar posición mas altura */
-    left: 85px;    
-    overflow-x: hidden; /*scroll horizontal*/
+    top: 85px; /*ajustar posición mas altura */
+    left: 65px;    
+    overflow: hidden; /*scroll horizontal*/
     padding-top: auto; /*ajustar posición vertical*/
     transition: 0.5s;    
 }
@@ -143,7 +148,7 @@ legend{
     background-color: green;
     border-radius: 0em 0em 2em 0em;
     height: 0;
-    width: 75px;
+    width: 55px;
     position: fixed;
     z-index: 1;
     top: 55px; /*ajustar posición mas altura */
