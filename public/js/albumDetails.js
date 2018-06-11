@@ -1,10 +1,15 @@
 //albumDetails.js
 
-var activeId; //Id de album con detalles activos.
-var activeDiv; //Almacena el div que muestra los detalles.
+
 var id; //Id del album actual.
-var isActive = false;
-var isUpdate = false;
+
+//Utilizados por funciones en otros modulos.
+//var activeDiv; //Almacena el div que muestra los detalles.
+//var activeId; //Id de album con detalles activos.
+//var isActive = false; //Existe algún elemento mostrando los detalles.
+//var isUpdate = false;
+
+
 var songDetails;
 var albumDetails;
 
@@ -170,7 +175,8 @@ var detailNodeStruct = function (tag, id, clase, funciones, childs) {
  * @param {type} id
  * @returns {Element|genDivStruct.nodeDiv}
  */
-function generarDivDetalles(id) {
+function generarDivDetalles(id,songs) {
+    //alert(JSON.stringify(songs));
     var nodeChildList = [];
     for (var sets in nodeSets) {
         switch (sets) {
@@ -178,10 +184,10 @@ function generarDivDetalles(id) {
                 nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, sets + id, nodeSets[sets].class, funciones(id)[sets], {child0: document.getElementById('img' + id)}));
                 break;
             case 'albumDiv':
-                nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, sets + id, nodeSets[sets].class, funciones(id)[sets], genAlbumDetailsList(dataAlbum, id)));
+                nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, sets + id, nodeSets[sets].class, funciones(id)[sets], genAlbumDetailsList(commonData.datosDiscos.get(), id)));
                 break;
             case 'songsDiv':
-                nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, sets + id, nodeSets[sets].class, funciones(id)[sets], {child0: genSongList(dataSong, id)}));
+                nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, sets + id, nodeSets[sets].class, funciones(id)[sets], {child0: genSongList(songs, id)}));
                 break;
             default:
         }
@@ -230,25 +236,27 @@ function genDivStruct(detailNodeStruct) {
  * @returns {undefined}
  */
 function mosaicDetails(id) {
-    if (isActive) {
-        isActive = deactivateDivMosaic(id);
+    if (commonData.isActive.get()) {
+        commonData.isActive.set(deactivateDivMosaic(id));
     }
     else {
-        setActiveNode(id);
-        isActive = true;
+        doQuerySongsByAlbumId(commonData.url.get()['std']['general']['canciones'], id, setActiveNode);
     }
-    if (isActive) {
-        var pos = $('#imgDiv' + id).position().top;
-        $(window).scrollTop(pos - 5);
-    }
-    else {
+    //Desplazamos el cursor al div que desactiva los detalles.
+    if (!commonData.isActive.get()) {
         var pos = $(id).position().top;
         $(window).scrollTop(pos);
     }
 }
 ;
+//Se desplaza a la posición del div con los detalles.
+function positionChange(id){
+    var pos = $('#imgDiv' + id).position().top;
+    $(window).scrollTop(pos);
+}
+;
 function detailsOnOff(id) {
-    if (commonData.songsUpdateStatus.get() & commonData.albumsUpdateStatus.get()) {
+    if (commonData.songsUpdateStatus.get() && commonData.albumsUpdateStatus.get()) {
         if (esMosaico) {
             mosaicDetails(id);
         }
@@ -267,19 +275,23 @@ function detailsOnOff(id) {
  * @returns {Boolean}
  */
 function deactivateDivMosaic(id) {
-    document.getElementById("mainRow").replaceChild(activeDiv, document.getElementById(activeId));
-    if (activeId === id) {
-        activeImg = activeId = activeDiv = null;
+    document.getElementById("mainRow").replaceChild(commonData.activeDiv.get(), document.getElementById(commonData.activeId.get()));
+    if (commonData.activeId.get() === id) {
+        activeImg = null;
+        commonData.activeId.set(null);
+        commonData.activeDiv.set(null);
         return false;
     }
-    setActiveNode(id)
+    doQuerySongsByAlbumId(commonData.url.get()['std']['general']['canciones'], id, setActiveNode);
     return true;
 }
 ;
-function setActiveNode(id) {
-    activeDiv = document.getElementById(id).cloneNode(true);
-    document.getElementById('mainRow').replaceChild(generarDivDetalles(id), document.getElementById(id));
-    activeId = id;
+function setActiveNode(id, songs) {    
+    commonData.activeDiv.set(document.getElementById(id).cloneNode(true));
+    document.getElementById('mainRow').replaceChild(generarDivDetalles(id, songs), document.getElementById(id));
+    commonData.activeId.set(id);
+    commonData.isActive.set(true);
+    positionChange(id);
 }
 ;
 /*Devuelve un elemento UL con las canciones en data.
@@ -388,9 +400,11 @@ function genAlbumDetailsList(data, id) {
  * @returns {Boolean}
  */
 function deactivateDivList(id) {
-    document.getElementById("mainUl").replaceChild(activeDiv, document.getElementById(activeId));
-    if (activeId === id) {
-        activeImg = activeId = activeDiv = null;
+    document.getElementById("mainUl").replaceChild(commonData.activeDiv.get(), document.getElementById(commonData.activeId.get()));
+    if (commonData.activeId.get() === id) {
+        activeImg = null;
+        commonData.activeId.set(null);
+        commonData.activeDiv.set(null);
         return false;
     }
     setActiveElement(id);
@@ -405,8 +419,8 @@ function getChildToAppendNode(id, funcion) {
 ;
 //Reemplaza un elemento por otro. Detalles por no detalles y viceversa.
 function setActiveElement(id) {
-    activeDiv = document.getElementById(id).cloneNode(true);
-    activeId = id;
+    commonData.activeDiv.set(document.getElementById(id).cloneNode(true));
+    commonData.activeId.set(id);
 
     var newNode = getChildToAppendNode(id, getDivDetailsList(id));
     document.getElementById('id').replaceChild(newNode, document.getElementById(id).firstChild);
@@ -414,15 +428,15 @@ function setActiveElement(id) {
 ;
 //Activa los detalles del elemento seleccionado y desactiva el elemento que mostraba los detalles si lo hubiese.
 function listDetails(id) {
-    if (isActive) {
-        isActive = deactivateDiv(id);
+    if (commonData.isActive.get()) {
+        commonData.isActive.set(deactivateDiv(id));
     }
     else {
         setActiveElement(id);
-        isActive = true;
+        commonData.isActive.set(true);
     }
-    if (isActive) {
-        var pos = $('#divList' + activeId).position().top;
+    if (commonData.isActive.get()) {
+        var pos = $('#divList' + commonData.activeId.get()).position().top;
         $(window).scrollTop(pos);
     }
 }

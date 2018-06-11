@@ -41,7 +41,12 @@ var pText = {
     sello: 'discografica',
     year: 'year',
     genero: 'genero',
-    class: 'list-info'
+    class: {
+            album: 'list-info text-album',
+            artista: 'list-info text-artista sss',
+            genero: 'list-info text-genero sss',
+            soporte: 'list-info text-soporte sss'
+        }
 };
 
 var colClass = {
@@ -63,7 +68,7 @@ var genLiNode = function (valor) {
 //Crea los elementos P de la estructura para la inserciÃ³n de los datos texto.
 var genPNode = function (valor, key) {
     var pNode = document.createElement('p');
-    pNode.setAttribute('class', pText.class + " text" + key);
+    pNode.setAttribute('class', pText.class[key]);    
     pNode.appendChild(document.createTextNode(valor[key]));
     return pNode;
 };
@@ -87,7 +92,7 @@ var genDivColNodeOne = function (valor) {
 
     return divColNode;
 }
-
+;
 /*
  var listTextStructure = function(valor1, valor2, valor3){
  var divRowNode = document.createElement('div');
@@ -108,8 +113,8 @@ var genImgNode = function (data) {
     img_Node.setAttribute('onclick', data.onclick);
 
     return img_Node;
-};
-
+}
+;
 //Crea los elementos DIV de clase row para la inserciÃ³n de los elementos DIV de clase COLUMN con los datos y la imÃ¡gen del album.
 var genRowColNode = function (texto, data) {
     var divRowNode = document.createElement('div');
@@ -164,4 +169,5 @@ var genImageList = function (data) {
         ulNode.appendChild(liNode);
     }
     document.getElementById('mainRow').appendChild(ulNode);
-};
+}
+;

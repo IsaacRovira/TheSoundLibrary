@@ -13,8 +13,8 @@ module.exports = function (api_router) {
         res.set({'Access-Control-Allow-Origin': '*','Content-Type': 'application/json'});
 
         var datos   = setParamsAsObj(getParamsFromUrl(req.url));
-        var string  =buildSqlValues(datos);
-        var qry     =sql.canciones.all + string;
+        var string  =buildSqlValues(datos, songParams);
+        var qry     =sql.canciones[queryType(string)] + string;
 
         userCheck(qry, res, datos['userid'], queryDb);
     });
@@ -25,19 +25,30 @@ module.exports = function (api_router) {
         res.set({'Access-Control-Allow-Origin': '*','Content-Type': 'application/json'});
         
         var datos = setParamsAsObj(getParamsFromUrl(req.url));
-        var string = buildSqlValues(datos);
-        var qry = sql.discos.all + string;
+        var string = buildSqlValues(datos, albumParams);
+        var qry = sql.discos[queryType(string)] + string;
 
         userCheck(qry, res, datos['userid'], queryDb);
     });
 };
+//Arrays con los campos permitidos para las busquedas.
+var songParams= ['artistas', 'titulo'];
+var albumParams=['album', 'artista', 'year', 'discografica', 'etiquetado', 'genero', 'identificadores', 'tipo'];
 
 //Funciones AUXILIARES
+function queryType(string){
+    if (string.length > 0){
+        return 'by_Any';
+    }
+    return 'all';
+}
+;
 //Consulta a la base de datos.
 function queryDb(err, qry, callback) {
     if (err) {
         return error(err, callback);
     }
+    //console.log("\n"+qry+"\n");
     sql.connect().query(qry, function (err, result) {
         if (err) {
             return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (api_router>>discos): " + err]}, callback);
@@ -56,12 +67,9 @@ function userCheck(qry, res, user, callback) {
     sql.connect().query(sql.users.by_id_key, user, function(err, result){ 
         if (err) {
             return callback({errorRes: ['Vaya, no conseguimos conectar con la BD'], code: [500], errorLog: ["Error (userCheck): " + err]}, qry, res);
-        }
+        }        
         ;
-        for (var key in result) {
-            console.log("1 - "+result[key].ID_key + "\n2 - " + user + "\n3 - "+mysql.escape(user));
-        }
-        ;     
+        //for (var key in result) {console.log("1 - "+result[key].ID_key + "\n2 - " + user + "\n3 - "+mysql.escape(user));};     
         if (result.length > 0) {
             console.log("\tRequest by user: " + result[0]['Email']);
             return callback(null, qry, res);
@@ -79,7 +87,7 @@ function getUserIdFromUrl(req) {
     for (var key in data) {
         if (key === 'userid') {
             userid = mysql.escape(data[key]);
-            return data[key];
+            return userid;
         }
     }
     return null;
@@ -110,7 +118,7 @@ function setParamsAsObj(string) {
     return obj;
 }
 ;
-//Genera una cadena con la clausala SQL limit para el query.
+//Genera una cadena con la clausula SQL limit para el query.
 function buildLimit(datos) {
     var string;
     if (datos['max'])
@@ -127,10 +135,12 @@ function logCtrl(req, titulo) {
         var text;
         switch (key) {
             case 'body':
+                /*
                 for (var n in req[key]) {
                     console.log("\n" + key + ": " + n + ": " + req[key][n]);
                 }
                 ;
+                */
                 break;
             case 'sessionID':
                 console.log("\n" + key + ": " + req[key] + "\n");
@@ -147,7 +157,7 @@ function logCtrl(req, titulo) {
 }
 ;
 //Serializa los datos del body o url para poder pasarselos al SQL en un where.
-function buildSqlValues(datos) {
+function buildSqlValues(datos, params) {
     var string;
     for (var key in datos) {
         switch (key) {
@@ -157,8 +167,13 @@ function buildSqlValues(datos) {
                 //if(datos[key])orderby = ' order by ' + datos[key];
                 break;
             default:
-                if (datos[key]) {
-                    string = updateStringLike(datos[key], string, key);
+                for(var i=0; i < params.length; i++){                    
+                    if(key === params[i]){
+                        if(datos[key]){
+                            string = updateStringLike(datos[key], string, key);
+                        }
+                        break;
+                    }
                 }
         }
     }

@@ -37,7 +37,7 @@ module.exports = function (data_router) {
     //Canciones
     data_router.post('/canciones', isLoggedIn, function (req, res) {
         logCtrl(req, "Request Canciones.");
-
+        
         var datos   = getBodyData(dataSet().canciones, req);
         var string  = buildSqlValues(datos);
         var limit   = buildLimit(datos);
@@ -75,19 +75,22 @@ function queryDb(err, qry, callback) {
     if (err) {
         return error(err, callback);
     }
+    //console.log(qry);
     sql.connect().query(qry, function (err, result) {
         if (err) {
-            return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (api_router>>discos): " + err]}, callback);
+            return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (data_router): " + err]}, callback);
         }
+        callback.setHeader('Content-Type', 'application/json');
         callback.status(201);
-        callback.json(result).end;
+        //console.log(JSON.stringify(result));
+        callback.send(result);
     });
 }
 ;
 //Verifica q el usuario existe antes de llamar a la consulta solicitada.
 function userCheck(qry, res, user, callback) {
     if (!user) {
-        return callback({code: [401], errorRes: ["Falta ID de usuario."], errorLog: ["Error (api_router>>canciones). User = " + user]}, qry, res);
+        return callback({code: [401], errorRes: ["Falta ID de usuario."], errorLog: ["Error (data_router). User = " + user]}, qry, res);
     }
     ;
     sql.connect().query(sql.users.by_id_key, user, function (err, result) {
@@ -96,7 +99,7 @@ function userCheck(qry, res, user, callback) {
         }
         ;
         for (var key in result) {
-            console.log("1 - " + result[key].ID_key + "\n2 - " + user + "\n3 - " + mysql.escape(user));
+            //console.log("1 - " + result[key].ID_key + "\n2 - " + user + "\n3 - " + mysql.escape(user));
         }
         ;
         if (result.length > 0) {
@@ -104,7 +107,7 @@ function userCheck(qry, res, user, callback) {
             return callback(null, qry, res);
         }
         else {
-            return callback({errorRes: ['Ususario desconocido'], code: [401], errorLog: ['Error (api_router>canciones). Unknown user: ' + user]}, qry, res);
+            return callback({errorRes: ['Ususario desconocido'], code: [401], errorLog: ['Error (data_router). Unknown user: ' + user]}, qry, res);
         }
     });
 }
@@ -173,10 +176,14 @@ function buildSqlValues(datos) {
     for (var key in datos) {
         switch (key) {
             case 'userid':
-            case 'max':
-                break;
+            case 'max':                
             case 'orderby':
                 //if(datos[key])orderby = ' order by ' + datos[key];
+                break;
+            case 'discoId':
+                if(datos[key]){
+                    string = updateStringEqual(datos[key], string, key);
+                }                
                 break;
             default:
                 if (datos[key]) {
@@ -212,9 +219,9 @@ function updateStringLike(valor, string, campo) {
 function updateStringEqual(valor, string, campo) {
     if (string) {
         string += " and ";
-        return string += campo + " = " + mysql.escape(valor);
+        return string += campo + " = " + valor;
     }
-    return campo + " = " + mysql.escape(valor);
+    return campo + " = " + valor;
 }
 ;
 function getBodyData(datos, req) {

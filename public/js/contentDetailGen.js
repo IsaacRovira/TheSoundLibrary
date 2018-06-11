@@ -112,7 +112,6 @@ function getDiscDetails(datos) {
     doQuery(param, url[0]['canciones'], addDiscDetailsSongs);
 }
 ;
-
 ///INTRODUCIMOS LAS CANCIONES.
 function addDiscDetailsSongs(datos) {
     var datosCanciones = JSON.parse(datos);
@@ -120,7 +119,6 @@ function addDiscDetailsSongs(datos) {
     document.getElementById('row_' + datosCanciones[0]['discoId']).appendChild(genSongsList(datosCanciones));
 }
 ;
-
 var removeDiscDetails = function (datos) {
     datosDisco = JSON.parse(datos);
 
@@ -131,8 +129,8 @@ var removeDiscDetails = function (datos) {
 
     document.getElementById(discoData.id).appendChild(node);
     document.getElementById(discoData.id).setAttribute('class', classSet.mainCol.class.mosaic);
-};
-
+}
+;
 function genDiscMosaicStruct() {
     var text = document.createTextNode(discoData.titulo);
     var figcaptionNode = document.createElement('figcaption');
@@ -153,21 +151,20 @@ function genDiscMosaicStruct() {
     return figureNode;
 }
 ;
-
 //ONCLICK FUNCTION: llamaremos a esta función para abrir
 //los detalles de los discos en modo mosáico.
 var openDetails = function (valor) {
     //var param =[{'discoId':valor}];
     var param = 'discoId=' + valor;
     doQuery(param, url[0]['discos'], getDiscDetails);
-};
-
+}
+;
 var closeDetails = function (valor) {
     ////var param =[{'discoId':valor}];
     var param = 'discoId=' + valor;
     doQuery(param, url[0]['discos'], removeDiscDetails);
-};
-
+}
+;
 //******************************************************************************
 //
 //FUNCIONES AUXILIARES
