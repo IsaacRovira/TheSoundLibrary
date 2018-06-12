@@ -34,7 +34,7 @@ function imgContainerNew() {
             class: 'col-12 imgTagMosaic',
             alt: '',
             src: '',
-            onerror: 'this.onerror=null;this.src=' + commonData.path.get().cover + 'nopic.png',
+            onerror: 'alert(\'SI\');this.onerror=null;this.src=' + commonData.path.get().cover + 'nopic.jpg',
             onclick: '',
             id: 'img'
         },
@@ -81,7 +81,7 @@ function updateImgContainerValues(datos, container) {
         switch (key) {
             case 'discoId':
                 container.mainDiv.id = datos[key];
-                container.imgTag.onclick = 'detailsOnOff(' + datos[key] + ')';
+                container.imgTag.onclick = 'detailsOnOff(' + datos[key] + ')';                
                 container.imgDiv.id += datos[key];
                 container.imgTag.id += datos[key];
                 container.dataDiv.id += datos[key];
