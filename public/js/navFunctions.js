@@ -103,3 +103,8 @@ function working(){
     alert("FUNCIÓN NO DISPONIBLE TODAVÍA.")    
 }
 ;
+
+//Pictures error
+function getAltPic(id){
+    document.getElementById(id).setAttribute('src', './img/Caratulas/nopic.jpg');
+}
