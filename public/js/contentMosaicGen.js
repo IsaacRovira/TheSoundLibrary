@@ -1,9 +1,33 @@
 //contentGenerator.js
 
 /*NUEVA ESTRUCTURA*/
+
+
+
 /*
  * Generar struct q reproduza esta estructura.
+ * 
+ * Pendiente modificar la estructura para que se muestre así:
+ * 
+ * <div "class=row" id="detalles_discoID">
+ *  <div "class= col-3 imgColDiv">
+ *      <img onclick="on_off_detalles()" alt="nombre album" src="ruta a la foto">
+ *  </div> 
+ *  <div "class=col-9 songsColDiv">
+ *      <ul>
+ *          <li></il>
+ *      </ul>
+ *  </div>
+ *  <div class="col-12 albumColDiv">
+ *      <p> or <ul>
+ *  </div>
+ *</div>
  *
+ *Determinrar la posición del la imgaen a la que se le piden los detalles para insertar está estrucrura
+ *a continuación del último child del maincontainer con ese valor de posición.
+ *
+ *************************************************
+ *************************************************
  * <div class="col-lo q toque" id="id del album">
  *  <div class="col-12">
  *      <img onclick="mostrar detalles" alt="nombre album" src="foto">
@@ -15,6 +39,46 @@
  *
  */
 
+
+/*
+ * Estructura para insertar los detalles del disco.
+ * Esta función devuelve una objeto con los valores predeterminados de la estructura.
+ * @returns {imgContainerNew.img}
+ */
+function imgContainerNew2(){
+    var img = {
+        mainDiv: {
+            node:   'div',
+            class:  'row',
+            id:     'id'
+        },
+        imgDiv: {
+            node:   'div',
+            class:  'col-13 imgColDiv'
+        },
+        img:    {
+            node:   'img',
+            class:  'imgNodeDetails',
+            alt:    'Album title',
+            src:    'src',
+            funciones:  {
+                onclick:    'onclick'
+            }
+        },
+        songsDiv:   {
+            node:   'div',
+            class:  'col-9 songsColDiv',
+            id:     'id'
+        },
+        albumDiv:   {
+            node:   'div',
+            class:  'col-12 albumColDiv',
+            id:     'id'
+        }        
+    };
+    
+}
+;
 function imgContainerNew() {
     var img = {
         mainDiv: {
