@@ -1,56 +1,7 @@
 //albumDetails.js
 
-
-var id; //Id del album actual.
-
-//Utilizados por funciones en otros modulos.
-//var activeDiv; //Almacena el div que muestra los detalles.
-//var activeId; //Id de album con detalles activos.
-//var isActive = false; //Existe algún elemento mostrando los detalles.
-//var isUpdate = false;
-
-var songDetails;
-var albumDetails;
-
 //ESTRUCTURAS DE DATOS
 //*******************************************************
-//
-/*
- * Estructura para insertar los detalles del disco.
- * Esta función devuelve una objeto con los valores predeterminados de la estructura.
- * @returns {imgContainerNew.img}
- */
-function imgContainerDetails(){
-    var img = {
-        mainDiv: {
-            node:   'div',
-            class:  'row',
-            id:     'details_'
-        },
-        imgDiv: {
-            node:   'div',
-            class:  'col-3 imgColDiv'
-        },
-        img:    {
-            node:   'img',
-            class:  'imgNodeDetails',
-            alt:    'Album title',
-            src:    'src'
-        },
-        albumDiv:   {
-            node:   'div',
-            class:  'col-3 albumColDiv',
-            id:     'id'
-        },
-                songsDiv:   {
-            node:   'div',
-            class:  'col-9 songsColDiv',
-            id:     'id'
-        }
-    };
-    return img;
-}
-;
 //Estructuras que almacenan las funciones y las classes
 var funciones = function (id) {
     var funciones = {
@@ -130,9 +81,9 @@ function songDetails() {
     var songDetails = {
         titulo: 'titulo',
         pista: 'pista',
-        //duracion: 'duracion',
+        duracion: 'duracion',
         cancionId: 'songId',
-        //artistas: 'artistas',
+        artistas: 'artistas',
         class: nodeSets.liSongDetails.class
     };
     return songDetails;
@@ -148,13 +99,6 @@ function albumDetails() {
         class: nodeSets.liAlbumDetails.class
     };
     return albumDetails;
-}
-;
-//Estructura general de un nodo
-var nodeStructure = {
-    nodeTag: '',
-    id: '',
-    class: ''
 }
 ;
 function nodeStruct(tag, id, clase) {
@@ -323,7 +267,7 @@ function genSongList(data, id) {
 
             liNode.setAttribute('id', song.cancionId);
             liNode.setAttribute('class', song.class);
-            liNode.appendChild(document.createTextNode(song.pista + ' - ' + song.titulo + ' - ' + song.duracion));
+            liNode.appendChild(document.createTextNode(song.pista + ' - ' + song.titulo + ' - ' + song.artistas));
             ulNode.appendChild(liNode);
         }
     }
@@ -359,12 +303,6 @@ function genAlbumDetailsList(data, id) {
         }
     }
     return nodeList;
-}
-;
-//Se desplaza a la posición del div con los detalles.
-function positionChange(id){
-    var top = document.getElementById(id).offsetTop;
-    window.scrollTo(0,top);
 }
 ;
 //Establece la clase selected para el elemento seleccionado desactivando antes otro elemento selected si lo hubiese.
@@ -453,7 +391,12 @@ function genSongListElementNode(songData) {
     return nodeP;
 }
 ;
-
+//Se desplaza a la posición del div con los detalles.
+function positionChange(id){
+    var top = document.getElementById(id).offsetTop;
+    window.scrollTo(0,top);
+}
+;
 //AUX
 //*****************************************************************************************
 /*Recorre la estructura generada por "detailNodeStruct" y devuelve el nodo definido en esa estructura.
