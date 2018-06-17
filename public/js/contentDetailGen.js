@@ -63,7 +63,7 @@ var imgAt = {
     }
 };
 
-var discoData = {
+var discoDataForm = {
     id: '',
     titulo: '',
     soporte: '',
@@ -87,8 +87,9 @@ var discoData = {
 //MOSTRAMOS LOS DETALLES DEL DISCO MODIFICAONDO EL DOM.
 function getDiscDetails(datos) {
     var datosDisco = JSON.parse(datos);
-
-    updateDiscoData(datosDisco[0]); //Actualizamos las variables con los datos del disco.
+    var discoData = discoDataForm;
+    
+    discoData = updateDiscoData(datosDisco[0]); //Actualizamos las variables con los datos del disco.
 
     //Eliminamos los child del DIV que contiene la info del album
     //antes de generar la nueva estructura.
@@ -121,17 +122,17 @@ function addDiscDetailsSongs(datos) {
 ;
 var removeDiscDetails = function (datos) {
     datosDisco = JSON.parse(datos);
-
-    updateDiscoData(datosDisco[0]);     //Actualizamos las variables con los datos del disco.       
+    var discoData = this.discoDataForm;
+    discoData = updateDiscoData(datosDisco[0]);     //Actualizamos las variables con los datos del disco.       
     removeChildElements(discoData.id);  //Eliminamos todos los childs del DIV con la id del disco.
 
-    var node = genDiscMosaicStruct();   //Generamosun figure node para insertarlo en el div con el id = discoId
+    var node = genDiscMosaicStruct(discoData);   //Generamosun figure node para insertarlo en el div con el id = discoId
 
     document.getElementById(discoData.id).appendChild(node);
     document.getElementById(discoData.id).setAttribute('class', classSet.mainCol.class.mosaic);
 }
 ;
-function genDiscMosaicStruct() {
+function genDiscMosaicStruct(discoData) {
     var text = document.createTextNode(discoData.titulo);
     var figcaptionNode = document.createElement('figcaption');
     var figureNode = document.createElement('figure');
@@ -178,9 +179,10 @@ function removeChildElements(id) {
     }
 }
 ;
-
-//Actualizar datos imgAtt y discoData
+//Actualiza los datos de imgAtt y discoData
 function updateDiscoData(datosDisco) {
+    var discoData = discoDataForm;
+    
     discoData.id = datosDisco['discoId'];
     discoData.titulo = datosDisco['album'];
     discoData.cover = datosDisco['img_cover'];
@@ -193,10 +195,10 @@ function updateDiscoData(datosDisco) {
     imgAt.onclick.mosaic = 'openDetails(' + discoData.id + ')';
     imgAt.class.details = 'img-thumbnail rounded mx-auto d-block img_mosaic_detail';
     imgAt.class.mosaic = 'img-thumbnail rounded mx-auto d-block img-mosaic';
+    return discoData;
 }
 ;
-
-//GENERA COLUMNA CON IMAGEN DEL ALBUM
+//Devuelve un DIV con un elemento img que muestra la carátula del album;
 var genImgCol = function (imgAttrb) {
     var colNode = document.createElement('div');
     colNode.setAttribute('class', classSet.imgCol.class);
@@ -209,9 +211,9 @@ var genImgCol = function (imgAttrb) {
 
     colNode.appendChild(imgNode);
     return colNode;
-};
-
-//GENERA COLUMNA CON LISTADO DE CANCIONES. ATENCION: OBTENER LISTA ORDENADA POR NUM PISTA.
+}
+;
+//Devuelve un DIV con la lista de canciones del album. ATENCION: OBTENER LISTA ORDENADA POR NUM PISTA.
 var genSongsList = function (canciones) {
     var colNode = document.createElement('div');
     colNode.setAttribute('class', classSet.songCol.class);
@@ -236,9 +238,9 @@ var genSongsList = function (canciones) {
 
     colNode.appendChild(ulNode);
     return colNode;
-};
-
-//GENERA COLUMNA CON LOS DATOS DEL ALBUM
+}
+;
+//Devuelve un DIV con una lista CON LOS DATOS DEL ALBUM
 var genAlbumDataList = function (albumData) {
     var colNode = document.createElement('div');
     colNode.setAttribute('class', classSet.albumDataCol.class);
@@ -258,9 +260,9 @@ var genAlbumDataList = function (albumData) {
     colNode.appendChild(ulNode);
 
     return colNode;
-};
-
-//GENERA UN ELEMENTO IL PARA LISTA DATOS ALBUM
+}
+;
+//Devuelve un elemento IL en la forma nombre = valor;
 var genListItem = function (nombre, valor) {
     var text = document.createTextNode(nombre + ": " + valor);
     var ilNode = document.createElement('il');
@@ -268,10 +270,9 @@ var genListItem = function (nombre, valor) {
     ilNode.appendChild(text);
 
     return ilNode;
-};
-
-
-//GENERA COLUMNA CON LOS DATOS DEL ETIQUETADO DEL ALBUM
+}
+;
+//Sin terminar
 var genAlbumLabelDataList = function (AlbumLabel) {
-
-};
+}
+;

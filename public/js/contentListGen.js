@@ -27,14 +27,14 @@ var imgAtt = {
     alt: "texto",
     width: "100%",
     onclick: ""
-};
-
+}
+;
 var liAtt = {
     class: 'list-group-item',
     id: 'discoID',
     onclick: 'test()'
-};
-
+}
+;
 var pText = {
     album: 'album',
     artista: 'artista',
@@ -42,39 +42,44 @@ var pText = {
     year: 'year',
     genero: 'genero',
     class: {
-            album: 'list-info text-album',
-            artista: 'list-info text-artista sss',
-            genero: 'list-info text-genero sss',
-            soporte: 'list-info text-soporte sss'
-        }
-};
-
+        album: 'list-info text-album',
+        artista: 'list-info text-artista sss',
+        genero: 'list-info text-genero sss',
+        soporte: 'list-info text-soporte sss'
+    }
+}
+;
 var colClass = {
     img: 'col-2 div-list-img',
     txt: 'col-8 div-list-text'
-};
-
-
+}
+;
+var containerDiv = {
+    tag:    'div',
+    id:     'container_',
+    class:  'row row-list-item'            
+}
+;
 //Crea los elementos Li de la estructura.
-var genLiNode = function (valor) {
+function genLiNode(valor) {
     var liNode = document.createElement('li');
     liNode.setAttribute('class', valor.class);
     liNode.setAttribute('id', valor.id);
     //liNode.setAttribute('onclick', valor.onclick);
 
     return liNode;
-};
-
+}
+;
 //Crea los elementos P de la estructura para la inserciÃ³n de los datos texto.
-var genPNode = function (valor, key) {
+function genPNode(valor, key) {
     var pNode = document.createElement('p');
-    pNode.setAttribute('class', pText.class[key]);    
+    pNode.setAttribute('class', pText.class[key]);
     pNode.appendChild(document.createTextNode(valor[key]));
     return pNode;
-};
-
+}
+;
 //Crea los elementos DIV de la clase column para la inserciÃ³n de los datos del album.
-var genDivColNode = function (valor) {
+function genDivColNode(valor) {
     var divColNode = document.createElement('div');
     divColNode.setAttribute('class', colClass.txt);
     divColNode.appendChild(genPNode(valor, 'album'));
@@ -82,10 +87,10 @@ var genDivColNode = function (valor) {
     divColNode.appendChild(genPNode(valor, 'genero'));
 
     return divColNode;
-};
-
+}
+;
 //Crea los elementos DIV de la clase column para la inserciÃ³n de la imÃ¡genes.
-var genDivColNodeOne = function (valor) {
+function genDivColNodeOne(valor){
     var divColNode = document.createElement('div');
     divColNode.setAttribute('class', colClass.txt);
     divColNode.appendChild(genPNode(valor.album));
@@ -93,19 +98,8 @@ var genDivColNodeOne = function (valor) {
     return divColNode;
 }
 ;
-/*
- var listTextStructure = function(valor1, valor2, valor3){
- var divRowNode = document.createElement('div');
- divRowNode.setAttribute('class', 'row');
- 
- divRowNode.appendChild(genDivColNode(valor1, valor2, valor3));
- 
- return divRowNode;
- }
- */
-
 //Crea los elementos IMG para la inserción de las imÃ¡genes de los albunes.
-var genImgNode = function (data) {
+function genImgNode(data) {
     var img_Node = document.createElement('img');
     img_Node.setAttribute('class', data.class);
     img_Node.setAttribute('alt', data.alt);
@@ -116,9 +110,10 @@ var genImgNode = function (data) {
 }
 ;
 //Crea los elementos DIV de clase row para la inserciÃ³n de los elementos DIV de clase COLUMN con los datos y la imÃ¡gen del album.
-var genRowColNode = function (texto, data) {
-    var divRowNode = document.createElement('div');
-    divRowNode.setAttribute('class', 'row row-list-item');
+function genRowColNode(texto, data, id) {
+    var divRowNode = document.createElement(containerDiv.tag);    
+    divRowNode.setAttribute('class', containerDiv.class);
+    divRowNode.setAttribute('id', containerDiv.id+id);
 
     var divColNode = document.createElement('div');
     divColNode.setAttribute('class', colClass.img);
@@ -135,10 +130,10 @@ var altValue = function (valorOrg, valorAlt) {
     if (!valorOrg)
         return valorAlt;
     return valorOrg;
-};
-
+}
+;
 //Genera la lista con los albunes atendiendo a la estructura indicada mÃ¡s arriba.
-var genImageList = function (data) {
+function genImageList(data) {
     var ulNode = document.createElement('ul');
     ulNode.setAttribute('class', 'list-group');
     ulNode.setAttribute('id', 'mainUl');
@@ -164,7 +159,7 @@ var genImageList = function (data) {
             }
         }
         var liNode = genLiNode(liAtt);
-        liNode.appendChild(genRowColNode(pText, imgAtt));
+        liNode.appendChild(genRowColNode(pText, imgAtt, data[i].discoId));
 
         ulNode.appendChild(liNode);
     }

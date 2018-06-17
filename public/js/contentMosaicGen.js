@@ -2,8 +2,6 @@
 
 /*NUEVA ESTRUCTURA*/
 
-
-
 /*
  * Generar struct q reproduza esta estructura.
  * 
@@ -40,45 +38,6 @@
  */
 
 
-/*
- * Estructura para insertar los detalles del disco.
- * Esta función devuelve una objeto con los valores predeterminados de la estructura.
- * @returns {imgContainerNew.img}
- */
-function imgContainerNew2(){
-    var img = {
-        mainDiv: {
-            node:   'div',
-            class:  'row',
-            id:     'id'
-        },
-        imgDiv: {
-            node:   'div',
-            class:  'col-13 imgColDiv'
-        },
-        img:    {
-            node:   'img',
-            class:  'imgNodeDetails',
-            alt:    'Album title',
-            src:    'src',
-            funciones:  {
-                onclick:    'onclick'
-            }
-        },
-        songsDiv:   {
-            node:   'div',
-            class:  'col-9 songsColDiv',
-            id:     'id'
-        },
-        albumDiv:   {
-            node:   'div',
-            class:  'col-12 albumColDiv',
-            id:     'id'
-        }        
-    };
-    
-}
-;
 function imgContainerNew() {
     var img = {
         mainDiv: {

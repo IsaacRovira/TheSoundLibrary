@@ -72,11 +72,12 @@ body{
     max-width: 100%;
     text-align: center;
     padding: 1%;
-    font-size: 1.0vw;
+    font-size: 1.0vw;    
 }
 .mainDivMosaic{
     padding:0%;
     margin: 0%;
+     
 }
 .dataDivMosaic{                
     padding:0%;
@@ -84,13 +85,28 @@ body{
     color: white;
 }
 .imgDivMosaic{                
-    padding:2%;
+    padding:3%;
     margin: 0%;
 }
 .imgTagMosaic{                
     padding:0%;
     margin: 0%;
     border-radius: 10%;
+}
+.selected{    
+    background-color: darkgreen;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+}
+.main-col-mosaic-details{
+    border-radius: 6px;
+    background-color: darkgreen;
+    padding: 0;
+    border: 0;
+    margin: 0;
+}
+.songDetails{
+    list-style-type: none;
 }
 /*OrderBy Form*/
 .orderBy-form{
@@ -235,12 +251,18 @@ legend{
     background: linear-gradient(to right, whitesmoke , transparent);
 }
 .list-group-item:hover{
-    opacity: 1;    
-    color: whitesmoke;
+    opacity: 1;
 }
 .list-info{
     margin: 1px;
 }
 .text-album{
     font-weight: bold;
+}
+.div-list-songs{
+    padding: 1%;
+    column-count: 3;
+    column-rule-style: solid;
+    column-rule-width: 1px;
+    column-rule-color: lightgray;
 }
