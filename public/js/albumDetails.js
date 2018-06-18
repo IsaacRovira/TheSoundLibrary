@@ -29,11 +29,11 @@ var nodeSets = {
     },
     albumDiv: {
         tag:    'div',
-        class:  'col-xs-1 col-md-2',
+        class:  'col-xs-1 col-md-2 albumDivDetails',
         id:     'albumDivDetails_'
     },
     songsDiv: {
-        class: 'col-xs-11 col-md-10',
+        class: 'col-xs-11 col-md-10 songsDivDetails',
         tag: 'div',
         id: 'songsDivDetails_'
     },
@@ -137,7 +137,7 @@ function generarDivDetalles(id, songs) {
                 nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, nodeSets[sets].id + id, nodeSets[sets].class, funciones(id)[sets], genAlbumDetailsList(commonData.datosDiscos.get(), id)));
                 break;
             case 'songsDiv'://Node songsDiv contiene un listado con las canciones.
-                nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, nodeSets[sets].id + id, nodeSets[sets].class, funciones(id)[sets], {child0: genSongList(songs, id)}));
+                nodeChildList[sets] = genDivStruct(detailNodeStruct(nodeSets[sets].tag, nodeSets[sets].id + id, nodeSets[sets].class, funciones(id)[sets], {child0: genSongList(songs)}));
                 break;
             default:
         }
@@ -221,29 +221,35 @@ function setActiveNode(id, songs){
 ;
 //Devuelve un elemento UL con las canciones en data. 
 function genSongList(data) {
+    var song;
+    var liNode;
     var ulNode = document.createElement(nodeSets.ulSongDetails.tag);
-    ulNode.setAttribute('class', nodeSets.ulSongDetails.class);
-
-    var song = songDetails();
+    ulNode.setAttribute('class', nodeSets.ulSongDetails.class);    
+    
     for (var i = 0; i < data.length; i++) {
-        var liNode = document.createTextNode('li');
-        liNode.setAttribute('class', nodeSets.liSongDetails.class);
-
-        for (var key in song) {
-            song[key] = data[i][key];
-        }
-
-        liNode.setAttribute('id', 'song' + song.id);
-        liNode.appendChild(document.createTextNode(song.pista + ' - ' + song.titulo + ' - ' + song.duracion));
-        ulNode.appendChild(liNode);
-
+        liNode = document.createElement('li');
         song = songDetails();
+        for (var key in song) {
+            switch(key){
+                case 'class':
+                    liNode.setAttribute(key, song.class);
+                    break;
+                case 'cancionId':    
+                    song[key] += data[i][key];
+                    liNode.setAttribute('id', song[key]);
+                    break;
+                default:
+                    song[key] = data[i][key];
+            }            
+        }        
+        liNode.appendChild(document.createTextNode(song.pista + ' - ' + song.titulo + ' - ' + song.artistas));
+        ulNode.appendChild(liNode);
     }
     return ulNode;
 }
 ;
 //Devuelve un elemento UL con las canciones en data.
-function genSongList(data, id) {
+function genSongListById(data, id) {
     var liNode;
     var ulNode = document.createElement('ul');
     ulNode.setAttribute('class', nodeSets.ulSongDetails.class);

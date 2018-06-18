@@ -4,7 +4,7 @@
     margin-left: 4em;
 }
 body{
-    background-color: graytext;
+    background-color: black;
 }
 .mainDataRowContainer{
     margin: 0 0 0 0;
@@ -16,6 +16,8 @@ body{
 #dataContainer{
     width: 100%;
     display: block;
+    margin: 60px 1% 1% 1%;    
+    padding:1%;
 }
 
 .far fa-times-circle{    
@@ -47,14 +49,17 @@ body{
 .title-text{
     width: 100%;
     height: 55px;
-    background: green;
+    background: black;    
     z-index: 1;
     position: fixed;
     top:0;
     left:0;
 }
 #menu-btn{
-    margin: 0% 5% 0% 2%;
+    margin: 0% 1% 0% 0%;    
+}
+#menu-btn:hover{
+   opacity: 0.8;
 }
 .title{
     margin: 0% 10% 0 1%;
@@ -79,7 +84,8 @@ body{
     margin: 0%;
      
 }
-.dataDivMosaic{                
+.dataDivMosaic{
+    text-align: center;
     padding:0%;
     margin: 0%;
     color: white;
@@ -88,25 +94,47 @@ body{
     padding:3%;
     margin: 0%;
 }
-.imgTagMosaic{                
+.imgTagMosaic{    
+    border-color: white;
+    border-style: solid;
+    border-width: 1px;
     padding:0%;
     margin: 0%;
     border-radius: 10%;
 }
+.imgTagMosaic:hover{
+    border-width: 3px;
+}
 .selected{    
-    background-color: darkgreen;
-    border-top-left-radius: 10%;
-    border-top-right-radius: 10%;
+    background-color: transparent;
+    border-radius: 0px;
+    border-width: 0 0 5px 0;
+    border-color: white;
+    border-style: solid;
+    
 }
 .main-col-mosaic-details{
+    color: white;
     border-radius: 6px;
-    background-color: darkgreen;
-    padding: 0;
-    border: 0;
-    margin: 0;
+    border-width: 0px;
+    border-color: white;
+    border-style: solid;
+    background-color: transparent;
+    padding-top: 1%;
+    margin:0 3% 0 0;
 }
 .songDetails{
     list-style-type: none;
+    margin: 1%;
+}
+.albumDivDetails{
+    padding-top: 15px;
+    border-right: solid 0.5px white;    
+}
+.songsDivDetails{
+    padding: 1%;
+    column-count: 2;
+    column-fill: auto;
 }
 /*OrderBy Form*/
 .orderBy-form{
@@ -179,7 +207,7 @@ legend{
 /*Menú vertical*/
 .sidenav{
     alignment-adjust: central;
-    background-color: green;
+    background-color: black;
     border-radius: 0em 0em 2em 0em;
     height: 0;
     width: 55px;
