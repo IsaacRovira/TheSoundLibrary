@@ -49,7 +49,7 @@ body{
 .title-text{
     width: 100%;
     height: 55px;
-    background: black;    
+    background: rgba(0,0,0,0.7);;    
     z-index: 1;
     position: fixed;
     top:0;
@@ -115,13 +115,13 @@ body{
 }
 .main-col-mosaic-details{
     color: white;
-    border-radius: 6px;
-    border-width: 0px;
+    border-radius: 0px;
+    border-width: 0 0 0.5px 0;    
     border-color: white;
-    border-style: solid;
+    border-style: ridge;
     background-color: transparent;
-    padding-top: 1%;
-    margin:0 3% 0 0;
+    padding: 3px 0 10px 0;
+    margin:1% 3% 1% 0;
 }
 .songDetails{
     list-style-type: none;
@@ -169,7 +169,7 @@ body{
 }
 /*Search Form*/
 .search-form{
-    background-color: green;
+    background-color: rgba(0,0,0,0.7);
     border-radius: 2em 2em 2em 2em;
     padding-top: 15px;
     height: 405px;
@@ -207,7 +207,7 @@ legend{
 /*Menú vertical*/
 .sidenav{
     alignment-adjust: central;
-    background-color: black;
+    background-color: rgba(0,0,0,0.7);;
     border-radius: 0em 0em 2em 0em;
     height: 0;
     width: 55px;
