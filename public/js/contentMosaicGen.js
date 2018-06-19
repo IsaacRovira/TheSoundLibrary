@@ -57,7 +57,7 @@ function imgContainerNew() {
             class: 'col-12 imgTagMosaic',
             alt: '',
             src: '',
-            onerror: 'alert(\'SI\');this.onerror=null;this.src=' + commonData.path.get().cover + 'nopic.jpg',
+            onerror: 'getAltPic(this.id)',
             onclick: '',
             id: 'img'
         },

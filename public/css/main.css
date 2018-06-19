@@ -242,6 +242,39 @@ legend{
 #list-group-sidenav li{
     margin-top: 10px;
 }
+
+/*Menu horizontal*/
+.sidenav-h{    
+    background-color: rgba(0,0,0,0.9);;    
+    height: 0;
+    width: 101%;
+    position: fixed;
+    z-index: 1;
+    top: 55px; /*ajustar posición mas altura */
+    left: 0;  
+    overflow: hidden; /*scroll*/
+    padding:auto; /*ajustar posición vertical*/    
+    transition: 0.5s;
+    padding-left: 10px;
+    padding-right: 10px;        
+}
+.menu-h-item{
+    top:auto;
+    vertical-align: middle;
+    font-size: 1.3vw;
+    font-family: verdana;
+    text-align: center;
+    color: white;
+
+}
+.sidenav-h>div:last-child{
+    padding-right: 50px;
+    text-align: right;
+}
+.sidenav-h>div:last-child a{
+    color: white;    
+}
+
 /*List style*/
 .div-list-img{
     margin: 0;

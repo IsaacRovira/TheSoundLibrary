@@ -6,13 +6,26 @@ var openSubMenus = {
 
 //Mostrar/Ocultar ventana del menú lateral
 function openNav() {
-    width = document.getElementById("sideMenu").offsetHeight;
-    if(width > 0){
+    var id = "sideMenu";
+    
+    if(screen.width >=768){
+        id = "sideMenu-h";
+    }
+    
+    var height = document.getElementById(id).offsetHeight;
+    if(height > 0){
         closeSubMenus();
-        document.getElementById("sideMenu").style.height = "0";        
+        document.getElementById(id).style.height = "0";        
     }else{
-        document.getElementById("sideMenu").style.height = "275px";
-    }                
+        switch(id){
+            case "sideMenu-h":
+                document.getElementById(id).style.height = "45px";
+                break;
+            case "sideMenu":
+                document.getElementById(id).style.height = "275px";
+                break;
+        }        
+    }          
 }
 ;
 //Refrescar contenido
