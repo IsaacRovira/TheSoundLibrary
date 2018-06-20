@@ -19,7 +19,7 @@ function openNav() {
     }else{
         switch(id){
             case "sideMenu-h":
-                document.getElementById(id).style.height = "45px";
+                document.getElementById(id).style.height = "3vw";
                 break;
             case "sideMenu":
                 document.getElementById(id).style.height = "275px";
@@ -34,17 +34,37 @@ function refreshData(){
     doQueryAll(commonData.url.get()['std']['general']['discos'], commonData.datosDiscos.set);
     commonData.dataToSearch.set({});
     commonData.orderByField.set('discoId');
+    openNav();
 }
 ;
 //Buscar
-function openSearch(){
-    var id = "search-form";
-    width = document.getElementById(id).offsetWidth;
-    if(width > 0){
-        document.getElementById(id).style.width = "0";        
-    }else{
-        closeSubMenus();
-        document.getElementById(id).style.width = "175px";
+function openSearch(nodeId){    
+    var id = "search-form-selector";
+    switch(nodeId){
+        case 'h-search':
+            var pos = document.getElementById(nodeId).getBoundingClientRect();            
+            break;
+        case 'v-search':            
+            break;
+    }
+    
+    height = document.getElementById(id).offsetHeight;    
+    if(height > 0){        
+        document.getElementById(id).style.height = "0";
+        document.getElementById(nodeId).setAttribute('class', 'menu-h-item col-1');
+    }else{        
+        //closeSubMenus();
+        //Modificar la apariencia del menú buscar.
+        document.getElementById(nodeId).setAttribute('class', 'menu-h-item selected col-1');
+        
+        //Establecer la posición y el ancho respecto al menu BUSCAR.
+        document.getElementById(id).style.top = pos.bottom + "px";
+        document.getElementById(id).style.left = pos.left + "px";        
+        document.getElementById(id).style.width = pos.width + "px";
+        
+        //Definir el alto para que el menú sea visible.
+        document.getElementById(id).style.height = "6vw";
+        
         openSubMenus[id] = true;
     }        
 }

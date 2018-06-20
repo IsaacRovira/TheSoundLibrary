@@ -42,29 +42,32 @@
                 </div>
             </div>
         </div>
+        
+        <!--SEARCH FORM-->
+        <div class="search-form-selector" id="search-form-selector">
+            <div class="search-form-option" id="sfo-songs" onclick="openSearchSongs()">Canciones</div>
+            <div class="search-form-option" id="sfo-albums" onclick="openSearchAlbums()">Discos</div>
+        </div>
         <div class="search-form" id="search-form">
-            <!--<a href="javascript:void(0)" class="closebtn" onclick="openSearch()">&times;</a>
-            <br><br>-->
-            <form class="form-list" id="formSearchAlbum">
-                <fieldset><legend>Discos</legend>
-                    <ul class="form-list list-group">
-                        <li class="list-group-item-text"><input type="text" name="album" value="Album"></li>            
-                        <li class="list-group-item-text"><input type="text" name="artista" value="Artista"></li>
-                        <li class="list-group-item-text"><input type="text" name="year" value="Año"></li>
-                        <li class="list-group-item-text"><input type="text" name="genero" value="Genero"></li>                    
-                    </ul>
-                </fieldset>
-                <br>
-                <fieldset><legend>Canciones</legend>
-                    <ul class="form-list list-group">
-                        <li class="list-group-item-text"><input type="text" name="cancion" value="Canción"></li>
-                        <li class="list-group-item-text"><input type="text" name="artista" value="Artista"></li>
-                    </ul>
-                </fieldset>
-                <br>
+            <form class="form-albums" id="formSearchAlbum">
+                <div class="search-form-album">
+                    <div class="search-input"><input type="text" name="album" value="Album"></div>
+                    <div class="search-input"><input type="text" name="artista" value="Artista"></div>
+                    <div class="search-input"><input type="text" name="year" value="Año"></div>
+                    <div class="search-input"><input type="text" name="genero" value="Genero"></div>
+                </div>
                 <input type="button" onclick="searchAlbum()" value="Buscar">
             </form>
+            <form class="form-songs" id="formSearchSong">
+                <div class="search-form-album">
+                    <div class="search-input"><input type="text" name="cancion" value="Canción"></div>
+                    <div class="search-input"><input type="text" name="artista" value="Artista"></div>
+                </div>
+                <input type="button" onclick="searchAlbum()" value="Buscar">            
+            </form>
         </div>
+        
+        <!--ORDER FORM-->
         <div class="orderBy-form" id="orderBy-form">
             <!--<a href="javascript:void(0)" class="closebtn" onclick="openOrderBy()">&times;</a>
             <br><br>-->
@@ -85,7 +88,7 @@
         </div>
 <!--NAV MENU-->
         <div class="row sidenav-h" id="sideMenu-h">            
-            <div class="menu-h-item col-1" onclick="changeMode(dataAlbum)">Mosaico</div>
+            <div class="menu-h-item col-1" onclick="changeMode(dataAlbum)" id="modeBtn">Lista</div>
             <div class="menu-h-item col-1" onclick="refreshData()">Refrescar</div>
             <div class="menu-h-item col-1" onclick="openSearch(this.id)" id="h-search">Buscar</div>
             <div class="menu-h-item col-1" onclick="openOrderBy()">Ordenar</div>
@@ -97,7 +100,7 @@
             <ul class="list-group" id="list-group-sidenav">
                 <li class="list-group-item-text"><i id="modo" onclick="changeMode(dataAlbum)" class="far fa-newspaper"></i></li>
                 <li class="list-group-item-text"><i class="fas fa-redo" onclick="refreshData()"></i></li>
-                <li class="list-group-item-text"><i class="fas fa-search" onclick="openSearch()"></i></li>
+                <li class="list-group-item-text"><i class="fas fa-search" onclick="openSearch(this.id)" id="v-search"></i></li>
                 <li class="list-group-item-text"><i id="elementFilter" class="fas fa-filter" onclick="openOrderBy()"></i></li>
                 <li class="list-group-item-text"><i class="fas fa-plus" onclick="working()"></i></li>
                 <li class="list-group-item-text"><i class="fas fa-edit" onclick="working()"></i></li>

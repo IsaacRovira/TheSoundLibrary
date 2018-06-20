@@ -136,6 +136,7 @@ body{
     column-count: 2;
     column-fill: auto;
 }
+
 /*OrderBy Form*/
 .orderBy-form{
     background-color: green;
@@ -167,7 +168,39 @@ body{
 .orderBy-form form input{
     margin: 2%;
 }
+
 /*Search Form*/
+.search-form-option{
+    top:auto;
+    vertical-align: middle;
+    font-size: 1.3vw;
+    font-family: verdana;
+    text-align: left;
+    color: black;
+    margin: 0.5vw;
+    padding-right: 0.1vw;
+}
+.search-form-option:hover{    
+    border-right: 0.5px solid red;    
+}
+.search-form-selector{
+    transition: 0.3s;
+    font-size: 1.3vw;
+    background: rgba(255,255,255,0.8);
+    border-radius: 0 0 10px 10px;
+    position: fixed;
+    z-index: 1;
+    overflow: hidden; /*scroll horizontal*/
+    padding: auto; /*ajustar posición vertical*/
+    height: 0; /*posiciones iniciales 0*/
+    width: 0;
+}
+.menu-h-item.selected{
+    background: rgba(255,255,255,0.8);
+    color: black;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
 .search-form{
     background-color: rgba(0,0,0,0.7);
     border-radius: 2em 2em 2em 2em;
@@ -176,8 +209,8 @@ body{
     width: 0;
     position: fixed;
     z-index: 1;
-    top: 85px; /*ajustar posición mas altura */
-    left: 65px;    
+    left: 65px;
+    top: 85px; /*ajustar posición mas altura */      
     overflow: hidden; /*scroll horizontal*/
     padding-top: auto; /*ajustar posición vertical*/
     transition: 0.5s;    

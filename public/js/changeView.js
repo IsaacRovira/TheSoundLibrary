@@ -12,6 +12,19 @@ function removeElements() {
     }
 }
 ;
+function textChange(text1, text2, id){
+    var currentText = document.getElementById(id).textContent;
+    
+    switch(currentText){
+        case text1:
+            document.getElementById(id).textContent = text2;
+            break;
+        case text2:
+            document.getElementById(id).textContent = text1;
+            break;
+    }
+}
+;
 //Llama a las funciones q generan las vistas mosáico o lista.
 function changeMode(data) {
     activeId = null;
@@ -19,6 +32,9 @@ function changeMode(data) {
     isActive = false;
 
     removeElements();
+    textChange('Mosaico', 'Lista', 'modeBtn');
+    openNav();
+    
     if (commonData.esMosaico.get()) {
         //f302
         //<i class="far fa-newspaper"></i>
