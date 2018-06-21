@@ -48,12 +48,13 @@ function openSearch(nodeId){
             break;
     }
     
-    height = document.getElementById(id).offsetHeight;    
+    height = document.getElementById(id).offsetHeight;
+    closeIconOnOff('Buscar', nodeId);
     if(height > 0){        
         document.getElementById(id).style.height = "0";
-        document.getElementById(nodeId).setAttribute('class', 'menu-h-item col-1');
+        document.getElementById(nodeId).setAttribute('class', 'menu-h-item col-1');        
     }else{        
-        //closeSubMenus();
+        //closeSubMenus();        
         //Modificar la apariencia del menú buscar.
         document.getElementById(nodeId).setAttribute('class', 'menu-h-item selected col-1');
         
@@ -67,6 +68,29 @@ function openSearch(nodeId){
         
         openSubMenus[id] = true;
     }        
+}
+;
+//Devuelve un nodo con los atributos pasados.
+function createNode(tag, clase, id){
+    var node = document.createElement(tag);
+    node.setAttribute('class', clase);
+    node.setAttribute('id', id);
+    return node;
+}
+;
+//Remplaza en el elemento indicado el texto por el elemento <i class="fas fa-times"></i> y viceversa.
+function closeIconOnOff(text,id){   
+    var valor = document.getElementById(id).textContent;
+    switch(valor){
+        case text:
+            document.getElementById(id).textContent='';
+            var newNode = createNode('i','fas fa-times', 'h-sidenav-close-btn');//<i class="fas fa-times"></i>            
+            document.getElementById(id).insertBefore(newNode, null);            
+            break;
+        default:
+            document.remove(document.getElementById('h-sidenav-close-btn'));
+            document.getElementById(id).textContent = text;
+    }
 }
 ;
 //busca discos q coincidan con los criterios.
@@ -112,7 +136,7 @@ function openOrderBy(){
 }
 ;
 function orderBy(){    
-    var valor = document.getElementById('select-orderBy').value;    
+    var valor = document.getElementById('select-orderBy').value;
     commonData.orderByField.set(valor);
     //alert(valor);
     //alert(JSON.stringify(commonData.dataToSearch.get()));
@@ -133,7 +157,7 @@ function closeSubMenus(){
 ;
 /*Working*/
 function working(){
-    alert("FUNCIÓN NO DISPONIBLE TODAVÍA.")    
+    alert("FUNCIÓN NO DISPONIBLE TODAVÍA.");
 }
 ;
 

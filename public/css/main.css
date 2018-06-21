@@ -49,7 +49,7 @@ body{
 .title-text{
     width: 100%;
     height: 55px;
-    background: rgba(0,0,0,0.7);;    
+    background: rgba(0,0,0,0.8);;    
     z-index: 1;
     position: fixed;
     top:0;
@@ -202,7 +202,7 @@ body{
     border-top-left-radius: 10px;
 }
 .search-form{
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.8);
     border-radius: 2em 2em 2em 2em;
     padding-top: 15px;
     height: 405px;
@@ -240,7 +240,7 @@ legend{
 /*Menú vertical*/
 .sidenav{
     alignment-adjust: central;
-    background-color: rgba(0,0,0,0.7);;
+    background-color: rgba(0,0,0,0.8);;
     border-radius: 0em 0em 2em 0em;
     height: 0;
     width: 55px;
@@ -278,7 +278,7 @@ legend{
 
 /*Menu horizontal*/
 .sidenav-h{    
-    background-color: rgba(0,0,0,0.9);;    
+    background-color: rgba(0,0,0,0.8);;    
     height: 0;
     width: 101%;
     position: fixed;
