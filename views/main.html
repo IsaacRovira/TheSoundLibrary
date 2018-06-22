@@ -44,30 +44,48 @@
         </div>
         
         <!--SEARCH FORM-->
-        <div class="search-form-selector" id="search-form-selector">
-            <div class="search-form-option" id="sfo-songs" onclick="openSearchSongs()">Canciones</div>
-            <div class="search-form-option" id="sfo-albums" onclick="openSearchAlbums()">Discos</div>
-        </div>
-        <div class="search-form" id="search-form">
-            <form class="form-albums" id="formSearchAlbum">
-                <div class="search-form-album">
-                    <div class="search-input"><input type="text" name="album" value="Album"></div>
-                    <div class="search-input"><input type="text" name="artista" value="Artista"></div>
-                    <div class="search-input"><input type="text" name="year" value="Año"></div>
-                    <div class="search-input"><input type="text" name="genero" value="Genero"></div>
-                </div>
-                <input type="button" onclick="searchAlbum()" value="Buscar">
-            </form>
-            <form class="form-songs" id="formSearchSong">
-                <div class="search-form-album">
-                    <div class="search-input"><input type="text" name="cancion" value="Canción"></div>
-                    <div class="search-input"><input type="text" name="artista" value="Artista"></div>
-                </div>
-                <input type="button" onclick="searchAlbum()" value="Buscar">            
-            </form>
-        </div>
+        <form class="search-form form-text" id="formSearch">            
+            <div class="search-form-album">
+                <div class="search-input">Album: <input type="text" name="album"></div>
+                <div class="search-input">Artista: <input type="text" name="artista" onblur="" onclick="cleanTextOnSelect(this.id)" id="artista-input"></div>
+                <div class="search-input">Año: <input type="text" name="year"></div>
+                <div class="search-input">Genero: <input type="text" name="genero"></div>
+            </div>
+            <div class="search-form-songs">
+                <div class="search-input">Canción: <input type="text" name="cancion"></div>
+                <div class="search-input">Artista canción: <input type="text" name="artista"></div>
+            </div>
+            <button class="btn" onclick="searchAlbum()"><i class="fas fa-search"></i></button>
+            <!-- <input id="btn-search" type="button" onclick="searchAlbum()"> -->
+        </form>
         
-        <!--ORDER FORM-->
+        <!--ORDER FORM NEW-->
+        <form class="filter-form form-text" id="formFilter">
+            <div class="row">
+                <div class="filter-input col-3">
+                    <div class="orderby-icon"><i id="album-asc" class="fas fa-sort-up" onclick="orderBy(this.id)"></i></div>
+                    <div class="texto-orderby">Album</div>
+                    <div class="orderby-icon"><i id="album-desc" class="fas fa-sort-down" onclick="orderBy(this.id)"></i></div>                
+                </div>
+            <div class="filter-input col-3">
+                <div class="orderby-icon"><i id="artista-asc" class="fas fa-sort-up" onclick="orderBy(this.id)"></i></div>
+                <div class="texto-orderby">Artista</div>
+                <div class="orderby-icon"><i id="artista-desc" class="fas fa-sort-down" onclick="orderBy(this.id)"></i></div>
+            </div>
+            <div class="filter-input col-3">
+                <div class="orderby-icon"><i id="year-asc" class="orderby-icon fas fa-sort-up" onclick="orderBy(this.id)"></i></div>
+                <div class="texto-orderby">Año</div>                            
+                <div class="orderby-icon"><i id="year-desc" class="fas fa-sort-down" onclick="orderBy(this.id)"></i></div>                    
+            </div>
+            <div class="filter-input col-3">                
+                <div class="orderby-icon"><i id="genero-asc" class="fas fa-sort-up" onclick="orderBy(this.id)"></i></div>
+                <div class="texto-orderby">Genero</div>
+                <div class="orderby-icon"><i id="genero-desc" class="fas fa-sort-down" onclick="orderBy(this.id)"></i></div>                
+            </div>
+            </div>
+        </form>
+        
+        <!--ORDER FORM OLD-->
         <div class="orderBy-form" id="orderBy-form">
             <!--<a href="javascript:void(0)" class="closebtn" onclick="openOrderBy()">&times;</a>
             <br><br>-->
@@ -91,7 +109,7 @@
             <div class="menu-h-item col-1" onclick="changeMode(dataAlbum)" id="modeBtn">Lista</div>
             <div class="menu-h-item col-1" onclick="refreshData()">Refrescar</div>
             <div class="menu-h-item col-1" onclick="openSearch(this.id)" id="h-search">Buscar</div>
-            <div class="menu-h-item col-1" onclick="openOrderBy()">Ordenar</div>
+            <div class="menu-h-item col-1" onclick="openOrderBy(this.id)" id="h-orderby">Ordenar</div>
             <div class="menu-h-item col-1" onclick="working()">Editar</div>
             <div class="menu-h-item col-1" onclick="working()">Nuevo</div>
             <div class="menu-h-item col-6"><a href="/logout">Salir</a></div>
