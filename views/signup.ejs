@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">    
     <title>The SounLDibrary</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
@@ -21,7 +22,7 @@
 
     <script>    
     
-    // With the element initially hidden, we can show it slowly:
+    // FadeIN:
     
     $( document ).ready(function() {
       $( ".row" ).fadeIn(1000, function(){
@@ -59,9 +60,10 @@
                 </form>
 
                 <hr>
-
-                <p>¿Ya tienes una cuenta? <a href="/login">Iniciar sesión</a></p>
-                <p><a href="/">Volver</a></p>
+				<div  class="opciones">
+                <p>¿Ya tienes una cuenta? <a href="/login"><big>Iniciar sesión</big></a></p>
+                <p><a href="/"><big>Volver<big></a></p>
+				</div>
             </div>
         </div>    
     </div>

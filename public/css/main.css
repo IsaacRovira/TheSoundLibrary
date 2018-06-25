@@ -148,7 +148,7 @@ body{
     font-size: 1.0vw;    
     writing-mode: vertical-rl;
     text-orientation: upright;
-    margin: 0 auto;
+    margin: 0 auto; /*Centrar*/
     height: 8vw;
 }
 .orderby-icon{    
@@ -170,6 +170,8 @@ body{
     overflow: hidden; /*scroll horizontal*/
     padding: auto; /*ajustar posición vertical*/
     height: 0; /*posiciones iniciales 0*/
+    padding-left: 0.5wh;
+    padding-right:0.5wh;
     width: 0;
     color:white;
 }
@@ -369,9 +371,10 @@ legend{
 }
 .list-group-item{
     border: 0;
-    margin: 0;
+    margin: 0 0 3px 0;
     padding: 1%;
-    background: linear-gradient(to right, whitesmoke , transparent);
+    /*background: linear-gradient(to right, whitesmoke , transparent);*/
+    background: whitesmoke;
 }
 .list-group-item:hover{
     opacity: 1;
@@ -380,6 +383,8 @@ legend{
     margin: 1px;
 }
 .text-album{
+    margin: 0;
+    font-family: verdana;
     font-weight: bold;
 }
 .div-list-songs{

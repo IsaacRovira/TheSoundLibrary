@@ -2,25 +2,46 @@
 Estilo de las pagina de bienvendia y las de registo e inicio de sesión.
 */
 
-    body{
-        padding-top: 20%;
-        background: black;
-            
-        height: 100%;
-        background-image: URL(https://j.gifs.com/qYA3V3.gif);
-
+.transparent{
+    border: solid black 1px;
+    background: rgba(0,0,0,0.5);
+}
+.white{
+    background:rgba(0,0,100,0.8);
+    background: linear-gradient(rgba(0,0,100,0.4),rgba(0,0,50,0.2),rgba(0,0,0,0.1));
+    padding-top: 15%;
+    color:white;
+}
+.opciones{
+    /*background: rgba(255,255,255,0.2);*/
+    /*background: linear-gradient(to right,rgba(0,0,0,0.1),transparent);*/    
+    padding: 1%;    
+}
+.opciones big{
+    color: #eb9316;
+}
+.opciones big:hover{
+    color: #0275d8;
+}
+@media screen and (min-width: 1024px){
+    body{    
+        background-image: url(../img/intro/vinyl_records_pic.jpg);
         background-repeat: no-repeat;
+        background-size:cover;
+        background-position-x: center;        
+    }
+}
+@media screen and (max-width: 1024px){
+    body{
+        background-image: url(../img/intro/vinyl_records_vertical_pic.jpg);        
+        background-repeat: repeat;
         background-size: cover;
-        background-position-x:center;
-        
-        
+        background-position-x: center;
     }
-    
-    .transparent{
-        background:rgba(0,0,100,0.8);
-        background: radial-gradient(rgba(0,0,100,0.8),rgba(0,0,50,0.2),rgba(0,0,0,0.00));
-        border-radius: 10px;
-    }
+}
+
+@media screen and (max-height: 640px){
     .white{
-        color:white;
+        object-fit: cover;        
     }
+}

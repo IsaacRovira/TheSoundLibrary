@@ -50,8 +50,8 @@ var pText = {
 }
 ;
 var colClass = {
-    img: 'col-2 div-list-img',
-    txt: 'col-8 div-list-text'
+    img: 'col-3 div-list-img',
+    txt: 'col-9 div-list-text'
 }
 ;
 var containerDiv = {

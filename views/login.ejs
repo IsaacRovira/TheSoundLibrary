@@ -2,7 +2,9 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>The SounLDibrary</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -14,18 +16,14 @@
     
     <style>
         .col-sm-6{display:none;}
-        .row{display:none;}
-        big{
-            color: white;
-        }
+        .row{display:none;}        
     </style>
     
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     
     <script>    
     
-// With the element initially hidden, we can show it slowly:
-
+// FadeIN:
     $( document ).ready(function() {
       $( ".row" ).fadeIn(1000, function(){
         $( ".col-sm-6" ).fadeIn(1500);
@@ -62,9 +60,10 @@
             </form>
 
             <hr>
-
+			<div  class="opciones">
             <p>Necesitas una cuenta? <a href="/signup"><big>¡Regístrate!</big></a></p>
-            <p><a href="/"><big>Volver<big></a>.</p>
+            <p><a href="/"><big>Volver</big></a></p>
+			</div>
 
         </div>
     </div>

@@ -43,7 +43,10 @@
             </div>
         </div>
         
-        <!--SEARCH FORM-->
+        <!--
+        
+        
+        SEARCH FORM-->
         <form class="search-form form-text" id="formSearch">            
             <div class="search-form-album">
                 <div class="search-input">Album: <input type="text" name="album"></div>
@@ -59,7 +62,10 @@
             <!-- <input id="btn-search" type="button" onclick="searchAlbum()"> -->
         </form>
         
-        <!--ORDER FORM NEW-->
+        <!--
+        
+        
+        ORDER FORM HORIZONTAL-->
         <form class="filter-form form-text" id="formFilter">
             <div class="row">
                 <div class="filter-input col-3">
@@ -85,26 +91,32 @@
             </div>
         </form>
         
-        <!--ORDER FORM OLD-->
+        <!--
+        
+        
+        ORDER FORM SMALL-->
         <div class="orderBy-form" id="orderBy-form">
             <!--<a href="javascript:void(0)" class="closebtn" onclick="openOrderBy()">&times;</a>
             <br><br>-->
             <form class="form-select-input" id="formOrderByAlbum">
-                <select name="filtro"  id="select-orderBy" onchange="orderBy()">
+                <select name="filtro"  id="select-orderBy" onchange="orderBy(this.id)">
                     <option value="discoId" selected>Predeterminado</option>
-                    <option value="album asc">Album &uarr;</option>
-                    <option value="album desc">Album &darr;</option>
-                    <option value="artista asc">Artista &uarr;</option>
-                    <option value="artista desc">Artista &darr;</option>
-                    <option value="year asc">Año &uarr;</option>
-                    <option value="year desc">Año &darr;</option>
-                    <option value="genero asc">Genero &uarr;</option>
-                    <option value="genero desc">Genero &darr;</option>                    
+                    <option value="album-asc">Album &uarr;</option>
+                    <option value="album-desc">Album &darr;</option>
+                    <option value="artista-asc">Artista &uarr;</option>
+                    <option value="artista-desc">Artista &darr;</option>
+                    <option value="year-asc">Año &uarr;</option>
+                    <option value="year-desc">Año &darr;</option>
+                    <option value="genero-asc">Genero &uarr;</option>
+                    <option value="genero-desc">Genero &darr;</option>                    
                 </select>                
                 <!--<input type="button" onclick="orderBy()" value="Ordenar">-->
             </form>
         </div>
-<!--NAV MENU-->
+        <!--
+                
+        
+        NAV MENU HORIZONTAL-->
         <div class="row sidenav-h" id="sideMenu-h">            
             <div class="menu-h-item col-1" onclick="changeMode(dataAlbum)" id="modeBtn">Lista</div>
             <div class="menu-h-item col-1" onclick="refreshData()">Refrescar</div>
@@ -114,6 +126,11 @@
             <div class="menu-h-item col-1" onclick="working()">Nuevo</div>
             <div class="menu-h-item col-6"><a href="/logout">Salir</a></div>
          </div>
+        
+        <!--
+        
+        
+        NAV MENU VERTICAL-->
         <div class="sidenav" id="sideMenu">
             <ul class="list-group" id="list-group-sidenav">
                 <li class="list-group-item-text"><i id="modo" onclick="changeMode(dataAlbum)" class="far fa-newspaper"></i></li>
@@ -125,6 +142,10 @@
                 <li class="list-group-item-text"><a href="/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a></li>
             </ul>
         </div>
+        <!--
+        
+        
+        CONTENEDOR-->
         <!--<div class="container" id="mainContainer">-->
         <div class="row mainDataRowContainer">                
             <div class="container" id="dataContainer">
