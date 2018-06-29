@@ -60,6 +60,7 @@ body{
 }
 #menu-btn:hover{
    opacity: 0.8;
+   cursor: pointer;
 }
 .title{
     margin: 0% 10% 0 1%;
@@ -207,6 +208,12 @@ body{
     margin: 2%;
 }
 
+.fa-sort-up:hover{
+    cursor: pointer;
+}
+.fa-sort-down:hover{
+    cursor: pointer;
+}
 /*Search Form*/
 .search-form{
     transition: 0.3s;
@@ -338,7 +345,10 @@ legend{
 .sidenav-h>div:last-child a{
     color: white;    
 }
-
+.menu-h-item:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
 /*List style*/
 .div-list-img{
     margin: 0;
