@@ -352,12 +352,13 @@ legend{
 /*List style*/
 .div-list-img{
     margin: 0;
-    padding: 1%;
+    padding: 1px;
     border: 0;
+    object-fit: scale-down;
 }
 .div-list-text{
     margin: 0;
-    padding: 1%;
+    padding: 1px;
     border: 0;
 }
 .row-list-item{
@@ -370,24 +371,24 @@ legend{
     color: white;
 }
 .img-list{
-    margin: 1%;
-    padding: 0%;
-    width: auto;
-    height: 5em;
+    margin: 0%;
+    padding: 1px;
+    max-width: 100%;
 }
 .list-group{
     padding: 0%;
     margin: 1%;
+    width: 100%;
 }
 .list-group-item{
     border: 0;
     margin: 0 0 3px 0;
-    padding: 1%;
+    padding: 1px;
     /*background: linear-gradient(to right, whitesmoke , transparent);*/
     background: whitesmoke;
 }
 .list-group-item:hover{
-    opacity: 1;
+    opacity: .9;
 }
 .list-info{
     margin: 1px;

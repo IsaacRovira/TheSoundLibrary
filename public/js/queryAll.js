@@ -70,10 +70,10 @@ function doQuerySearch(destino, conditionsObj, limitINT, orderby, callback) {
         if (this.readyState === 4 && this.status === 201) {
             callback(this.responseText);
         }
-    };
-
+    }
+    ;
     xhttp.open("POST", destino, true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
     xhttp.send(buildSearchString(conditionsObj, limitINT, orderby));
 }
 ;
@@ -83,8 +83,8 @@ function doQuerySongsByAlbumId(destino, albumId, callback) {
         if (this.readyState === 4 && this.status === 201) {            
             callback(albumId, JSON.parse(this.responseText));
         }
-    };
-
+    }
+    ;
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send('discoId=' + albumId);
@@ -98,8 +98,7 @@ function buildSearchString(dataObject, maxInt, ordby){
     
     for(var key in dataObject){
         if(dataObject[key]) string+= key + "=" + dataObject[key] + "&";
-    }
-        
+    }        
     return string+="limit=" + max + "&orderby=" + ord;
 }
 ;

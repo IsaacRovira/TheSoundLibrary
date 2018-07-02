@@ -313,10 +313,10 @@ function getUserId() {
     return userid;
 }
 ;
-function load() {
+function load() {    
     //changeMode(JSON.parse(data));
     doQueryAll(urlSettings.std.general.canciones, commonData.datosCanciones.set);
-    doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);
+    doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);    
 }
 ;
 

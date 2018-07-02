@@ -112,9 +112,8 @@ function closeIconOnOff(text,id){
 //busca discos q coincidan con los criterios.
 function searchAlbum(){
     var elements = document.getElementById('formSearch').elements;
-    var dataToSearch={};
-    
-    for(var key in elements){
+    var dataToSearch={};    
+    for(var key in elements){        
         switch(elements[key].value){
             case 'Album':
             case 'Artista':
@@ -122,7 +121,7 @@ function searchAlbum(){
             case 'Genero':
             case 'Cancion':
                 break;
-            default:
+            default:                
                 if(elements[key].value) dataToSearch[elements[key].name] = elements[key].value;
         }
     }
@@ -130,7 +129,7 @@ function searchAlbum(){
     commonData.dataToSearch.set(dataToSearch);
     
     //Realizamos la consulta.
-    doQuerySearch(commonData.url.get()['std']['general']['discos'], dataToSearch, 0, commonData.orderByField.get(), commonData.datosDiscos.set);
+    doQuerySearch(commonData.url.get()['std']['general']['discos'], commonData.dataToSearch.get(), 0, commonData.orderByField.get(), commonData.datosDiscos.set);
     //Cerramos el menú consulta.
     closeSubMenus();
 }
@@ -212,7 +211,6 @@ function working(){
     alert("FUNCIÓN NO DISPONIBLE TODAVÍA.");
 }
 ;
-
 //ONSELECT SEARCH
 function cleanTextOnSelect(id){
     var attrb = document.getElementById(id).getAttribute('value');

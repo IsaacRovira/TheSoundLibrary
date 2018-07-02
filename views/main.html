@@ -47,18 +47,18 @@
         
         
         SEARCH FORM-->
-        <form class="search-form form-text" id="formSearch">            
+        <form class="search-form form-text" id="formSearch">
             <div class="search-form-album">
-                <div class="search-input">Album: <input type="text" name="album"></div>
-                <div class="search-input">Artista: <input type="text" name="artista" onblur="" onclick="cleanTextOnSelect(this.id)" id="artista-input"></div>
-                <div class="search-input">Año: <input type="text" name="year"></div>
-                <div class="search-input">Genero: <input type="text" name="genero"></div>
+                <div class="search-input">Album:<div><input type="text" name="album"></div></div>
+                <div class="search-input">Artista:<div><input type="text" name="artista" onblur="" onclick="cleanTextOnSelect(this.id)" id="artista-input"></div></div>
+                <div class="search-input">Año:<div><input type="text" name="year"></div></div>
+                <div class="search-input">Genero:<div><input type="text" name="genero"></div></div>
             </div>
             <div class="search-form-songs">
-                <div class="search-input">Canción: <input type="text" name="cancion"></div>
-                <div class="search-input">Artista canción: <input type="text" name="artista"></div>
+                <div class="search-input">Canción:<div><input type="text" name="cancion"></div></div>
+                <div class="search-input">Artista canción:<div><input type="text" name="artista"></div></div>
             </div>
-            <button class="btn" onclick="searchAlbum()"><i class="fas fa-search"></i></button>
+            <div class="btn" onclick="searchAlbum()"><i class="fas fa-search"></i></div>
             <!-- <input id="btn-search" type="button" onclick="searchAlbum()"> -->
         </form>
         
