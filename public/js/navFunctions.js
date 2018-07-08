@@ -34,7 +34,7 @@ function openNav() {
 ;
 //Refrescar contenido
  /* Volver a consultar la base de datos y acutlaizar el contenido mostrado según el modo seleccionado, lista o mosaico*/
-function refreshData(){    
+function refreshData(){
     doQueryAll(commonData.url.get()['std']['general']['discos'], commonData.datosDiscos.set);
     commonData.dataToSearch.set({});
     commonData.orderByField.set('discoId');
@@ -126,12 +126,13 @@ function searchAlbum(){
         }
     }
     //Almacenamos la cadena con los criterios de busqueda.
-    commonData.dataToSearch.set(dataToSearch);
-    
+    commonData.dataToSearch.set(dataToSearch);    
     //Realizamos la consulta.
     doQuerySearch(commonData.url.get()['std']['general']['discos'], commonData.dataToSearch.get(), 0, commonData.orderByField.get(), commonData.datosDiscos.set);
     //Cerramos el menú consulta.
     closeSubMenus();
+    //Desactivamos el los detalles si los estamos mostrando.
+    deactivateDivMosaic(id)
 }
 ;
 //Ordenar

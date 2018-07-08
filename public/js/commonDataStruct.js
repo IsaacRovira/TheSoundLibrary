@@ -291,8 +291,11 @@ function updateDataSongs(newData) {
 }
 ;
 function updateDataAlbums(newData) {    
-    commonData.albumsUpdateStatus.set(true);
+    commonData.albumsUpdateStatus.set(true); //Actualizamos el estado del estado de albumsUpdata
+    commonData.activeId.set(null);          //Pasamos el valor null a la variable que almacena la id del album que muestra los detalles.
+    commonData.isActive.set(false);         //Asignamos false a la variable que indica que hay un album q muestra los detalles.
     removeElements();
+
     if(esMosaico){
         genImageMosaico(newData);
     }else{

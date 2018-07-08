@@ -125,7 +125,7 @@ function detailNodeStruct(tag, id, clase, funciones, childs) {
 
 //MODO MOSAICO
 //*****************************************************************************************
-//Recorre las estructuras de datos y devuelve un div con los detalles.
+//Recorre las estructuras de datos definidas y devuelve un div con los detalles.
 function generarDivDetalles(id, songs) {    
     var nodeChildList = [];    
     for (var sets in nodeSets) {//Recorremos la estructura nodeSets y generamos los childs para el div que contendrá los detalles.
