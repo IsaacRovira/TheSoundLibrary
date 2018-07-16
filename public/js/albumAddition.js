@@ -24,10 +24,8 @@ var discogs={
         per_page    :25,
         page        :1
     }
-};
-
-
-
+}
+;
 
 /*
  * Debe generar una cadena tipo: {back to black, Amy Winehouse, soul,release}&{?title,artist,genere,type}
@@ -74,8 +72,8 @@ function doSearch(){
     
     alert(searchValues);
     queryDiscogs(discogs['url'],searchValues, pagination, testResponse);
-};
-
+}
+;
 function queryDiscogs(destino, valores, param, callback) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {        
@@ -96,7 +94,6 @@ function queryDiscogs(destino, valores, param, callback) {
     xhttp.send();
 }
 ;
-
 function testResponse(valor){    
     data = JSON.parse(valor);  
     var nodeUL = document.createElement('ul');
@@ -112,7 +109,7 @@ function testResponse(valor){
                 case 'barcode':
                 case 'genre':
                     var nodeP = document.createElement('p');
-                    var nodeTXT = document.createTextNode(key + ": "+ JSON.stringify(data['results'][num][key]));
+                    var nodeTXT = document.createTextNode(key + ": "+ getString(data['results'][num][key]));
                     nodeP.appendChild(nodeTXT);
                     nodeLI.appendChild(nodeP);
                     break;
@@ -146,3 +143,167 @@ function testResponse(valor){
     document.getElementById('lista').remove();
     document.getElementById('mainContainer').appendChild(nodeUL);
 }
+;
+function basicNodeStruct(tag, id, clase, valor){
+    var node = document.createElement(tag);
+    
+    if(id){node.setAttribute('id', id);}
+    if(clase){node.setAttribute('class', clase);}
+    
+    if(valor){
+        var txt = document.createTextNode(valor);
+        node.appendChild(txt);
+    }
+    return node;
+}
+;
+function imgNodeStruct(tag, id, clase, src){
+    var node = document.createElement('tag');
+    
+    if(id){node.setAttribute('id', id);}
+    if(clase){node.setAttribute('class', clase);}
+    
+    node.setAttribute('src', src);
+    
+    return node;
+}
+;
+function imgStruct(tag, id, clase, src){
+    var node ={
+        node    : tag,
+        id      : id,
+        class   : clase,
+        src     : src
+    };
+    return node;
+}
+;
+function textDivStruct(tag,id,clase){
+    var node ={
+        node : tag,
+        id   : id,
+        class: clase
+    };
+    return node;
+}
+;
+var itemStruct ={
+    itemDiv:{
+        tag    :  'div',
+        id      :  '',
+        class   :  'itemDiv',
+        childs  :{
+            imgDiv:{
+                node    : 'div',
+                id      : '',
+                class   : 'imgDiv',
+                childs  :{
+                    img : imgStruct('img', '', 'imgFrame', '')
+                }
+            },
+            txtDiv:{
+                node: 'div',
+                id  : '',
+                class: 'mainDataText',
+                childs:{
+                    title  : textDivStruct('div','','textDiv titulo'),
+                    artist : textDivStruct('div','','textDiv'),
+                    year    : textDivStruct('div','','textDiv'),
+                    country : textDivStruct('div','','textDiv'),
+                    catno   : textDivStruct('div','','textDiv')
+                }
+            },
+            dataDiv:{
+                node: 'div',
+                id  : '',
+                class: 'dataDiv',
+                childs:{
+                    barcode : textDivStruct('div', '', 'textDiv'),
+                    label   : textDivStruct('div', '', 'textDiv'),
+                    style   : textDivStruct('div', '', 'textDiv'),
+                    genre  : textDivStruct('div', '', 'textDiv'),
+                    format  : textDivStruct('div', '', 'textDiv')
+                }
+            }
+        }        
+    }
+}
+;
+function genNode(object, valor){
+    switch(object['node']){
+        case 'img':
+            var node = imgNodeStruct(object['node'], object['id'],object['class'], valor['src']);
+            break;
+        default:
+            var node = basicNodeStruct(object['node'], object['id'], object['class'], valor);
+    }
+    if(object['childs']){        
+        for(var key in object['childs']){
+            var txt = '';
+            switch(key){
+                case 'title':
+                case 'artist':
+                case 'year':
+                case 'country':
+                case 'catno':
+                case 'barcode':
+                case 'label':
+                case 'style':
+                case 'genre':
+                case 'format':                
+                    txt= tagNames[key]+tagNames['separador'] + valor[key];
+                    break;
+                default:
+                    txt = valor['empty'];
+            }
+            var nodeChild = genNode(object['childs'][key], txt);
+            node.appendChild(nodeChild);
+        }    
+    }
+    return node;
+}
+;
+var tagNames={
+        title   : 'Título',
+        artis   : 'Artista',
+        year    : 'Año',
+        country : 'País',
+        catno   : 'Núm.Cat',
+        barcode : 'Código de barras',
+        label   : 'Etiquetado',
+        style   : 'Estilos',
+        genre   : 'Géneros',
+        format  : 'Soportes',
+        separador: ': '
+}
+;
+function albumData(src, title, artist, year, country, catno, barcode, label, style, genre, format){
+    var data={
+        src     : src,
+        title   : title,
+        artis   : artist,
+        year    : year,
+        country : country,
+        catno   : catno,
+        barcode : getString(barcode),
+        label   : getString(label),
+        style   : getString(style),
+        genre   : getString(genre),
+        format  : getString(format),
+        empty   : ''
+    };
+    return data;
+}
+;
+function getString(data){
+    var cadena='';
+    for(var key in data){
+        if(cadena.length > 0){
+            cadena+=', '+data[key];
+        }else{
+            cadena=data[key];
+        }        
+    }
+    return cadena;
+}
+;
