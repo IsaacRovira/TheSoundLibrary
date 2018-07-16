@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>The Sound Library</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--CSS-->
+        <link rel="stylesheet" type="text/css" href="../public/css/addition.css">
+        <!--JavaScript-->
+        <script src= "../public/js/albumAddition.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="header" id="head">
+            <div class="row title-row">
+<!--Pantallas grandes-->
+                <div class="title-text" id="titleFull">
+                    <h1 class="title"><i id="menu-btn" class="fas fa-bars" onclick="back()"></i>The Sound Library</h1>
+                </div>
+<!--Pantallas pequeñas-->
+                <div class="title-text" id="titleSmall">
+                    <h1 class="title"><i id="menu-btn" class="fas fa-bars" onclick="back()"></i>TSL</h1>
+                </div>
+            </div>
+        </div>
+<!--Formulario para la búsqueda-->        
+        <div id="formulariobusqueda" class="search-form">
+            <form id="searchFormAddition" class="search-form">
+                <div class="search-input">
+                    <div class="search-form-name">Artista</div>
+                    <input type="text" name="artist"></div>
+                <div class="search-input">
+                    <div class="search-form-name">Etiqueta</div>
+                    <input type="text" name="label"></div>
+                <div class="search-input">
+                    <div class="search-form-name">Título</div>
+                    <input type="text" name="release_title"></div>
+                <div class="search-input">
+                    <div class="search-form-name">Estilo</div>
+                    <input type="text" name="style"></div>
+                <div class="search-input">
+                    <div class="search-form-name">Género</div>
+                    <input type="text" name="genre"></div>
+                <div class="search-input">
+                    <div class="search-form-name">Formato</div>
+                    <input type="text" name="format"></div>
+                <div class="search-input">
+                    <div class="search-form-name">País</div>
+                    <input type="text" name="country"></div>
+                <div class="search-input">
+                    <div class="search-form-name">Código de barras</div>
+                    <input type="text" name="barcode"></div>
+                <div class="search-input">
+                    <div class="search-form-name">Año</div>
+                    <input type="text" name="year"></div>
+                <div class="search-button" onclick="doSearch()">SEARCH</div>
+            </form>
+        </div>
+
+        
+        
+        
+        
+<!--Resultados de la búsqueda-->
+        <div id="mainContainer" class="resultContainer">
+            <div id='lista'>TODO resultados de la búsqueda</div>
+        </div>
+
+        
+<!--Pie de página / menú de navegación-->
+        <div id="footMenu" class="footer">
+            <div id="anterior" class="footblock ant" onclick="">ANTERIOR</div>
+            <div id="pageinfo" class="footblock info">NUM/TOT</div>
+            <div id="siguiente" class="footblock sig" onclick="">SIGUIENTE</div>
+        </div>
+    </body>
+</html>
