@@ -71,7 +71,7 @@ function doSearch(){
     
     
     alert(searchValues);
-    queryDiscogs(discogs['url'],searchValues, pagination, testResponse);
+    queryDiscogs(discogs['url'],searchValues, pagination, getData);
 }
 ;
 function queryDiscogs(destino, valores, param, callback) {
@@ -94,8 +94,24 @@ function queryDiscogs(destino, valores, param, callback) {
     xhttp.send();
 }
 ;
+function getData(valor){
+    var res = JSON.parse(valor)['results'];
+    var nodeUL = document.createElement('ul');
+    nodeUL.setAttribute('id','lista');
+    
+    for(var key in res){       
+        var newLiNode = document.createElement('li');
+        newLiNode.appendChild(genNode(itemStruct, albumData(res[key]),'itmDiv'));
+        nodeUL.appendChild(newLiNode);
+    }
+    
+    //removeNode = document.getElementById('lista');
+    document.getElementById('lista').remove();
+    document.getElementById('mainContainer').appendChild(nodeUL);
+}
+;
 function testResponse(valor){    
-    data = JSON.parse(valor);  
+    data = JSON.parse(valor);
     var nodeUL = document.createElement('ul');
     nodeUL.setAttribute('id','lista');
     alert(data['pagination']['items']);    
@@ -144,6 +160,128 @@ function testResponse(valor){
     document.getElementById('mainContainer').appendChild(nodeUL);
 }
 ;
+var itemStruct ={
+    itmDiv:{
+        node    :  'div',
+        id      :  '',
+        class   :  'itemDiv',
+        childs  :{
+            imgDiv:{
+                node    : 'div',
+                id      : '',
+                class   : 'imgDiv',
+                childs  :{                    
+                    img : imgStruct('img', '', 'imgFrame', '')
+                }
+            },
+            txtDiv:{
+                node: 'div',
+                id  : '',
+                class: 'mainDataText',
+                childs:{
+                    title  : textDivStruct('div','','textDiv titulo'),
+                    artist : textDivStruct('div','','textDiv'),
+                    year    : textDivStruct('div','','textDiv'),
+                    country : textDivStruct('div','','textDiv'),
+                    catno   : textDivStruct('div','','textDiv')
+                }
+            },
+            dataDiv:{
+                node: 'div',
+                id  : '',
+                class: 'dataDiv',
+                childs:{
+                    barcode : textDivStruct('div', '', 'textDiv'),
+                    label   : textDivStruct('div', '', 'textDiv'),
+                    style   : textDivStruct('div', '', 'textDiv'),
+                    genre  : textDivStruct('div', '', 'textDiv'),
+                    format  : textDivStruct('div', '', 'textDiv')
+                }
+            }
+        }
+    }
+}
+;
+function genNode(object, valor, key){
+    var txt = '';    
+    switch(key){
+        case 'title':
+        case 'artist':
+        case 'year':
+        case 'country':
+        case 'catno':
+        case 'barcode':
+        case 'label':
+        case 'style':
+        case 'genre':
+        case 'format':                
+            txt= tagNames[key]+tagNames['separador'] + valor[key];
+            break;
+        default:
+            txt = valor['empty'];
+    }
+    
+    switch(object[key]['node']){
+        case 'img':
+            var node = imgNodeStruct(object[key]['node'], object[key]['id'],object[key]['class'], notUndefined(valor['src']));
+            break;
+        default:
+            var node = basicNodeStruct(object[key]['node'], object[key]['id'], object[key]['class'], notUndefined(txt));
+    }
+    if(object[key]['childs']){
+        for(var val in object[key]['childs']){
+            var nodeChild = genNode(object[key]['childs'], valor, val);
+            node.appendChild(nodeChild);
+        }
+    }
+    return node;
+}
+;
+var tagNames={
+        title   : 'Título',
+        artist   : 'Artista',
+        year    : 'Año',
+        country : 'País',
+        catno   : 'Núm.Cat',
+        barcode : 'Código de barras',
+        label   : 'Etiquetado',
+        style   : 'Estilos',
+        genre   : 'Géneros',
+        format  : 'Soportes',
+        separador: ': '
+}
+;
+function albumData(res){
+    var data={
+        src     : res['cover_image'],
+        title   : splitTitle(res['title'],' - ')['title'],
+        artist   : splitTitle(res['title'],' - ')['artist'],
+        year    : res['year'],
+        country : res['country'],
+        catno   : res['catno'],
+        barcode : getString(res['barcode']),
+        label   : getString(res['label']),
+        style   : getString(res['style']),
+        genre   : getString(res['genre']),
+        format  : getString(res['format']),
+        id      : res['id'],
+        empty   : ''
+    };
+    return data;
+}
+;
+function getString(data){
+    var cadena='';
+    for(var key in data){
+        if(cadena.length > 0){
+            cadena+=', '+data[key];
+        }else{
+            cadena=data[key];
+        }        
+    }
+    return cadena;
+}
+;
 function basicNodeStruct(tag, id, clase, valor){
     var node = document.createElement(tag);
     
@@ -157,8 +295,13 @@ function basicNodeStruct(tag, id, clase, valor){
     return node;
 }
 ;
+function notUndefined(valor){
+    if(valor)return valor;
+    return '';
+}
+;
 function imgNodeStruct(tag, id, clase, src){
-    var node = document.createElement('tag');
+    var node = document.createElement(tag);
     
     if(id){node.setAttribute('id', id);}
     if(clase){node.setAttribute('class', clase);}
@@ -187,123 +330,11 @@ function textDivStruct(tag,id,clase){
     return node;
 }
 ;
-var itemStruct ={
-    itemDiv:{
-        tag    :  'div',
-        id      :  '',
-        class   :  'itemDiv',
-        childs  :{
-            imgDiv:{
-                node    : 'div',
-                id      : '',
-                class   : 'imgDiv',
-                childs  :{
-                    img : imgStruct('img', '', 'imgFrame', '')
-                }
-            },
-            txtDiv:{
-                node: 'div',
-                id  : '',
-                class: 'mainDataText',
-                childs:{
-                    title  : textDivStruct('div','','textDiv titulo'),
-                    artist : textDivStruct('div','','textDiv'),
-                    year    : textDivStruct('div','','textDiv'),
-                    country : textDivStruct('div','','textDiv'),
-                    catno   : textDivStruct('div','','textDiv')
-                }
-            },
-            dataDiv:{
-                node: 'div',
-                id  : '',
-                class: 'dataDiv',
-                childs:{
-                    barcode : textDivStruct('div', '', 'textDiv'),
-                    label   : textDivStruct('div', '', 'textDiv'),
-                    style   : textDivStruct('div', '', 'textDiv'),
-                    genre  : textDivStruct('div', '', 'textDiv'),
-                    format  : textDivStruct('div', '', 'textDiv')
-                }
-            }
-        }        
-    }
-}
-;
-function genNode(object, valor){
-    switch(object['node']){
-        case 'img':
-            var node = imgNodeStruct(object['node'], object['id'],object['class'], valor['src']);
-            break;
-        default:
-            var node = basicNodeStruct(object['node'], object['id'], object['class'], valor);
-    }
-    if(object['childs']){        
-        for(var key in object['childs']){
-            var txt = '';
-            switch(key){
-                case 'title':
-                case 'artist':
-                case 'year':
-                case 'country':
-                case 'catno':
-                case 'barcode':
-                case 'label':
-                case 'style':
-                case 'genre':
-                case 'format':                
-                    txt= tagNames[key]+tagNames['separador'] + valor[key];
-                    break;
-                default:
-                    txt = valor['empty'];
-            }
-            var nodeChild = genNode(object['childs'][key], txt);
-            node.appendChild(nodeChild);
-        }    
-    }
-    return node;
-}
-;
-var tagNames={
-        title   : 'Título',
-        artis   : 'Artista',
-        year    : 'Año',
-        country : 'País',
-        catno   : 'Núm.Cat',
-        barcode : 'Código de barras',
-        label   : 'Etiquetado',
-        style   : 'Estilos',
-        genre   : 'Géneros',
-        format  : 'Soportes',
-        separador: ': '
-}
-;
-function albumData(src, title, artist, year, country, catno, barcode, label, style, genre, format){
-    var data={
-        src     : src,
-        title   : title,
-        artis   : artist,
-        year    : year,
-        country : country,
-        catno   : catno,
-        barcode : getString(barcode),
-        label   : getString(label),
-        style   : getString(style),
-        genre   : getString(genre),
-        format  : getString(format),
-        empty   : ''
+function splitTitle(valor, separador){
+    var datos ={
+      artist : valor.split(separador)[0],
+      title : valor.split(separador)[1] 
     };
-    return data;
-}
-;
-function getString(data){
-    var cadena='';
-    for(var key in data){
-        if(cadena.length > 0){
-            cadena+=', '+data[key];
-        }else{
-            cadena=data[key];
-        }        
-    }
-    return cadena;
+    return datos;
 }
 ;
