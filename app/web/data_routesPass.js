@@ -6,7 +6,7 @@ var sql             = require(path.normalize(config.raiz + "/config/database.js"
 
 
 module.exports = function(data_router) {
-
+    
     var error = function(mensaje, res){
             res.status(500);
             res.send(mensaje);
@@ -14,6 +14,7 @@ module.exports = function(data_router) {
 
     //FONOTECA CANCIONES
     data_router.post('/fonotecas/canciones', isLoggedIn, function(req, res){
+        
         console.log("Request fonotecas/canciones");
 
        //datos del body  
@@ -24,19 +25,19 @@ module.exports = function(data_router) {
            ['duracion', req.body.duracion],
            ['pista', req.body.pista],
            ['titulo', req.body.titulo],
-           ['userid', req.body.userid]
+           ['session', req.session.passport.user]
         ];
 
         //Generamos el string para la consulta SQL
-        var string = ' ';
+        var string = ' ';//String siempre > 0 para los queries a las fonotecas. Fuerza el "and" al comienzo en las funciones updateStringEqual y updateStringLike.
         for(var i =0; i < datos.length; i++){
             switch(i){
                     case 0: if(datos[i][1]){
                             string = updateStringEqual(datos[i][1], string, datos[i][0]);
-                            i=datos.length; //No añadimos más campos.
+                            i=datos.length; //No aï¿½adimos mï¿½s campos.
                         }
                         break;
-                        //Es necesario añadir la tabla para eliminar la ambiguedad en la sentencia SQL.
+                        //Es necesario aï¿½adir la tabla para eliminar la ambiguedad en la sentencia SQL.
                     case 2: if(datos[i][1]) string = updateStringEqual(datos[i][1], string, "discos."+datos[i][0]);
                         break;
                     case 3:
@@ -54,9 +55,9 @@ module.exports = function(data_router) {
             'Access-Control-Allow-Origin': '*'
         });
 
-        sql.connect().query(sql.fonotecas.canciones + string, req.body.userid,  function(err, result){
+        sql.connect().query(sql.fonotecas.canciones + string, datos.session/*req.body.userid*/,  function(err, result){
            if(err){
-                error("¡Ups! Algo ha fallado.",res);
+                error("ï¿½Ups! Algo ha fallado.",res);
                 console.log("Error query canciones fonoteca: " + err);
             }else{
                 if(JSON.stringify(result).length< 3){
@@ -72,6 +73,7 @@ module.exports = function(data_router) {
 
     //FONOTECA DISCOS
     data_router.post('/fonotecas/discos', isLoggedIn, function(req, res){   
+        console.log("\nDATA_ROUTESPASS\n");
         console.log("Request fonotecas/discos");
         //Datos del body
         var datos=[
@@ -84,21 +86,22 @@ module.exports = function(data_router) {
             ['genero', req.body.genero],
             ['identificadores', req.body.identificadores],
             ['tipo', req.body.tipo],
-            ['userid', req.body.userid]
+            //['userid', req.body.userid]
+            ['session', req.session.passport.user]
         ];   
 
-        var string =" ";
-        for(var i =0; i < datos.length; i++){
-            switch(i){
-                    case 0: if(datos[i][1]){
-                            //Es necesario añadir la tabla al campo para eliminar la ambiguedad en la sentencia SQL.
+        var string =" "; //String siempre > 0 para los queries a las fonotecas. Fuerza el "and" al comienzo en las funciones updateStringEqual y updateStringLike.
+        for(var i=0; i < datos.length; i++){
+            switch(datos[i][0]){
+                    case 'discoId': if(datos[i][1]){
+                            //Es necesario aÃ±adir la tabla al campo para eliminar la ambiguedad en la sentencia SQL.
                             string = updateStringEqual(datos[i][1], string, "discos."+datos[i][0]);
-                            i=datos.length; //No añadimos más campos.
+                            i=datos.length; //No aÃ±adimos mÃ¡s campos.
                         }
                         break;
-                    case 3:  if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
+                    case 'year':  if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
                         break;
-                    case 9: break;
+                    case 'sessionID': break;
                     default: if(datos[i][1]) string = updateStringLike(datos[i][1], string, datos[i][0]);
                         break;
             }
@@ -110,9 +113,9 @@ module.exports = function(data_router) {
             'Access-Control-Allow-Origin': '*'
         });
 
-        sql.connect().query(sql.fonotecas.discos + string, req.body.userid, function(err, result){
+        sql.connect().query(sql.fonotecas.discos + string, datos.session/*req.body.userid*/, function(err, result){
             if(err){
-                error("¡Ups! Algo ha fallado.",res);
+                error("Â¡Ups! Algo ha fallado.",res);
                 console.log("Error query discos: " + err);
             }else{                
                 if(JSON.stringify(result).length<3){
@@ -182,11 +185,11 @@ module.exports = function(data_router) {
                 console.log('\n' + sql.canciones.by_Any + cadena + '\n');
                 sql.connect().query(sql.canciones.by_Any + string, function(err, result){
                     if(err){
-                        error("¡Ups! Algo ha fallado.",res);
+                        error("ï¿½Ups! Algo ha fallado.",res);
                         console.log("Error query canciones: " + err);
                     }else{
                         if(JSON.stringify(result).length< 3){
-                            res.status(404).json({errors: ['Canción no encontrada']});
+                            res.status(404).json({errors: ['Canciï¿½n no encontrada']});
                             res.end();
                         }else{
                             res.status(201).json(result);
@@ -197,7 +200,7 @@ module.exports = function(data_router) {
             }else{
                 sql.connect().query(sql.canciones.all, function(err, result, fields){
                     if(err){
-                        error("¡Ups! Algo ha fallado.",res);
+                        error("ï¿½Ups! Algo ha fallado.",res);
                         console.log("Error query canciones: " + err);
                     }else{
                         //console.log(JSON.stringify(result));
@@ -221,7 +224,7 @@ module.exports = function(data_router) {
                             return consulta(string);
                         }
                     }
-                    error("Error de autenticación");
+                    error("Error de autenticaciï¿½n");
                     console.log("LogIn error user: " + datos['userid'] + ".");
                     res.end();
                     }
@@ -251,7 +254,7 @@ module.exports = function(data_router) {
             switch(i){
                     case 0: if(datos[i][1]){
                             string = updateStringEqual(datos[i][1], string, datos[i][0]);
-                            i=datos.length; //No añadimos más campos.
+                            i=datos.length; //No aï¿½adimos mï¿½s campos.
                         }
                         break;
                     case 3:  if(datos[i][1]) string = updateStringEqual(datos[i][1], string, datos[i][0]);
@@ -272,7 +275,7 @@ module.exports = function(data_router) {
     //        console.log(string);
             sql.connect().query(sql.discos.by_Any + string, function(err, result){
                 if(err){
-                    error("¡Ups! Algo ha fallado.",res);
+                    error("ï¿½Ups! Algo ha fallado.",res);
                     console.log("Error query discos: " + err);
                 }else{                
                     if(JSON.stringify(result).length<3){
@@ -287,7 +290,7 @@ module.exports = function(data_router) {
         }else{
             sql.connect().query(sql.discos.all, function(err, result){
                 if(err){
-                    error("¡Ups! Algo ha fallado.",res);
+                    error("ï¿½Ups! Algo ha fallado.",res);
                     console.log("Error query discos: " + err);
                 }else{
     //console.log(JSON.stringify(result));
@@ -299,12 +302,12 @@ module.exports = function(data_router) {
     });
 };
 
-// isLoggedIn verifica que el usuario haya iniciado sesión.
+// isLoggedIn verifica que el usuario haya iniciado sesiï¿½n.
 function isLoggedIn(req, res, next) {    
-    if (req.isAuthenticated()) //Verificar si el usuario ha iniciado sesión.
+    if (req.isAuthenticated()) //Verificar si el usuario ha iniciado sesiï¿½n.
         return next();
     
-    res.send({error : ("not logged in")}); //Usuarios no identificados a la página de inicio.
+    res.send({error : ("not logged in")}); //Usuarios no identificados a la pï¿½gina de inicio.
 }
 
 //Funciones auxiliares

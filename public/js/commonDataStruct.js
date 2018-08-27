@@ -318,8 +318,10 @@ function getUserId() {
 ;
 function load() {    
     //changeMode(JSON.parse(data));
-    doQueryAll(urlSettings.std.general.canciones, commonData.datosCanciones.set);
-    doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);    
+    doQueryAll(urlSettings.std.fonotecas.canciones, commonData.datosCanciones.set);
+    doQueryAll(urlSettings.std.fonotecas.discos, commonData.datosDiscos.set);
+    //doQueryAll(urlSettings.std.general.canciones, commonData.datosCanciones.set);
+    //doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);
 }
 ;
 

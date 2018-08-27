@@ -5,14 +5,14 @@ var mysql = require(config.modulos + 'mysql');
 
 
 var sql = {
-    config      : {
+    config          : {
                 host: config.sql.ip,
                 port: config.sql.port,
                 user: config.sql.user,
                 password: config.sql.pass,
                 database: config.sql.db
             },
-    users       : {
+    users           : {
                 all: "select * from users",
                 by_email: "select * from users where email = ?",
                 by_id_key: "select * from users where ID_key = ?",
@@ -22,7 +22,7 @@ var sql = {
                 by_username: "select * from users where username = ?",
                 by_id: "select * from users where userID = ?"
             },
-    discos      : {
+    discos          : {
                 all: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid",
                 by_id: "select * from discos where discoID = ?",
                 by_album: "select * from discos where Album = ?",
@@ -37,17 +37,17 @@ var sql = {
                 withSong: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid \n\
         inner join canciones where discos.discoId = canciones.discoId "
             },
-    generos     : {
+    generos         : {
                 all: "select * from generos",
                 by_id: "select * from generos where generoID = ?",
                 by_nombre: "select * from generos where genero = ?"
             },
-    soportes    : {
+    soportes        : {
                 all: "select * from soportes",
                 by_id: "select * from soportes where soporteid = ?",
                 by_tipo: "select * from soportes where soporteid = ?"
             },
-    fonotecas   : {
+    fonotecas       : {
                 all: "select * from fonotecas",
                 by_id: "select * from fonotecas where fonoID = ?",
                 by_nombre: "select * from fonotecas where nombre = ?",
@@ -61,7 +61,7 @@ var sql = {
                 by_discoID: "select * from fonotecasdata where DiscoID = ?",
                 by_fonoID: "select * from fonotecasdata where FonoID = ?"
             },
-    canciones   : {
+    canciones       : {
                 all: "select cancionId, discoId, artistas, duracion, pista, titulo from canciones",
                 by_id: "select * from canciones where CancionID = ",
                 by_artistas: "select * from canciones where Artistas contains ",
@@ -69,9 +69,10 @@ var sql = {
                 by_titulo: "select * from canciones where Titulo contains ",
                 by_Any: "SELECT cancionId, discoId, artistas, duracion, pista, titulo FROM canciones "
             },
-    connect     :
-                function(){
-                    con = mysql.createConnection({
+    discosNew       : 'SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid left join fonotecasdata on discos.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid inner join users on fonotecas.userid = users.userid where ID_key = ? and fonotecasdata.discoid is null',
+    cancionesNew    : 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones left join fonotecasdata on canciones.discoid = fonotecasdata.discoid inner join fonotecas on fonotecasdata.fonoid = fonotecas.fonoid inner join users on fonotecas.userid = users.userid where ID_key = ? and fonotecasdata.discoid is null',
+    connect         : function(){
+        con = mysql.createConnection({
                         host: config.sql.ip,
                         port: config.sql.port,
                         user: config.sql.user,

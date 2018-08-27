@@ -27,6 +27,32 @@ var discogs={
 }
 ;
 
+var pagination ={
+    itemsPerPage:       "",
+    totalItems:         "",
+    currentPage:        "",
+    urlNext:           "",
+    urlPrev:            "",
+    urlFirst:           "",
+    urlLast:            "",
+    totalPages:         "",
+    
+    newPagination:      function(){
+        this.itemsPerPage=  "";
+        this.totalItems=    "";
+        this.currentPage=   "";
+        this.urlPrev=       "";
+        this.urlNext=       "";
+        this.urlFirst=      "";
+        this.urlLast=       "";
+        this.totalPages=    "";        
+    },
+    setPagination:      function(){        
+    }
+}
+;
+
+
 /*
  * Debe generar una cadena tipo: {back to black, Amy Winehouse, soul,release}&{?title,artist,genere,type}
  * con los datos del formulario.
@@ -74,6 +100,9 @@ function doSearch(){
     queryDiscogs(discogs['url'],searchValues, pagination, getData);
 }
 ;
+/*
+ * Funcion callback => getData
+ */
 function queryDiscogs(destino, valores, param, callback) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {        
@@ -94,12 +123,17 @@ function queryDiscogs(destino, valores, param, callback) {
     xhttp.send();
 }
 ;
+/*
+ * Genera el código HTML con los datos obtenidos.
+ */
 function getData(valor){
+    var resInfo = JSON.parse(valor)['pagination'];    
     var res = JSON.parse(valor)['results'];
+    
     var nodeUL = document.createElement('ul');
     nodeUL.setAttribute('id','lista');
     
-    for(var key in res){       
+    for(var key in res){  
         var newLiNode = document.createElement('li');
         newLiNode.appendChild(genNode(itemStruct, albumData(res[key]),'itmDiv'));
         nodeUL.appendChild(newLiNode);
@@ -110,7 +144,7 @@ function getData(valor){
     document.getElementById('mainContainer').appendChild(nodeUL);
 }
 ;
-function testResponse(valor){    
+function testResponse(valor){
     data = JSON.parse(valor);
     var nodeUL = document.createElement('ul');
     nodeUL.setAttribute('id','lista');

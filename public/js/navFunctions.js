@@ -32,10 +32,22 @@ function openNav() {
     }          
 }
 ;
+
+//**********************************************************
+//NECESARIO IDENTIFICAR SI ESTAMOS EN FONOTECA O NUEVO.!!!!!
+//**********************************************************
 //Refrescar contenido
  /* Volver a consultar la base de datos y acutlaizar el contenido mostrado según el modo seleccionado, lista o mosaico*/
-function refreshData(){
-    doQueryAll(commonData.url.get()['std']['general']['discos'], commonData.datosDiscos.set);
+function refreshData(origen){    
+    switch(origen){
+        case 'add':            
+            doQueryAll(commonData.url.get()['std']['general']['discos'], commonData.datosDiscos.set);
+            break;
+        case 'changeMode':
+            doQueryAll(commonData.url.get()['std']['fonotecas']['discos'], commonData.datosDiscos.set);
+            break;
+    }
+    //doQueryAll(commonData.url.get()['std']['general']['discos'], commonData.datosDiscos.set);
     commonData.dataToSearch.set({});
     commonData.orderByField.set('discoId');
     closeSubMenus();
@@ -109,6 +121,10 @@ function closeIconOnOff(text,id){
     }
 }
 ;
+//**************************************************************
+//**************************************************************
+////NECESARIO IDENTIFICAR SI ESTAMOS EN FONOTECA O NUEVO.!!!!!
+//***************************************************************
 //busca discos q coincidan con los criterios.
 function searchAlbum(){
     var elements = document.getElementById('formSearch').elements;
@@ -189,6 +205,8 @@ function orderBy(id){
     document.getElementById("orderBy-form").style.width = "0";
 }
 ;
+//***************************************************************
+
 /*Cerrar menús*/
 function closeSubMenus(){
     for(var key in openSubMenus){
@@ -227,7 +245,7 @@ function cleanTextOnSelect(id){
     }
 }
 ;
-//Pictures error
+//SI NO ENCUENTRA EL ARCHIVO CON LA IMAGEN DEL DISCO...
 function getAltPic(id){
     document.getElementById(id).setAttribute('src', './img/Caratulas/nopic.jpg');
 }

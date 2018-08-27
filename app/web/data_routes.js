@@ -9,29 +9,34 @@ var aux = require(path.normalize(config.raiz + '/app/misc/misc.js'));
 
 module.exports = function (data_router) {
     //Canciones por fonoteca
-    data_router.post('/fonotecas/canciones', isLoggedIn, function (req, res) {        
+    data_router.post('/fonotecas/canciones', isLoggedIn, function (req, res) {
+        
         logCtrl(req, "Request fonotecas/canciones.");
 
         var datos   = getBodyData(dataSet().canciones, req);
-        var string  = buildSqlValues(datos);
+        var string  = buildSqlValues(datos,true);
         var limit   = buildLimit(datos);
         var orderby = orderBy(datos.orderby);
-        var query   = sql.canciones[qry(string)] + string + limit + orderby;
+        var query   = sql.fonotecas.canciones + string + limit + orderby;
         
-        userCheck(query, res, datos.userid, queryDb);
+        //userCheck(query, res, datos.userid, queryDb);
+        queryDb(null, query, res, datos.userid);
     });
 
     //Discos por fonoteca
     data_router.post('/fonotecas/discos', isLoggedIn, function (req, res) {        
+        
         logCtrl(req, "Request fonotecas/discos.");
 
         var datos   = getBodyData(dataSet().discos, req);
-        var string  = buildSqlValues(datos);
+        var string  = buildSqlValues(datos,true);
         var limit   = buildLimit(datos);
         var orderby = orderBy(datos.orderby);
-        var query   = sql.discos[qry(string)] + string + limit + orderby;
+        var query   = sql.fonotecas.discos + string + limit + orderby;
+        //var query   = sql.discos[qry(string)] + string + limit + orderby;
 
-        userCheck(query, res, datos.userid, queryDb);        
+        //userCheck(query, res, datos.userid, queryDb);
+        queryDb(null, query, res, datos.userid);
     });
 
     //Canciones
@@ -39,27 +44,29 @@ module.exports = function (data_router) {
         logCtrl(req, "Request Canciones.");
         
         var datos   = getBodyData(dataSet().canciones, req);
-        var string  = buildSqlValues(datos);
+        var string  = buildSqlValues(datos.true);
         var limit   = buildLimit(datos);
         var orderby = orderBy(datos.orderby);
-        var query   = sql.canciones[qry(string)] + string + limit + orderby;
+        var query   = sql.cancionesNew + string + limit + orderby;
         
-        userCheck(query, res, datos.userid, queryDb);
+        //userCheck(query, res, datos.userid, queryDb);
+        queryDb(null, query, res, datos.userid);
 
     });//Fin data_router.post Canciones
 
     // Discos
     data_router.post('/discos', isLoggedIn, function (req, res) {
-        logCtrl(req, "Request Discos.");
+        logCtrl(req, "*Request Discos.");
         //Encabezado        
 
         var datos   = getBodyData(dataSet().discos, req);
-        var string  = buildSqlValues(datos);
+        var string  = buildSqlValues(datos,true);
         var limit   = buildLimit(datos);
         var orderby = orderBy(datos.orderby);
-        var query   = sql.discos[qry(string)] + string + limit + orderby;
+        var query   = sql.discosNew + string + limit + orderby;
 
-        userCheck(query, res, datos.userid, queryDb);
+        //userCheck(query, res, datos.userid, queryDb);
+        queryDb(null, query, res, datos.userid);
     });
 };
 
@@ -75,8 +82,14 @@ function queryDb(err, qry, callback) {
     if (err) {
         return error(err, callback);
     }
+    
     //console.log(qry);
-    sql.connect().query(qry, function (err, result) {
+    if(arguments.length>3){
+        var user = arguments[3];      
+    }else{
+        user = null;
+    }
+    sql.connect().query(qry, user, function (err, result) {
         if (err) {
             return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (data_router): " + err]}, callback);
         }
@@ -98,10 +111,12 @@ function userCheck(qry, res, user, callback) {
             return callback({errorRes: ['Vaya, no conseguimos conectar con la BD'], code: [500], errorLog: ["Error (userCheck): " + err]}, qry, res);
         }
         ;
+        /*
         for (var key in result) {
-            //console.log("1 - " + result[key].ID_key + "\n2 - " + user + "\n3 - " + mysql.escape(user));
+            console.log("1 - " + result[key].ID_key + "\n2 - " + user + "\n3 - " + mysql.escape(user));
         }
         ;
+        */
         if (result.length > 0) {
             console.log("\tRequest by user: " + result[0]['Email']);
             return callback(null, qry, res);
@@ -192,8 +207,11 @@ function buildSqlValues(datos) {
         }
     }
     ;
-    if (string) {
+    if (string && arguments.length<2) {
         return 'where ' + string;
+    }
+    if(string && arguments[1]){
+        return ' and ' + string;
     }
     return '';
 }
@@ -228,7 +246,7 @@ function getBodyData(datos, req) {
     var data = datos;
     for (var key in data) {
         switch (key) {
-            case 'userid':
+            case 'userid':                
                 if (req.session.passport.user)
                     data[key] = req.session.passport.user;
                 break;
