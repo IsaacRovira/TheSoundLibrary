@@ -168,7 +168,7 @@ module.exports = function(data_router) {
 
                     break;
                     default:
-                        if(datos[key]!= null){
+                        if(datos[key]!== null){
                             string = updateStringLike(datos[key], string, key);
                         }
             }

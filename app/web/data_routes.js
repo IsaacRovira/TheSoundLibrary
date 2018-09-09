@@ -12,12 +12,12 @@ module.exports = function (data_router) {
     data_router.post('/fonotecas/canciones', isLoggedIn, function (req, res) {
         
         logCtrl(req, "Request fonotecas/canciones.");
-
+        
         var datos   = getBodyData(dataSet().canciones, req);
         var string  = buildSqlValues(datos,true);
         var limit   = buildLimit(datos);
         var orderby = orderBy(datos.orderby);
-        var query   = sql.fonotecas.canciones + string + limit + orderby;
+        var query   = sql.fonotecasdata.canciones + string + limit + orderby;
         
         //userCheck(query, res, datos.userid, queryDb);
         queryDb(null, query, res, datos.userid);
@@ -27,12 +27,13 @@ module.exports = function (data_router) {
     data_router.post('/fonotecas/discos', isLoggedIn, function (req, res) {        
         
         logCtrl(req, "Request fonotecas/discos.");
-
+        
         var datos   = getBodyData(dataSet().discos, req);
         var string  = buildSqlValues(datos,true);
         var limit   = buildLimit(datos);
         var orderby = orderBy(datos.orderby);
-        var query   = sql.fonotecas.discos + string + limit + orderby;
+        var query   = sql.fonotecasdata.discos + string + limit + orderby;
+        
         //var query   = sql.discos[qry(string)] + string + limit + orderby;
 
         //userCheck(query, res, datos.userid, queryDb);
@@ -44,13 +45,13 @@ module.exports = function (data_router) {
         logCtrl(req, "Request Canciones.");
         
         var datos   = getBodyData(dataSet().canciones, req);
-        var string  = buildSqlValues(datos.true);
+        var string  = buildSqlValues(datos);
         var limit   = buildLimit(datos);
         var orderby = orderBy(datos.orderby);
-        var query   = sql.cancionesNew + string + limit + orderby;
-        
+        var query   = sql.canciones.all + string + limit + orderby;
+
         //userCheck(query, res, datos.userid, queryDb);
-        queryDb(null, query, res, datos.userid);
+        queryDb(null, query, res);
 
     });//Fin data_router.post Canciones
 
@@ -66,7 +67,7 @@ module.exports = function (data_router) {
         var query   = sql.discosNew + string + limit + orderby;
 
         //userCheck(query, res, datos.userid, queryDb);
-        queryDb(null, query, res, datos.userid);
+        queryDb(null, query, res,datos.userid);
     });
 };
 
@@ -159,6 +160,7 @@ function buildLimit(datos) {
         return string;
     return "";
 }
+;
 //Muestra en consola un registro con los datos del request.
 function logCtrl(req, titulo) {
     console.log(aux.ahora() + ' \x1b[36m' + titulo + " " + req['ip'].split(':')[3] + '\x1b[0m');
@@ -196,7 +198,7 @@ function buildSqlValues(datos) {
                 //if(datos[key])orderby = ' order by ' + datos[key];
                 break;
             case 'discoId':
-                if(datos[key]){
+                if(datos[key]){                    
                     string = updateStringEqual(datos[key], string, key);
                 }                
                 break;
@@ -208,7 +210,7 @@ function buildSqlValues(datos) {
     }
     ;
     if (string && arguments.length<2) {
-        return 'where ' + string;
+        return ' where ' + string;
     }
     if(string && arguments[1]){
         return ' and ' + string;
@@ -251,13 +253,12 @@ function getBodyData(datos, req) {
                     data[key] = req.session.passport.user;
                 break;
             default:
-                if (req.body[key]) {
+                if (req.body[key]) {                    
                     data[key] = req.body[key];
                 }
                 ;
         }
     }
-
     return data;
 }
 ;

@@ -68,8 +68,20 @@ module.exports = function(passport) {
                                 console.log(err);
                                 return done(null, false, req.flash('signupMessage', 'Imposible conectar con la base de datos. Registro fallido.'));
                             }
-                            return done(null, newUser);
-                    });
+                            sql.connect().query("INSERT INTO fonotecas (UserID) SELECT userID from users where Email = ?", values[0], function(err){
+                                if(err){
+                                    console.log(err);
+                                    sql.connect().query("DELETE FROM users where Email = ?", values[0], function(errr){
+                                        if(errr){
+                                            console.log(errr);
+                                            return done(null, false, req.flash('singupMessage', 'Error en el proceso de registro. Transacción incompleta. Contacte con el administrador.'));
+                                        }
+                                    });
+                                    return done(null, false, req.flash('singupMessage', 'Error en el proceso de registro.'));
+                                }
+                            });
+                        return done(null, newUser);
+                    });                    
                 }
             });
         });

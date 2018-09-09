@@ -46,6 +46,9 @@ function refreshData(origen){
         case 'changeMode':
             doQueryAll(commonData.url.get()['std']['fonotecas']['discos'], commonData.datosDiscos.set);
             break;
+        case 'check':
+            doQueryAll(commonData.url.get()['std']['fonotecas']['discos'], commonData.datosDiscos.set);
+            break;
     }
     //doQueryAll(commonData.url.get()['std']['general']['discos'], commonData.datosDiscos.set);
     commonData.dataToSearch.set({});

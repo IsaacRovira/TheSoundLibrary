@@ -39,6 +39,7 @@ var isActive = false; //
 var activeDiv;
 var orderByField = "discoid";
 var dataToSearch={};
+var currentMode = check; //check, add, edit
 
 //***************************************************************
 function pathClass(callback) {
@@ -233,6 +234,18 @@ function dataToSearchClass(callback){
     };
 }
 ;
+function currentModeClass(callback){
+    return{
+        get:    function(){
+            return currentMode;
+        },
+        set:    function(newData){
+            currentMode = newData;
+            callback(newData);
+        }
+    };
+}
+;
 //**************************************************************
 var commonData = {
     path:               pathClass(function () {
@@ -282,6 +295,9 @@ var commonData = {
     }),
     dataToSearch:       dataToSearchClass(function(){
         return null;
+    }),
+    currentMode:        currentModeClass(function(){
+        return null;
     })
 };
 
@@ -295,7 +311,7 @@ function updateDataAlbums(newData) {
     commonData.activeId.set(null);          //Pasamos el valor null a la variable que almacena la id del album que muestra los detalles.
     commonData.isActive.set(false);         //Asignamos false a la variable que indica que hay un album q muestra los detalles.
     removeElements();
-
+    
     if(esMosaico){
         genImageMosaico(newData);
     }else{
@@ -318,7 +334,7 @@ function getUserId() {
 ;
 function load() {    
     //changeMode(JSON.parse(data));
-    doQueryAll(urlSettings.std.fonotecas.canciones, commonData.datosCanciones.set);
+    //doQueryAll(urlSettings.std.fonotecas.canciones, commonData.datosCanciones.set);
     doQueryAll(urlSettings.std.fonotecas.discos, commonData.datosDiscos.set);
     //doQueryAll(urlSettings.std.general.canciones, commonData.datosCanciones.set);
     //doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);
