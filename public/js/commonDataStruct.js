@@ -39,7 +39,7 @@ var isActive = false; //
 var activeDiv;
 var orderByField = "discoid";
 var dataToSearch={};
-var currentMode = check; //check, add, edit
+var currentMode = 'check'; //check, add, edit
 
 //***************************************************************
 function pathClass(callback) {

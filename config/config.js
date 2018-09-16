@@ -12,17 +12,19 @@ const APIPORT   = 3030;
 const HTTPPORT  = 80;
 
 
-//SQL
+//MYSQL
 const SQLPORT   = 3360;
 const SQLIP     = "127.0.0.1";
 const SQLUSER   = "nodejs";
 const SQLPASS   = "node.js";
 const SQLDB     = "soundlib";
+const DBMODE    = "sqlite" //sqlite | mysql
 
 module.exports ={
     modulos     : MODULOS,
     node        : NODE,
     raiz        : RAIZ,
+    dbmode      : DBMODE,
     
     sql:{
         port    : SQLPORT,

@@ -2,7 +2,7 @@
 
 var config = require(process.cwd() + '/config/config.js');
 var mysql = require(config.modulos + 'mysql');
-
+var sqlite3 = require('sqlite3').verbose();
 
 var sql = {
     config: {
@@ -71,16 +71,59 @@ var sql = {
     },
     discosNew: 'SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid where DiscoID not in (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.UserID where ID_key = ?)',
     cancionesNew: 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones where DiscoID NOT IN (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.UserID where ID_key = ?)',
-    connect: function () {
-        con = mysql.createConnection({
-            host: config.sql.ip,
-            port: config.sql.port,
-            user: config.sql.user,
-            password: config.sql.pass,
-            database: config.sql.db
-        });
-        return con;
-    }
+    
+    //Devuelve una función para la consulta según el motor seleccionado en configuración.
+    mysql:{
+            connect:  function () {
+                con = mysql.createConnection({
+                    host: config.sql.ip,
+                    port: config.sql.port,
+                    user: config.sql.user,
+                    password: config.sql.pass,
+                    database: config.sql.db
+                });
+                return con;
+            },
+            query:  function(qry,param,callback){
+                return sql.mysql.connect().query(qry,param,callback);
+            },
+            insert: function(qry,param,callback){
+                return sql.mysql.connect().query(qry,param,callback);
+            }
+        },
+    sqlite:{
+            connect: new sqlite3.Database('./sqlite/soundlib.db', function (err){
+                if(err){
+                    console.log(err.message);
+                }
+                console.log("Conectado a la base de datos soundlib.db");
+                /*
+                sql.sqlite.connect.each("select * from users", [], function(err, row){
+                    if(err){
+                        console.log(err);
+                    }
+                    
+                    console.log(row.email);
+                });
+                */
+            }),
+            query:  function(qry,parameter,callback){
+                console.log(qry +" "+parameter);
+                var param = parameter;
+                if(typeof(parameter) === 'string'){
+                    param = [param];                    
+                }
+                return sql.sqlite.connect.each(qry,param,callback);
+            },
+            insert: function(qry, parameter, callback){
+                console.log(qry +" "+parameter);
+                var param = parameter;
+                if(typeof(parameter) === 'string'){
+                    param = [param];
+                }
+                return sql.sqlite.connect.run(qry,param,callback);
+            }
+        }
 };
 
 module.exports = sql;

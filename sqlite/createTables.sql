@@ -1,0 +1,57 @@
+DROP TABLE IF EXISTS canciones;
+CREATE TABLE canciones (
+cancionID INTEGER PRIMARY KEY NOT NULL,
+titulo TEXT NOT NULL,
+pista INTEGER DEFAULT NULL,
+duracion TEXT DEFAULT NULL,
+artistas TEXT,
+discoID INTEGER NOT NULL,
+FOREIGN KEY(discoID) REFERENCES discos('discoID')
+);
+
+DROP TABLE IF EXISTS discos;
+CREATE TABLE discos(
+discoID INTEGER PRIMARY KEY NOT NULL,
+album TEXT NOT NULL,
+artista TEXT,
+year INTEGER,
+genero TEXT NOT NULL,
+soporteID INTEGER NOT NULL,
+etiquetado TEXT,
+identificadores TEXT,
+discografica TEXT,
+img_cover TEXT,
+img_backcover TEXT,
+FOREIGN KEY(soporteID) REFERENCES soportes(soporteID)
+);
+
+DROP TABLE IF EXISTS fonotecasdata;
+CREATE TABLE fonotecasdata(
+fonotecasDataID INTEGER PRIMARY KEY NOT NULL,
+userID INTEGER NOT NULL,
+discoID INTEGER NOT NULL,
+fechaRegistro TEXT,
+numItems INTEGER,
+FOREIGN KEY (userID) REFERENCES users(userID),
+FOREIGN KEY (discoID) REFERENCES discos(discoID)
+);
+
+DROP TABLE IF EXISTS soportes;
+CREATE TABLE soportes(
+soporteID INTEGER PRIMARY KEY NOT NULL,
+tipo TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users(
+userID INTEGER PRIMARY KEY NOT NULL,
+nombre TEXT, userName TEXT UNIQUE,
+displayNmae TEXT,
+email TEXT UNIQUE,
+password TEXT NOT NULL,
+ID_key TEXT NOT NULL UNIQUE,
+token TEXT UNIQUE,
+local INTEGER UNIQUE,
+twitter INTEGER UNIQUE,
+google INTEGER UNIQUE,
+facebook INTEGER UNIQUE);

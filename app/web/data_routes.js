@@ -67,7 +67,7 @@ module.exports = function (data_router) {
         var query   = sql.discosNew + string + limit + orderby;
 
         //userCheck(query, res, datos.userid, queryDb);
-        queryDb(null, query, res,datos.userid);
+        queryDb(null, query, res, datos.userid);
     });
 };
 
@@ -90,7 +90,7 @@ function queryDb(err, qry, callback) {
     }else{
         user = null;
     }
-    sql.connect().query(qry, user, function (err, result) {
+    sql[config.dbmode].query(qry, user, function (err, result) {
         if (err) {
             return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (data_router): " + err]}, callback);
         }
@@ -107,7 +107,7 @@ function userCheck(qry, res, user, callback) {
         return callback({code: [401], errorRes: ["Falta ID de usuario."], errorLog: ["Error (data_router). User = " + user]}, qry, res);
     }
     ;
-    sql.connect().query(sql.users.by_id_key, user, function (err, result) {
+    sql[config.dbmode].query(sql.users.by_id_key, user, function (err, result) {
         if (err) {
             return callback({errorRes: ['Vaya, no conseguimos conectar con la BD'], code: [500], errorLog: ["Error (userCheck): " + err]}, qry, res);
         }
@@ -131,7 +131,7 @@ function userCheck(qry, res, user, callback) {
 //Verifica q el usuario existe antes de llamar a la consulta solicitada.
 function usrCheck(user, callback) {
     var data = null;
-    sql.connect().query(sql.users.by_id_key, user, function (err, result) {
+    sql[config.dbmode].query(sql.users.by_id_key, user, function (err, result) {
         if (err) {
             console.error("@Error query usuarios: " + err);
             data = {error: ['Error conectando a la BD'], code: [500]};

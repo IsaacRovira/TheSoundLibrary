@@ -49,7 +49,7 @@ function queryDb(err, qry, callback) {
         return error(err, callback);
     }
     //console.log("\n"+qry+"\n");
-    sql.connect().query(qry, function (err, result) {
+    sql[config.dbmode].query(qry, function (err, result) {
         if (err) {
             return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (api_router>>discos): " + err]}, callback);
         }
@@ -64,7 +64,7 @@ function userCheck(qry, res, user, callback) {
         return callback({code: [401], errorRes: ["Falta ID de usuario."], errorLog: ["Error (api_router>>canciones). User = " + user]}, qry, res);
     }
     ;
-    sql.connect().query(sql.users.by_id_key, user, function(err, result){ 
+    sql[config.dbmode].query(sql.users.by_id_key, user, function(err, result){ 
         if (err) {
             return callback({errorRes: ['Vaya, no conseguimos conectar con la BD'], code: [500], errorLog: ["Error (userCheck): " + err]}, qry, res);
         }        

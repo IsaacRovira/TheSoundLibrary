@@ -6,12 +6,15 @@ var config          = require(process.cwd()+'/config/config.js');
 //Modulos
 var path            = require(config.modulos + 'path');
 var LocalStrategy   = require(config.modulos + 'passport-local').Strategy;
-var mysql           = require(config.modulos + 'mysql');
+//var mysql           = require(config.modulos + 'mysql');
 //var express         = require(config.modulos + 'express');
 
 //Modelo usuario
 var sql             = require(path.normalize(config.raiz + "/config/database.js"));
-var User            = require(path.normalize(config.raiz+'/app/models/user'));
+var User            = require(path.normalize(config.raiz+'/app/models/user.js'));
+
+//Aux
+var aux             = require(path.normalize(config.raiz+'/app/misc/misc.js'))
 
 
 // EXPORTS passport
@@ -21,13 +24,22 @@ module.exports = function(passport) {
         done(null, user.local.id);
     });
     passport.deserializeUser(function(id, done) {
-        sql.connect().query("SELECT * from users where ID_key = ?", id, function(err, results){
+        sql[config.dbmode].query("SELECT * from users where ID_key = ?", id, function(err, results){
             user = new User();
-            user.local.id       = results[0].ID_key;
-            user.local.email	= results[0].Email;
-            user.local.password	= results[0].Password;
+            if(err){
+                console.log(err);
+                done(err, user);
+            }
+            switch(config.dbmode){
+                case 'mysql':
+                    user = addUser({id:results[0].ID_key,email:results[0].email,password:results[0].password});
+                    break;
+                case 'sqlie':
+                    user = addUser({id:results.ID_key,email:results.email,password:results.password});
+                    for(var key in user){console.log(key + ": "+ user[key]);}
+            }
             done(err, user);
-        });
+        });        
     });
 
 //Passport LocalStrategy
@@ -44,34 +56,39 @@ module.exports = function(passport) {
 // La función no se activa hasta que llega el dato.
         process.nextTick(function() {
 // Verificar si el email recibido a través del form existe en la BD.
-            sql.connect().query("SELECT count(email) as email from users where email = ?", email, function(err, result){
-            //sql.connect().query("SELECT count(email) as email from users where email = ?", email, function(err, result, fields, next){
-                if(err){
+            //sql.sqlite.connect.get("SELECT COUNT(email) from users where email = ?", email, function(err, result){
+            sql[config.dbmode].query("SELECT COUNT(email) from users where email = ?", email, function(err, result){                
+                if(err){ 
                     console.log(err);
                     return done(null, false, req.flash('signupMessage', "Imposible conectar con la base de datos."));
                 }
+                var num = getVal(result, 'COUNT(email)');                
 //No existe solicitamos signupMessage.
-                if(result[0].email > 0){
+                if(num > 0){
                         return done(null, false, req.flash('signupMessage', 'Esta cuenta de correo ya ha sido registrada.'));
 //Si no existe el usuario, crear el usuario.
                 }else{
                     var newUser = new User();
 //Almacenamos las credenciales locles del usuario.
+                    newUser = addUser({id: newUser.generateHash(email), email: email, password: newUser.generateHash(password)});
+                    /*
                     newUser.local.email		= email;
                     newUser.local.password	= newUser.generateHash(password);
                     newUser.local.id    	= newUser.generateHash(email);
-//y las guardamos en la base de datos.
+                    */
+//y las guardamos en la base de datos.                    
                     var values = [newUser.local.email, newUser.local.password, newUser.local.id, 1];
-                    sql.connect().query("INSERT INTO users (Email, password, id_key, local) values (?,?,?,?)", values, function (err){
-                    //sql.connect().query("INSERT INTO users (Email, password, id_key, local) values (?,?,?,?)", values, function (err, result, fileds){
+                    sql[config.dbmode].insert("INSERT INTO users (email, password, ID_key, local) values (?,?,?,?)", values, function (err){
                             if(err){
                                 console.log(err);
                                 return done(null, false, req.flash('signupMessage', 'Imposible conectar con la base de datos. Registro fallido.'));
                             }
-                            sql.connect().query("INSERT INTO fonotecas (UserID) SELECT userID from users where Email = ?", values[0], function(err){
+                            var data = [0,aux.ahora(),0, email];
+                            for(var key in data){console.log(key +": "+data[key]);}
+                            sql[config.dbmode].insert("INSERT INTO fonotecasdata (userID, discoID, fechaRegistro, numItems) SELECT userID, ?, ?, ? FROM users WHERE email = ?", data, function(err){
                                 if(err){
                                     console.log(err);
-                                    sql.connect().query("DELETE FROM users where Email = ?", values[0], function(errr){
+                                    sql[config.dbmode].query("DELETE FROM users where email = ?", values[0], function(errr){
                                         if(errr){
                                             console.log(errr);
                                             return done(null, false, req.flash('singupMessage', 'Error en el proceso de registro. Transacción incompleta. Contacte con el administrador.'));
@@ -91,20 +108,28 @@ module.exports = function(passport) {
     passport.use('local-login', newLocalStrategy(function(req, email, password, done){
         theUser = new User();
 //Buscar en la base de datos el email introducido en el forulario.
-        sql.connect().query("SELECT * from users where email = ?", email, function(err, result){
-        //sql.connect().query("SELECT * from users where email = ?", email, function(err, result, fields){
+        sql[config.dbmode].query("SELECT COUNT(email), email, password, ID_key from users where email = ?", email, function(err, result){
             if(err){
                 return done(null, false, req.flash("loginMessage", "Imposible conectar con la base de datos.")); //En caso de error salimos.
-            };
+            };            
+            var valor = getVal(result, 'email');            
 //Si el usuario no existe Solicitamos el flashdata con el mensaje de error.
-            if(result.length<1){
+            if(!valor){
                 return done(null, false, req.flash("loginMessage", "Nombre de usuario o password incorrecto"));
             };
-//Almacenamos las credenciales del usuario en nuestro objeto "User"...
-            theUser.local.id	= result[0].ID_key;
-            theUser.local.email 	= email;
+//Almacenamos las credenciales del usuario en nuestro objeto "User"...            
+            switch(config.dbmode){
+                case 'mysql':
+                    theUser = addUser({id: result[0].ID_key, email: email, password: result[0].password});
+                    break;
+                case 'sqlite':                    
+                    theUser = addUser({id: result.ID_key, email: email, password: result.password});                    
+                    break;
+            }            
+            //theUser.local.id	= result[0].ID_key;
+            //theUser.local.email 	= email;
 //Si la password es incorrecta devolvemos el flashdata con el mensaje de error.
-                    if(!theUser.validPassword(password, result[0].Password)){
+                    if(!theUser.validPassword(password, theUser.local.password)){
                             console.log("Password error");
                             return done(null, false, req.flash("loginMessage", "Nombre de usuario o password incorrecto"));
                     };
@@ -113,5 +138,23 @@ module.exports = function(passport) {
             });
     }));
 
+//Aux
+function addUser(data){
+    user = new User();
+    for(var key in data){
+        user.local[key] = data[key];
+    }
+    return user;
+}
+;
+function getVal(valor, field){    
+    switch(config.dbmode){
+        case 'mysql':
+            return valor[0];
+        case 'sqlite':
+            return valor[field];
+    }    
+}
+;
 //FIN PASSPORT
 };
