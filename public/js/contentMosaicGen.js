@@ -102,7 +102,7 @@ function showImgContainer(org) {
 function updateImgContainerValues(datos, container) {
     for (var key in datos) {
         switch (key) {
-            case 'discoId':
+            case 'discoID':
                 container.mainDiv.id = datos[key];
                 container.imgTag.onclick = 'detailsOnOff(' + datos[key] + ')';                
                 container.imgDiv.id += datos[key];

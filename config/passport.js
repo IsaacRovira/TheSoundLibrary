@@ -14,7 +14,7 @@ var sql             = require(path.normalize(config.raiz + "/config/database.js"
 var User            = require(path.normalize(config.raiz+'/app/models/user.js'));
 
 //Aux
-var aux             = require(path.normalize(config.raiz+'/app/misc/misc.js'))
+var aux             = require(path.normalize(config.raiz+'/app/misc/misc.js'));
 
 
 // EXPORTS passport
@@ -30,14 +30,7 @@ module.exports = function(passport) {
                 console.log(err);
                 done(err, user);
             }
-            switch(config.dbmode){
-                case 'mysql':
-                    user = addUser({id:results[0].ID_key,email:results[0].email,password:results[0].password});
-                    break;
-                case 'sqlie':
-                    user = addUser({id:results.ID_key,email:results.email,password:results.password});
-                    for(var key in user){console.log(key + ": "+ user[key]);}
-            }
+            user = addUser({id:results[0].ID_key,email:results[0].email,password:results[0].password});            
             done(err, user);
         });        
     });
@@ -62,9 +55,8 @@ module.exports = function(passport) {
                     console.log(err);
                     return done(null, false, req.flash('signupMessage', "Imposible conectar con la base de datos."));
                 }
-                var num = getVal(result, 'COUNT(email)');                
 //No existe solicitamos signupMessage.
-                if(num > 0){
+                if(result[0]['COUNT(email)'] > 0){
                         return done(null, false, req.flash('signupMessage', 'Esta cuenta de correo ya ha sido registrada.'));
 //Si no existe el usuario, crear el usuario.
                 }else{
@@ -79,13 +71,15 @@ module.exports = function(passport) {
 //y las guardamos en la base de datos.                    
                     var values = [newUser.local.email, newUser.local.password, newUser.local.id, 1];
                     sql[config.dbmode].insert("INSERT INTO users (email, password, ID_key, local) values (?,?,?,?)", values, function (err){
-                            if(err){
-                                console.log(err);
-                                return done(null, false, req.flash('signupMessage', 'Imposible conectar con la base de datos. Registro fallido.'));
-                            }
-                            var data = [0,aux.ahora(),0, email];
-                            for(var key in data){console.log(key +": "+data[key]);}
-                            sql[config.dbmode].insert("INSERT INTO fonotecasdata (userID, discoID, fechaRegistro, numItems) SELECT userID, ?, ?, ? FROM users WHERE email = ?", data, function(err){
+                        if(err){
+                            console.log(err);
+                            return done(null, false, req.flash('signupMessage', 'Imposible conectar con la base de datos. Registro fallido.'));
+                        }
+                        var data = [0,aux.ahora(),0, email];
+
+                        for(var key in data){console.log(key +": "+data[key]);}
+                            
+                        sql[config.dbmode].insert("INSERT INTO fonotecasdata (userID, discoID, fechaRegistro, numItems) SELECT userID, ?, ?, ? FROM users WHERE email = ?", data, function(err){
                                 if(err){
                                     console.log(err);
                                     sql[config.dbmode].query("DELETE FROM users where email = ?", values[0], function(errr){
@@ -112,20 +106,13 @@ module.exports = function(passport) {
             if(err){
                 return done(null, false, req.flash("loginMessage", "Imposible conectar con la base de datos.")); //En caso de error salimos.
             };            
-            var valor = getVal(result, 'email');            
+
 //Si el usuario no existe Solicitamos el flashdata con el mensaje de error.
-            if(!valor){
+            if(result[0]['COUNT(email)'] < 1){
                 return done(null, false, req.flash("loginMessage", "Nombre de usuario o password incorrecto"));
             };
-//Almacenamos las credenciales del usuario en nuestro objeto "User"...            
-            switch(config.dbmode){
-                case 'mysql':
-                    theUser = addUser({id: result[0].ID_key, email: email, password: result[0].password});
-                    break;
-                case 'sqlite':                    
-                    theUser = addUser({id: result.ID_key, email: email, password: result.password});                    
-                    break;
-            }            
+//Almacenamos las credenciales del usuario en nuestro objeto "User"...
+            theUser = addUser({id: result[0].ID_key, email: email, password: result[0].password});
             //theUser.local.id	= result[0].ID_key;
             //theUser.local.email 	= email;
 //Si la password es incorrecta devolvemos el flashdata con el mensaje de error.
@@ -152,7 +139,7 @@ function getVal(valor, field){
         case 'mysql':
             return valor[0];
         case 'sqlite':
-            return valor[field];
+            return valor[0][field];
     }    
 }
 ;

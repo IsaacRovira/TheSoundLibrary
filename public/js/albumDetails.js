@@ -82,7 +82,7 @@ function songDetails() {
         titulo: 'titulo',
         pista: 'pista',
         duracion: 'duracion',
-        cancionId: 'songId',
+        cancionID: 'songId',
         artistas: 'artistas',
         class: nodeSets.liSongDetails.class
     };
@@ -234,7 +234,7 @@ function genSongList(data) {
                 case 'class':
                     liNode.setAttribute(key, song.class);
                     break;
-                case 'cancionId':    
+                case 'cancionID':    
                     song[key] += data[i][key];
                     liNode.setAttribute('id', song[key]);
                     break;
@@ -257,11 +257,11 @@ function genSongListById(data, id) {
     var song = songDetails();
 
     for (var i = 0; i < data.length; i++) {
-        if (data[i].discoId === id) {
+        if (data[i].discoID === id) {
             liNode = document.createElement('li');
             for (var key in song) {
                 switch (key) {
-                    case 'cancionId':
+                    case 'cancionID':
                         song[key] += data[i][key];
                         break;
                     case 'class':
@@ -271,7 +271,7 @@ function genSongListById(data, id) {
                 }
             }
 
-            liNode.setAttribute('id', song.cancionId);
+            liNode.setAttribute('id', song.cancionID);
             liNode.setAttribute('class', song.class);
             liNode.appendChild(document.createTextNode(song.pista + ' - ' + song.titulo + ' - ' + song.artistas));
             ulNode.appendChild(liNode);
@@ -287,7 +287,7 @@ function genAlbumDetailsList(data, id) {
     var album = albumDetails();
 
     for (var i = 0; i < data.length; i++) {
-        if (data[i].discoId === id) {
+        if (data[i].discoID === id) {
             for (var key in album) {
                 if (key !== 'class') {
                     album[key] = data[i][key];

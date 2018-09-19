@@ -2,7 +2,7 @@
 
 //PATH
 const RAIZ      = process.cwd();
-const MODULOS   = RAIZ + "\\node_modules\\";
+const MODULOS   = RAIZ + "/node_modules/";
 const NODE      = "f:\\Program files\\nodejs\\";
 
 //API

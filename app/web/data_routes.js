@@ -20,7 +20,7 @@ module.exports = function (data_router) {
         var query   = sql.fonotecasdata.canciones + string + limit + orderby;
         
         //userCheck(query, res, datos.userid, queryDb);
-        queryDb(null, query, res, datos.userid);
+        queryDb(query, datos.userid, res);
     });
 
     //Discos por fonoteca
@@ -37,7 +37,7 @@ module.exports = function (data_router) {
         //var query   = sql.discos[qry(string)] + string + limit + orderby;
 
         //userCheck(query, res, datos.userid, queryDb);
-        queryDb(null, query, res, datos.userid);
+        queryDb(query, datos.userid, res);
     });
 
     //Canciones
@@ -51,7 +51,8 @@ module.exports = function (data_router) {
         var query   = sql.canciones.all + string + limit + orderby;
 
         //userCheck(query, res, datos.userid, queryDb);
-        queryDb(null, query, res);
+        console.log(query);
+        queryDb(query, datos.userid, res);
 
     });//Fin data_router.post Canciones
 
@@ -67,37 +68,21 @@ module.exports = function (data_router) {
         var query   = sql.discosNew + string + limit + orderby;
 
         //userCheck(query, res, datos.userid, queryDb);
-        queryDb(null, query, res, datos.userid);
+        queryDb(query, datos.userid, res);
     });
 };
 
 //FUNCIONES AUX
-function qry(string){
-    if (string.length > 0){
-        return 'by_Any';
-    }
-    return 'all';
-};
-
-function queryDb(err, qry, callback) {
-    if (err) {
-        return error(err, callback);
-    }
-    
+function queryDb(qry, user, callback) {
     //console.log(qry);
-    if(arguments.length>3){
-        var user = arguments[3];      
-    }else{
-        user = null;
-    }
-    sql[config.dbmode].query(qry, user, function (err, result) {
+    sql[config.dbmode].query(qry, user, function (err, resultado) {
         if (err) {
-            return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (data_router): " + err]}, callback);
-        }
-        callback.setHeader('Content-Type', 'application/json');
-        callback.status(201);
-        //console.log(JSON.stringify(result));
-        callback.send(result);
+            error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (data_router): " + err]}, callback);            
+        }else{
+            callback.setHeader('Content-Type', 'application/json');
+            callback.status(201);            
+            callback.send(resultado);  
+        }        
     });
 }
 ;

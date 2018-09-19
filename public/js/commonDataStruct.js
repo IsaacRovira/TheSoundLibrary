@@ -5,7 +5,7 @@ var PATH = {
 };
 var dataSong;
 var dataAlbum;
-var songsUpdate = false;
+var songsUpdate = true;
 var albumsUpdate = false;
 var serverName = getServer();
 var userId = getUserId();

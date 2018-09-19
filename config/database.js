@@ -62,15 +62,15 @@ var sql = {
         discos: 'SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid INNER JOIN users on users.userID = fonotecasdata.userID where ID_key = ?'
     },
     canciones: {
-        all: "select cancionId, discoId, artistas, duracion, pista, titulo from canciones",
+        all: "select cancionID, discoID, artistas, duracion, pista, titulo from canciones",
         by_id: "select * from canciones where CancionID = ",
         by_artistas: "select * from canciones where Artistas contains ",
         by_discoID: "select * from canciones where DiscoID = ",
         by_titulo: "select * from canciones where Titulo contains ",
         by_Any: "SELECT cancionId, discoId, artistas, duracion, pista, titulo FROM canciones "
     },
-    discosNew: 'SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid where DiscoID not in (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.UserID where ID_key = ?)',
-    cancionesNew: 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones where DiscoID NOT IN (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.UserID where ID_key = ?)',
+    discosNew: 'SELECT discos.discoID, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid where DiscoID not in (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.UserID where ID_key = ?)',
+    cancionesNew: 'SELECT cancionID, canciones.discoID, artistas, duracion, pista, titulo FROM canciones where DiscoID NOT IN (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.UserID where ID_key = ?)',
     
     //Devuelve una función para la consulta según el motor seleccionado en configuración.
     mysql:{
@@ -113,7 +113,7 @@ var sql = {
                 if(typeof(parameter) === 'string'){
                     param = [param];                    
                 }
-                return sql.sqlite.connect.each(qry,param,callback);
+                return sql.sqlite.connect.all(qry,param,callback);
             },
             insert: function(qry, parameter, callback){
                 console.log(qry +" "+parameter);
@@ -122,7 +122,16 @@ var sql = {
                     param = [param];
                 }
                 return sql.sqlite.connect.run(qry,param,callback);
+            },
+            queryall:  function(qry,parameter,callback){
+                console.log(qry +" "+parameter);
+                var param = parameter;
+                if(typeof(parameter) === 'string'){
+                    param = [param];                    
+                }
+                return sql.sqlite.connect.each(qry,param,callback);
             }
+            
         }
 };
 

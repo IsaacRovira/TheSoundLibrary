@@ -139,12 +139,12 @@ function genImageList(data) {
     ulNode.setAttribute('id', 'mainUl');
 
     for (var i = 0; i < data.length; i++) {
-        liAtt.id = data[i]['discoId'];
+        liAtt.id = data[i]['discoID'];
 
         imgAtt.src = commonData.path.get().cover + data[i]['img_cover'];
         imgAtt.alt = data[i]['album'];
         imgAtt.fileName = data[i]['img_cover'];
-        imgAtt.onclick = 'detailsOnOff(' + data[i]['discoId'] + ')';
+        imgAtt.onclick = 'detailsOnOff(' + data[i]['discoID'] + ')';
 
         for (var key in pText) {
             switch (key) {
@@ -159,7 +159,7 @@ function genImageList(data) {
             }
         }
         var liNode = genLiNode(liAtt);
-        liNode.appendChild(genRowColNode(pText, imgAtt, data[i].discoId));
+        liNode.appendChild(genRowColNode(pText, imgAtt, data[i].discoID));
 
         ulNode.appendChild(liNode);
     }

@@ -1,7 +1,7 @@
 // server.js
 
 console.log(process.cwd());
-var config      = require(process.cwd()+'\\config\\config.js');
+var config      = require(process.cwd()+'/config/config.js');
 var path        = require(config.modulos + 'path');
 var aux         = require(path.normalize(config.raiz + '/app/misc/misc.js'))
 var api         = require(path.normalize(config.raiz + '/app/api/api.js'));
