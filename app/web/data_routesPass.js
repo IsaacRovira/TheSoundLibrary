@@ -19,9 +19,9 @@ module.exports = function(data_router) {
 
        //datos del body  
        var datos=[
-           ['cancionId', req.body.cancionId],
+           ['cancionID', req.body.cancionID],
            ['artistas', req.body.artistas],       
-           ['discoId', req.body.discoId],
+           ['discoID', req.body.discoID],
            ['duracion', req.body.duracion],
            ['pista', req.body.pista],
            ['titulo', req.body.titulo],
@@ -55,7 +55,7 @@ module.exports = function(data_router) {
             'Access-Control-Allow-Origin': '*'
         });
 
-        sql[config.dbmode].query(sql.fonotecas.canciones + string, datos.session/*req.body.userid*/,  function(err, result){
+        sql[config.dbmode].query(sql.fonotecas.canciones + string, datos.session/*req.body.userID*/,  function(err, result){
            if(err){
                 error("�Ups! Algo ha fallado.",res);
                 console.log("Error query canciones fonoteca: " + err);
@@ -77,7 +77,7 @@ module.exports = function(data_router) {
         console.log("Request fonotecas/discos");
         //Datos del body
         var datos=[
-            ['discoId', req.body.discoId],
+            ['discoID', req.body.discoID],
             ['album', req.body.album],
             ['artista', req.body.artista],
             ['year', req.body.year],
@@ -86,14 +86,14 @@ module.exports = function(data_router) {
             ['genero', req.body.genero],
             ['identificadores', req.body.identificadores],
             ['tipo', req.body.tipo],
-            //['userid', req.body.userid]
+            //['userID', req.body.userID]
             ['session', req.session.passport.user]
         ];   
 
         var string =" "; //String siempre > 0 para los queries a las fonotecas. Fuerza el "and" al comienzo en las funciones updateStringEqual y updateStringLike.
         for(var i=0; i < datos.length; i++){
             switch(datos[i][0]){
-                    case 'discoId': if(datos[i][1]){
+                    case 'discoID': if(datos[i][1]){
                             //Es necesario añadir la tabla al campo para eliminar la ambiguedad en la sentencia SQL.
                             string = updateStringEqual(datos[i][1], string, "discos."+datos[i][0]);
                             i=datos.length; //No añadimos más campos.
@@ -113,7 +113,7 @@ module.exports = function(data_router) {
             'Access-Control-Allow-Origin': '*'
         });
 
-        sql[config.dbmode].query(sql.fonotecas.discos + string, datos.session/*req.body.userid*/, function(err, result){
+        sql[config.dbmode].query(sql.fonotecas.discos + string, datos.session/*req.body.userID*/, function(err, result){
             if(err){
                 error("¡Ups! Algo ha fallado.",res);
                 console.log("Error query discos: " + err);
@@ -148,12 +148,12 @@ module.exports = function(data_router) {
 
         var datos={
            artistas     : req.body.artistas,
-           cancionId    : req.body.cancionId,
-           discoId      : req.body.discoId,
+           cancionID    : req.body.cancionID,
+           discoID      : req.body.discoID,
            duracion     : req.body.duracion,
            pista        : req.body.pista,
            titulo       : req.body.titulo,
-           userid       : req.body.userid,
+           userID       : req.body.userID,
            max          : req.body.max
            };
 
@@ -161,7 +161,7 @@ module.exports = function(data_router) {
         var string = "";
         for(var key in datos){
             switch(key){
-                    case 'userid':
+                    case 'userID':
                         //console.log(key + ' = ' + datos[key]);
                         break;
                     case 'max':
@@ -211,7 +211,7 @@ module.exports = function(data_router) {
             }
         };
 
-        if(datos['userid']!= null){
+        if(datos['userID']!= null){
             sql[config.dbmode].query(sql.users.all, function(err,result){
                 if(err){
                     error("Algo no ha salido bien.", res);
@@ -219,13 +219,13 @@ module.exports = function(data_router) {
                     res.end();
                 }else{
                     for(var key in result){
-                        if(result[key]['ID_key']===datos['userid']){
+                        if(result[key]['ID_key']===datos['userID']){
                             console.log("\nRequest canciones user: " +result[key]['Email']+'\n');
                             return consulta(string);
                         }
                     }
                     error("Error de autenticaci�n");
-                    console.log("LogIn error user: " + datos['userid'] + ".");
+                    console.log("LogIn error user: " + datos['userID'] + ".");
                     res.end();
                     }
                 });
@@ -237,7 +237,7 @@ module.exports = function(data_router) {
         console.log("Request discos");
         //Datos del body
         var datos=[
-            ['discoId', req.body.discoId],
+            ['discoID', req.body.discoID],
             ['album', req.body.album],
             ['artista', req.body.artista],
             ['year', req.body.year],
@@ -246,7 +246,7 @@ module.exports = function(data_router) {
             ['genero', req.body.genero],
             ['identificadores', req.body.identificadores],
             ['tipo', req.body.tipo],
-            ['userid', req.body.userid]
+            ['userID', req.body.userID]
         ];
 
         var string ="";

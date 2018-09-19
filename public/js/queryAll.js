@@ -1,6 +1,6 @@
 //queryALL.js
 
-var userid = commonData.userId.get();
+var userID = commonData.userID.get();
 var serverName = commonData.server.get();
 var apiPort = commonData.apiPort.get();
 
@@ -19,7 +19,7 @@ function doQuery(queryString, destino, callback) {
 
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(queryString + "&" + userid);
+    xhttp.send(queryString + "&" + userID);
 }
 ;
 //Query all the data
@@ -87,7 +87,7 @@ function doQuerySongsByAlbumId(destino, albumId, callback) {
     ;
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send('discoId=' + albumId);
+    xhttp.send('discoID=' + albumId);
 }
 ;
 //Serializa el objeto dataObject de tipo clave=valor y añade el valor maxInt al final.

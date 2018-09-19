@@ -19,8 +19,8 @@ module.exports = function (data_router) {
         var orderby = orderBy(datos.orderby);
         var query   = sql.fonotecasdata.canciones + string + limit + orderby;
         
-        //userCheck(query, res, datos.userid, queryDb);
-        queryDb(query, datos.userid, res);
+        //userCheck(query, res, datos.userID, queryDb);
+        queryDb(query, datos.userID, res);
     });
 
     //Discos por fonoteca
@@ -36,8 +36,8 @@ module.exports = function (data_router) {
         
         //var query   = sql.discos[qry(string)] + string + limit + orderby;
 
-        //userCheck(query, res, datos.userid, queryDb);
-        queryDb(query, datos.userid, res);
+        //userCheck(query, res, datos.userID, queryDb);
+        queryDb(query, datos.userID, res);
     });
 
     //Canciones
@@ -50,9 +50,9 @@ module.exports = function (data_router) {
         var orderby = orderBy(datos.orderby);
         var query   = sql.canciones.all + string + limit + orderby;
 
-        //userCheck(query, res, datos.userid, queryDb);
+        //userCheck(query, res, datos.userID, queryDb);
         console.log(query);
-        queryDb(query, datos.userid, res);
+        queryDb(query, [], res);
 
     });//Fin data_router.post Canciones
 
@@ -67,8 +67,8 @@ module.exports = function (data_router) {
         var orderby = orderBy(datos.orderby);
         var query   = sql.discosNew + string + limit + orderby;
 
-        //userCheck(query, res, datos.userid, queryDb);
-        queryDb(query, datos.userid, res);
+        //userCheck(query, res, datos.userID, queryDb);
+        queryDb(query, datos.userID, res);
     });
 };
 
@@ -77,7 +77,7 @@ function queryDb(qry, user, callback) {
     //console.log(qry);
     sql[config.dbmode].query(qry, user, function (err, resultado) {
         if (err) {
-            error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (data_router): " + err]}, callback);            
+            error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (data_router): " + err]}, callback);
         }else{
             callback.setHeader('Content-Type', 'application/json');
             callback.status(201);            
@@ -177,12 +177,12 @@ function buildSqlValues(datos) {
     var string;
     for (var key in datos) {
         switch (key) {
-            case 'userid':
+            case 'userID':
             case 'max':                
             case 'orderby':
                 //if(datos[key])orderby = ' order by ' + datos[key];
                 break;
-            case 'discoId':
+            case 'discoID':
                 if(datos[key]){                    
                     string = updateStringEqual(datos[key], string, key);
                 }                
@@ -233,7 +233,7 @@ function getBodyData(datos, req) {
     var data = datos;
     for (var key in data) {
         switch (key) {
-            case 'userid':                
+            case 'userID':                
                 if (req.session.passport.user)
                     data[key] = req.session.passport.user;
                 break;
@@ -251,7 +251,7 @@ function getBodyData(datos, req) {
 function dataSet() {
     var data = {
         discos: {
-            discoId: "",
+            discoID: "",
             album: "",
             artista: "",
             year: "",
@@ -261,18 +261,18 @@ function dataSet() {
             genero: "",
             identificadores: "",
             tipo: "",
-            userid: "",
+            userID: "",
             max: "",
             orderby: ""
         },
         canciones: {
             artistas: "",
-            cancionId: "",
-            discoId: "",
+            cancionID: "",
+            discoID: "",
             duracion: "",
             pista: "",
             titulo: "",
-            userid: "",
+            userID: "",
             max: "",
             orderby: ""
         }

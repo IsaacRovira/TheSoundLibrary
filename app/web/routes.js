@@ -5,7 +5,7 @@ var cookie  ={
     domain:     'TheSoundLibrary',
     path:       '/mysoundlib',
     secure:     false,
-    userid:     'user.local.id',
+    userID:     'user.local.id',
     expires:    new Date(Date.now()+ 600000),
     httpOnly:   true
 };
@@ -60,8 +60,8 @@ module.exports = function(app, passport) {
     // Acceso a los datos de la fonoteca;
     app.get('/mysoundlib', isLoggedIn, function(req, res) {
         //res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
-        //res.cookie('userid', user.local.id, {path: '/mysoundlib', secure: false, expires: new Date(Date.now()+ 600000), httpOnly: true});
-        //res.set('Set-Cookie', 'userid='+ user.local.id+"; path=/mysoundlib");
+        //res.cookie('userID', user.local.id, {path: '/mysoundlib', secure: false, expires: new Date(Date.now()+ 600000), httpOnly: true});
+        //res.set('Set-Cookie', 'userID='+ user.local.id+"; path=/mysoundlib");
         res.sendFile((config.raiz + '/views/main.html'),{            
             user : req.user // Cierra la sesión del usuario.
         });

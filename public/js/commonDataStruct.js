@@ -8,7 +8,7 @@ var dataAlbum;
 var songsUpdate = true;
 var albumsUpdate = false;
 var serverName = getServer();
-var userId = getUserId();
+var userID = getuserID();
 var apiPortValue = 3030;
 var urlSettings = {
     std: {
@@ -37,7 +37,7 @@ var idActivo = '';
 var activeId; //Id de album con detalles activos.
 var isActive = false; //
 var activeDiv;
-var orderByField = "discoid";
+var orderByField = "discoID";
 var dataToSearch={};
 var currentMode = 'check'; //check, add, edit
 
@@ -66,14 +66,14 @@ function serverClass(callback) {
     };
 }
 ;
-function userIdClass(callback) {
+function userIDClass(callback) {
     return{
         get: function () {
-            return userId;
+            return userID;
         },
         set: function (newData) {
-            userId = newData;
-            callback(userId);
+            userID = newData;
+            callback(userID);
         }
     };
 }
@@ -254,7 +254,7 @@ var commonData = {
     server:             serverClass(function () {
         return null;
     }),
-    userId:             userIdClass(function () {
+    userID:             userIDClass(function () {
         return null;
     }),
     apiPort:            apiPortClass(function () {
@@ -326,10 +326,10 @@ function getServer() {
 }
 ;
 //Dejo aquí el userID o lo passo como parámetro a la función export?
-function getUserId() {
+function getuserID() {
     console.log(JSON.stringify(document.cookie));
-    userid = JSON.stringify(document.cookie);
-    return userid;
+    userID = JSON.stringify(document.cookie);
+    return userID;
 }
 ;
 function load() {    

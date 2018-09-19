@@ -52,7 +52,7 @@ function refreshData(origen){
     }
     //doQueryAll(commonData.url.get()['std']['general']['discos'], commonData.datosDiscos.set);
     commonData.dataToSearch.set({});
-    commonData.orderByField.set('discoId');
+    commonData.orderByField.set('discoID');
     closeSubMenus();
     openNav();
 }

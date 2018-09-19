@@ -16,7 +16,7 @@ module.exports = function (api_router) {
         var string  =buildSqlValues(datos, songParams);
         var qry     =sql.canciones[queryType(string)] + string;
 
-        userCheck(qry, res, datos['userid'], queryDb);
+        userCheck(qry, res, datos['userID'], queryDb);
     });
     
     api_router.get('/api/discos', function (req, res) {
@@ -28,7 +28,7 @@ module.exports = function (api_router) {
         var string = buildSqlValues(datos, albumParams);
         var qry = sql.discos[queryType(string)] + string;
 
-        userCheck(qry, res, datos['userid'], queryDb);
+        userCheck(qry, res, datos['userID'], queryDb);
     });
 };
 //Arrays con los campos permitidos para las busquedas.
@@ -49,7 +49,7 @@ function queryDb(err, qry, callback) {
         return error(err, callback);
     }
     //console.log("\n"+qry+"\n");
-    sql[config.dbmode].query(qry, function (err, result) {
+    sql[config.dbmode].query(qry,[], function (err, result) {
         if (err) {
             return error({code: [500], errorRes: ["Ups! Algo ha fallado al intentar conectar con la BD."], errorLog: ["Error (api_router>>discos): " + err]}, callback);
         }
@@ -69,9 +69,11 @@ function userCheck(qry, res, user, callback) {
             return callback({errorRes: ['Vaya, no conseguimos conectar con la BD'], code: [500], errorLog: ["Error (userCheck): " + err]}, qry, res);
         }        
         ;
-        //for (var key in result) {console.log("1 - "+result[key].ID_key + "\n2 - " + user + "\n3 - "+mysql.escape(user));};     
-        if (result.length > 0) {
-            console.log("\tRequest by user: " + result[0]['Email']);
+        //for (var key in result) {console.log("1 - "+result[key].ID_key + "\n2 - " + user + "\n3 - "+mysql.escape(user));};
+        //console.log((result[0]['userID']>0) + " " + result[0]['userID']);
+        console.log(JSON.stringify(result[0]));
+        if (result[0]) {
+            console.log("\tRequest by user: " + result[0]['email']);
             return callback(null, qry, res);
         }
         else {                    
@@ -80,14 +82,14 @@ function userCheck(qry, res, user, callback) {
     });
 }
 ;
-//Busca userid entre los parámetros de la url. Devuelve null o la id de usuario.
-function getUserIdFromUrl(req) {
+//Busca userID entre los parámetros de la url. Devuelve null o la id de usuario.
+function getuserIDFromUrl(req) {
     console.log(req.url);
     var data = setParamsAsObj(getParamsFromUrl(req.url));
     for (var key in data) {
-        if (key === 'userid') {
-            userid = mysql.escape(data[key]);
-            return userid;
+        if (key === 'userID') {
+            userID = mysql.escape(data[key]);
+            return userID;
         }
     }
     return null;
@@ -161,7 +163,7 @@ function buildSqlValues(datos, params) {
     var string;
     for (var key in datos) {
         switch (key) {
-            case 'userid':
+            case 'userID':
             case 'max':
             case 'orderby':
                 //if(datos[key])orderby = ' order by ' + datos[key];
@@ -217,7 +219,7 @@ function getBodyData(datos, req) {
     var data = datos;
     for (var key in data) {
         switch (key) {
-            case 'userid':
+            case 'userID':
                 //if(req.session.passport.user) data[key]=mysql.escape(req.session.passport.user);
                 break;
             default:
@@ -235,7 +237,7 @@ function getBodyData(datos, req) {
 function dataSet() {
     var data = {
         discos: {
-            discoId: "",
+            discoID: "",
             album: "",
             artista: "",
             year: "",
@@ -245,18 +247,18 @@ function dataSet() {
             genero: "",
             identificadores: "",
             tipo: "",
-            userid: "",
+            userID: "",
             max: "",
             orderby: ""
         },
         canciones: {
             artistas: "",
-            cancionId: "",
-            discoId: "",
+            cancionID: "",
+            discoID: "",
             duracion: "",
             pista: "",
             titulo: "",
-            userid: "",
+            userID: "",
             max: "",
             orderby: ""
         }

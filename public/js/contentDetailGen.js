@@ -107,8 +107,8 @@ function getDiscDetails(datos) {
 
     //Llamammos a la función que hará el query de las canciones y
     //que llamará luego a la función q las insertará en el DOM.
-    //var param =[{'discoId':datosDisco[0]['discoId']}];
-    var param = 'discoId=' + discoData.id;
+    //var param =[{'discoID':datosDisco[0]['discoID']}];
+    var param = 'discoID=' + discoData.id;
     //alert(param);
     doQuery(param, url[0]['canciones'], addDiscDetailsSongs);
 }
@@ -117,7 +117,7 @@ function getDiscDetails(datos) {
 function addDiscDetailsSongs(datos) {
     var datosCanciones = JSON.parse(datos);
     //alert(JSON.stringify(datosCanciones));
-    document.getElementById('row_' + datosCanciones[0]['discoId']).appendChild(genSongsList(datosCanciones));
+    document.getElementById('row_' + datosCanciones[0]['discoID']).appendChild(genSongsList(datosCanciones));
 }
 ;
 var removeDiscDetails = function (datos) {
@@ -126,7 +126,7 @@ var removeDiscDetails = function (datos) {
     discoData = updateDiscoData(datosDisco[0]);     //Actualizamos las variables con los datos del disco.       
     removeChildElements(discoData.id);  //Eliminamos todos los childs del DIV con la id del disco.
 
-    var node = genDiscMosaicStruct(discoData);   //Generamosun figure node para insertarlo en el div con el id = discoId
+    var node = genDiscMosaicStruct(discoData);   //Generamosun figure node para insertarlo en el div con el id = discoID
 
     document.getElementById(discoData.id).appendChild(node);
     document.getElementById(discoData.id).setAttribute('class', classSet.mainCol.class.mosaic);
@@ -155,14 +155,14 @@ function genDiscMosaicStruct(discoData) {
 //ONCLICK FUNCTION: llamaremos a esta función para abrir
 //los detalles de los discos en modo mosáico.
 var openDetails = function (valor) {
-    //var param =[{'discoId':valor}];
-    var param = 'discoId=' + valor;
+    //var param =[{'discoID':valor}];
+    var param = 'discoID=' + valor;
     doQuery(param, url[0]['discos'], getDiscDetails);
 }
 ;
 var closeDetails = function (valor) {
-    ////var param =[{'discoId':valor}];
-    var param = 'discoId=' + valor;
+    ////var param =[{'discoID':valor}];
+    var param = 'discoID=' + valor;
     doQuery(param, url[0]['discos'], removeDiscDetails);
 }
 ;
@@ -183,7 +183,7 @@ function removeChildElements(id) {
 function updateDiscoData(datosDisco) {
     var discoData = discoDataForm;
     
-    discoData.id = datosDisco['discoId'];
+    discoData.id = datosDisco['discoID'];
     discoData.titulo = datosDisco['album'];
     discoData.cover = datosDisco['img_cover'];
     discoData.soporte = datosDisco['tipo'];
@@ -231,7 +231,7 @@ var genSongsList = function (canciones) {
         var text = document.createTextNode(canciones[i]['pista'] + ". " + canciones[i]['titulo']); //No tengo datos de duración.
         var ilNode = document.createElement('il');
         ilNode.setAttribute('class', classSet.ilTagSong.class);
-        ilNode.setAttribute('id', canciones[i]['cancionId']);
+        ilNode.setAttribute('id', canciones[i]['cancionID']);
         ilNode.appendChild(text);
         ulNode.appendChild(ilNode);
     }

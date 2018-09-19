@@ -23,19 +23,19 @@ var sql = {
         by_id: "select * from users where userID = ?"
     },
     discos: {
-        all: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid",
+        all: "SELECT discoID, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteID = soportes.soporteID",
         by_id: "select * from discos where discoID = ?",
         by_album: "select * from discos where Album = ?",
         by_year: "select * from discos where year = ?",
         by_genero: "select * from discos where Genero = ?",
-        by_soporte: "select * from discos where SoporteID = ?",
+        by_soporte: "select * from discos where soporteID = ?",
         by_artista: "select * from discos where Artista like '%?%'",
         by_identificador: "select * from discos where Identificador like '%?%'",
         by_Etiquetado: "select * from discos where Etiquetado like '%?%'",
-        by_Any: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid ",
-        by_max: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid  limit ?",
-        withSong: "SELECT discoId, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteid = soportes.soporteid \n\
-        inner join canciones where discos.discoId = canciones.discoId "
+        by_Any: "SELECT discoID, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteID = soportes.soporteID ",
+        by_max: "SELECT discoID, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteID = soportes.soporteID  limit ?",
+        withSong: "SELECT discoID, album, artista, year, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo FROM discos inner join soportes on discos.soporteID = soportes.soporteID \n\
+        inner join canciones where discos.discoID = canciones.discoID "
     },
     generos: {
         all: "select * from generos",
@@ -44,8 +44,8 @@ var sql = {
     },
     soportes: {
         all: "select * from soportes",
-        by_id: "select * from soportes where soporteid = ?",
-        by_tipo: "select * from soportes where soporteid = ?"
+        by_id: "select * from soportes where soporteID = ?",
+        by_tipo: "select * from soportes where soporteID = ?"
     },
     fonotecas: {
         all: "select * from fonotecas",
@@ -56,21 +56,21 @@ var sql = {
     fonotecasdata: {
         all: "select * from fonotecasdata",
         by_id: "select * from fonotecasdata where FonotecasDataID = ?",
-        by_discoID: "select * from fonotecasdata where DiscoID = ?",
+        by_discoID: "select * from fonotecasdata where discoID = ?",
         by_userID: "select * from fonotecasdata where userID = ?",
-        canciones: 'SELECT cancionId, canciones.discoId, artistas, duracion, pista, titulo FROM canciones inner join discos on canciones.discoid = discos.discoid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid INNER JOIN users on users.userID = fonotecasdata.userID where ID_key = ?',
-        discos: 'SELECT discos.discoId, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid inner join fonotecasdata on discos.discoid = fonotecasdata.discoid INNER JOIN users on users.userID = fonotecasdata.userID where ID_key = ?'
+        canciones: 'SELECT cancionID, canciones.discoID, artistas, duracion, pista, titulo FROM canciones inner join discos on canciones.discoID = discos.discoID inner join fonotecasdata on discos.discoID = fonotecasdata.discoID INNER JOIN users on users.userID = fonotecasdata.userID where ID_key = ?',
+        discos: 'SELECT discos.discoID, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteID = soportes.soporteID inner join fonotecasdata on discos.discoID = fonotecasdata.discoID INNER JOIN users on users.userID = fonotecasdata.userID where ID_key = ?'
     },
     canciones: {
         all: "select cancionID, discoID, artistas, duracion, pista, titulo from canciones",
-        by_id: "select * from canciones where CancionID = ",
+        by_id: "select * from canciones where cancionID = ",
         by_artistas: "select * from canciones where Artistas contains ",
-        by_discoID: "select * from canciones where DiscoID = ",
+        by_discoID: "select * from canciones where discoID = ",
         by_titulo: "select * from canciones where Titulo contains ",
-        by_Any: "SELECT cancionId, discoId, artistas, duracion, pista, titulo FROM canciones "
+        by_Any: "SELECT cancionID, discoID, artistas, duracion, pista, titulo FROM canciones "
     },
-    discosNew: 'SELECT discos.discoID, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteid = soportes.soporteid where DiscoID not in (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.UserID where ID_key = ?)',
-    cancionesNew: 'SELECT cancionID, canciones.discoID, artistas, duracion, pista, titulo FROM canciones where DiscoID NOT IN (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.UserID where ID_key = ?)',
+    discosNew: 'SELECT discos.discoID, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteID = soportes.soporteID where discoID not in (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.userID where ID_key = ?)',
+    cancionesNew: 'SELECT cancionID, canciones.discoID, artistas, duracion, pista, titulo FROM canciones where discoID NOT IN (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.userID where ID_key = ?)',
     
     //Devuelve una función para la consulta según el motor seleccionado en configuración.
     mysql:{
