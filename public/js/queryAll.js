@@ -94,14 +94,16 @@ function doQuerySongsByAlbumId(destino, albumId, callback) {
 //DICOG QUERY METODO 2
 //Pasa el string completo al servidor de la forma (https://api.discogs.com/database/search?label=Universal+Records&year=1977&genre=Rock&per_page=3&type=release&page=2)
 //y el servidor completa el header, hace la consulta y devuelve el objecto con la respuesta.
-function doQueryDiscogsAlbum2(destino, qry, callback){
+function doQueryDiscogAlbum2(destino, qry, callback){
+    console.log("qry",qry);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
-        if(this.readyState === 4 && this.status === 201){
-            callback (JSON.parse(this.responseText));
+        if(this.readyState === 4 && this.status === 200){            
+            console.log(this.responseText);
+            callback(JSON.parse(this.responseText));
         }
     }
-    ;
+    ;    
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("qry="+qry);
@@ -110,7 +112,7 @@ function doQueryDiscogsAlbum2(destino, qry, callback){
 //DISCOG QUERY METODO 1
 //Pasa el string de busqueda y el de paginación al servidor para hacer el query a DISCOG
 // y el servidor genera el URL, y el header, hace la consulta y devuevle el objeto con la resupesta.
-function doQueryDiscogsAlbums(destino, searchData, paginationSettings, callback){
+function doQueryDiscogAlbum(destino, searchData, paginationSettings, callback){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
         if(this.readyState === 4 && this.status === 201){

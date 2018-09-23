@@ -5,16 +5,18 @@ var path = require(config.modulos + 'path');
 var mysql = require(config.modulos + 'mysql');
 var sql = require(path.normalize(config.raiz + "/config/database.js"));
 var aux = require(path.normalize(config.raiz + '/app/misc/misc.js'));
-
+var https = require('https');
 
 module.exports = function (data_router) {
     //Discos DISCOG
-    data_router.post('/add/discos', isLoggedIn, function (req, res) {
-        
-        logCtrl(req, "Request add/discos.");
+    data_router.post('/add/discos', isLoggedIn, function (req, res) {        
+        console.log("Request add/discos.;")
+        //logCtrl(req, "Request add/discos.");
         var url;
         if(req.body['qry']){
-            url =   req.body['qry'];            
+            url =   req.body['qry'];
+            console.log(url);
+           
         }
         else
         {            
@@ -298,11 +300,10 @@ function dataSet() {
 ;
 // isLoggedIn verifica que el usuario haya iniciado sesi�n.
 function isLoggedIn(req, res, next) {
-    console.log("Funcion isLoggedIn");
+    //console.log("Funcion isLoggedIn");
     //Verificar si el usuario ha iniciado sesión.
-    console.log(req.isAuthenticated());
     if (req.isAuthenticated()) {
-        console.log("isLoggedIn OK");
+        //console.log("isLoggedIn OK");
         return next();
     }
     console.log("isLoggedIn error");
@@ -326,7 +327,7 @@ var header ={
     Authorization: "Discogs token=SdnGXnFwzcWVCMUhDmuumAZJOdCkpCcVGNApmdju"
 }
 ;
-function doQuery(destino, header, callback){
+function doQueryOLD(destino, header, callback){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
         if(this.readyState === 4 && this.status === 200){
@@ -341,6 +342,49 @@ function doQuery(destino, header, callback){
     xhttp.open("GET", destino, true);
     xhttp.setRequestHeader('user-agent'+"="+header['user-agent'], 'Authorization'+"="+header['Authorization']);
     xhttp.send();
+}
+;
+function divideURI(uri){
+    var protocol    = uri.split('://')[0];
+    var host        = uri.split('/')[2];
+    var path        = uri.split(host)[1];
+    return {protocol: protocol, host: host, path: path};
+}
+;
+//Funciónq realiza la consulta a la base de datos DISCOG
+//utilizando el modulo https y su función request.
+
+function doQuery(destino, header, callback){    
+    var datos='';
+    var uri = divideURI(destino);        
+    var opt = {
+        port: 443,
+        host: uri.host,
+        path: encodeURI(uri.path),
+        method: 'GET',
+        headers: header
+    };
+    var req = https.request(opt, function(res){
+        //console.log("statusCode: ", res.statusCode);
+        //console.log("headers: ", res.headers);
+        console.log(res.headers.date," ", res.headers['x-discogs-ratelimit-remaining']);
+        res.on('data', function(data){
+            datos+=data;
+        });
+        res.on('err', function(err){
+            console.log("statusCode: ", res.statusCode);
+            console.log("headers: ", res.headers);            
+            console.log(err);
+            callback.status(res.statusCode);
+            callback.send(err);
+        });
+        res.on('end', function(){
+           console.log("Respuesta recibida.");
+           callback.status(res.statusCode);
+           callback.send(datos);
+        });
+    });
+    req.end();
 }
 ;
 //Estructura que recoge los parámetros para la búsqueda.

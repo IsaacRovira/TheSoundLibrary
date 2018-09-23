@@ -21,7 +21,7 @@ var urlSettings = {
             canciones: "http://" + getServer() + "/fonotecas/canciones"
         },
         discog: {
-            discos: "http://" + getServer() + "add/discos",
+            discos: "http://" + getServer() + "/add/discos",
             canciones: ""
         }
     },
@@ -71,7 +71,7 @@ function datosDiscogAlbumsClass(callback){
             return datosDiscogAlbums;
         },
         set: function(dato){
-            datosDiscogsAlbums = dato;
+            datosDiscogAlbums = dato;
             callback(datosDiscogAlbums);
         }
     };
@@ -203,8 +203,8 @@ function datosDiscosClass(callback) {
             return dataAlbum;
         },
         set: function (dato) {
-            dataAlbum = JSON.parse(dato);
-            callback(JSON.parse(dato));
+            dataAlbum = (dato);
+            callback(dato);
         }
     };
 }
@@ -383,7 +383,8 @@ function updateDataSongs(newData) {
     commonData.songsUpdateStatus.set(true);
 }
 ;
-function updateDataAlbums(newData) {    
+function updateDataAlbums(newData) {
+    console.log(newData);
     commonData.albumsUpdateStatus.set(true); //Actualizamos el estado del estado de albumsUpdata
     commonData.activeId.set(null);          //Pasamos el valor null a la variable que almacena la id del album que muestra los detalles.
     commonData.isActive.set(false);         //Asignamos false a la variable que indica que hay un album q muestra los detalles.
@@ -403,7 +404,7 @@ function getServer() {
 ;
 //Dejo aquí el userID o lo passo como parámetro a la función export?
 function getuserID() {
-    console.log(JSON.stringify(document.cookie));
+    //console.log(JSON.stringify(document.cookie));
     userID = JSON.stringify(document.cookie);
     return userID;
 }
