@@ -12,6 +12,7 @@ function removeElements() {
     }
 }
 ;
+//Intercambia el texto de un elemento del DOM.
 function textChange(text1, text2, id){
     var currentText = document.getElementById(id).textContent;
     

@@ -82,9 +82,9 @@ module.exports = function(app, passport) {
 };
 
 // isLoggedIn verifica que el usuario haya iniciado sesión.
-function isLoggedIn(req, res, next) {    
-    if (req.isAuthenticated()) //Verificar si el usuario ha iniciado sesión.
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()){//Verificar si el usuario ha iniciado sesión.        
         return next();
-    
+    }
     res.redirect('/'); //Usuarios no identificados a la página de inicio.
 }

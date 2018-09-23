@@ -45,17 +45,29 @@ body{
         display: none;
     }
 }
-
+.subtitle{
+    width:100%;
+    height: 25px;
+    background: rgba(0,0,0,0.8);
+    z-index: 1;
+    position: absolute;
+    top:56px;
+    left:0;
+    right:0;
+    color: white;
+}
 .title-text{
     width: 100%;
     height: 55px;
-    background: rgba(0,0,0,0.8);;    
+    background: rgba(0,0,0,0.8);
     z-index: 1;
     position: fixed;
     top:0;
     left:0;
 }
 #menu-btn{
+    text-align: left;
+    width: 7%;
     margin: 0% 1% 0% 0%;    
 }
 #menu-btn:hover{
@@ -67,7 +79,19 @@ body{
     color: white;
     font-weight: 900;    
 }
-
+.exit-icon{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    margin: 5px;
+    padding-right: 3%;
+}
+.exit-icon>a{
+    color: white;
+}
+.exit-icon>a:hover{
+    opacity: 0.75;
+}
 /*Mosaic style*/
 #mainRow{
     margin-top: 10px;
@@ -349,6 +373,7 @@ legend{
     cursor: pointer;
     text-decoration: underline;
 }
+
 /*List style*/
 .div-list-img{
     margin: 0;
@@ -404,4 +429,21 @@ legend{
     column-rule-style: solid;
     column-rule-width: 1px;
     column-rule-color: lightgray;
+}
+
+/*Pie de página*/
+.footer{
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 20px;
+    width: 100%;
+    background: rgba(0,0,0,0.9);
+    text-align: center;
+    color: white;
+}
+.footElement{
+    display: inline-block;
 }

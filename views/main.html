@@ -28,6 +28,7 @@
         <script src= "./js/changeView.js" type="text/javascript"></script>	
         <script src= "./js/albumDetails.js" type="text/javascript"></script>
         <script src= "./js/navFunctions.js" type="text/javascript"></script>
+        <script src= "./js/addView.js" type="text/javascript"></script>
 	<!--<script type="text/javascript">getUserId();</script>-->
         <title>TheSoundLibrary</title>
     </head>
@@ -35,12 +36,24 @@
         <div class="header" id="head">
             <div class="row title-row">                
                 <div class="title-text" id="titleFull">
-                    <h1 class="title"><i id="menu-btn" class="fas fa-bars" onclick="openNav()"></i>The Sound Library</h1>                    
+                    <h1 class="title"><i id="menu-btn" class="fas fa-bars" onclick="openNav()"></i>The Sound Library</h1>
+                    <div class="exit-icon"><a href="/logout"><h2><i class="fas fa-sign-out-alt"></i></h2></a></div>
                 </div>
                 <div class="title-text" id="titleSmall">
                     <h1 class="title"><i id="menu-btn" class="fas fa-bars" onclick="openNav()"></i>TSL</h1>
+                    <div class="exit-icon"><a href="/logout"><h2><i class="fas fa-sign-out-alt"></i></h2></a></div>
                 </div>
+                <!--Fonoteca/Añadir-->
+                <div class="subtitle"><h4 id="navPosition">Fonoteca</h4></div> 
             </div>
+        </div>
+        
+        <div class="footer" id="footMenu">
+            <div class="footElement backward" id="first">AA</div>
+            <div class="footElement backward" id="prev">A</div>
+            <div class="footElement situation" id="pageInfo">DDD/DDD</div>
+            <div class="footElement forward" id="next">B</div>
+            <div class="footElement forward" id="last">BB</div>
         </div>
         
         <!--
@@ -123,8 +136,7 @@
             <div class="menu-h-item col-1" onclick="openSearch(this.id)" id="h-search">Buscar</div>
             <div class="menu-h-item col-1" onclick="openOrderBy(this.id)" id="h-orderby">Ordenar</div>
             <div class="menu-h-item col-1" onclick="working()">Editar</div>
-            <div class="menu-h-item col-1" onclick="refreshData('add')">Añadir</div>
-            <div class="menu-h-item col-6"><a href="/logout">Salir</a></div>
+            <div class="menu-h-item col-1" onclick="loadAddView()">Añadir</div>            
          </div>
         
         <!--

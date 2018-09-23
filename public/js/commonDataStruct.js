@@ -13,12 +13,16 @@ var apiPortValue = 3030;
 var urlSettings = {
     std: {
         general: {
-            'discos': "http://" + getServer() + "/discos",
-            'canciones': "http://" + getServer() + "/canciones"
+            discos: "http://" + getServer() + "/discos",
+            canciones: "http://" + getServer() + "/canciones"
         },
         fonotecas: {
-            'discos': "http://" + getServer() + "/fonotecas/discos",
-            'canciones': "http://" + getServer() + "/fonotecas/canciones"
+            discos: "http://" + getServer() + "/fonotecas/discos",
+            canciones: "http://" + getServer() + "/fonotecas/canciones"
+        },
+        discog: {
+            discos: "http://" + getServer() + "add/discos",
+            canciones: ""
         }
     },
     api: {
@@ -39,9 +43,76 @@ var isActive = false; //
 var activeDiv;
 var orderByField = "discoID";
 var dataToSearch={};
-var currentMode = 'check'; //check, add, edit
+var currentMode = 'Fonoteca'; //fonotecas, Añadir
+var currentPage = 1;
+var numItemsPerPage = 9; //Almacenar en base de datos por usuario o en una cookie
+var releaseType = "release"; //Master-Release //Almacenar en base de datos por usuario o en una cookie
+
+var datosDiscogAlbums = null;
+var datosDiscogCanciones = null;
 
 //***************************************************************
+
+function datosDiscogCancionesClass(callback){
+    return{
+        get: function(){
+            return datosDiscogCanciones;
+        },
+        set: function(dato){
+            datosDiscogCanciones = dato;
+            callback(datosDiscogcanciones);
+        }
+    };
+}
+;
+function datosDiscogAlbumsClass(callback){
+    return{
+        get: function(){
+            return datosDiscogAlbums;
+        },
+        set: function(dato){
+            datosDiscogsAlbums = dato;
+            callback(datosDiscogAlbums);
+        }
+    };
+}
+;
+function currentPageClass(callback){
+    return{
+        get: function(){
+            return currentPage;
+        },
+        set: function (dato){
+            currentPage = dato;
+            callback(currentPage);
+        }
+    };
+}
+;
+function numItemsPerPageClass(callback){
+    return{
+        get: function(){
+            return numItemsPerPage;
+        },
+        set function(dato){
+            numItemPerPage = dato;
+            callback(numItemPerPage);
+        }
+    };
+}
+;
+function releaseTypeClass(callback){
+    return{
+        get: function(){
+            return releaseType;
+        },
+        set: function(dato){
+            releaseType = dato;
+            callback(releaseType);
+        }
+    };
+}
+;
 function pathClass(callback) {
     return{
         get: function () {
@@ -298,6 +369,12 @@ var commonData = {
     }),
     currentMode:        currentModeClass(function(){
         return null;
+    }),
+    datosDiscogAlbums:  datosDiscogAlbumsClass(function(data){
+        return updateAddView(data);
+    }),
+    datosDiscogCanciones: datosDiscogCancionesClass(function(){
+        return null;
     })
 };
 
@@ -310,9 +387,8 @@ function updateDataAlbums(newData) {
     commonData.albumsUpdateStatus.set(true); //Actualizamos el estado del estado de albumsUpdata
     commonData.activeId.set(null);          //Pasamos el valor null a la variable que almacena la id del album que muestra los detalles.
     commonData.isActive.set(false);         //Asignamos false a la variable que indica que hay un album q muestra los detalles.
-    removeElements();
-    
-    if(esMosaico){
+    removeElements();    
+    if(esMosaico){        
         genImageMosaico(newData);
     }else{
         genImageList(newData);        
@@ -335,7 +411,7 @@ function getuserID() {
 function load() {    
     //changeMode(JSON.parse(data));
     //doQueryAll(urlSettings.std.fonotecas.canciones, commonData.datosCanciones.set);
-    doQueryAll(urlSettings.std.fonotecas.discos, commonData.datosDiscos.set);
+    doQueryAll(commonData.url.get().std.fonotecas.discos, commonData.datosDiscos.set);
     //doQueryAll(urlSettings.std.general.canciones, commonData.datosCanciones.set);
     //doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);
 }

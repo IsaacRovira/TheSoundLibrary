@@ -28,7 +28,7 @@ function openNav() {
                 document.getElementById(id).style.height = "275px";
                 break;
         }
-        document.getElementById('menu-btn').setAttribute('class', 'svg-inline--fa fas fa-times fa-w-14');
+        document.getElementById('menu-btn').setAttribute('class', 'fas fa-angle-double-up');
     }          
 }
 ;

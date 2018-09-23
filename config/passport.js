@@ -24,13 +24,15 @@ module.exports = function(passport) {
         done(null, user.local.id);
     });
     passport.deserializeUser(function(id, done) {
-        sql[config.dbmode].query("SELECT * from users where ID_key = ?", id, function(err, results){
+        console.log('Passport.deserializeUser');
+        sql[config.dbmode].query("SELECT * from users where ID_key = ?", id, function(err, results){            
             user = new User();
             if(err){
                 console.log(err);
                 done(err, user);
             }
-            user = addUser({id:results[0].ID_key,email:results[0].email,password:results[0].password});            
+            user = addUser({id:results[0].ID_key,email:results[0].email,password:results[0].password});
+            console.log('Passport.deserializeUser sin errores');
             done(err, user);
         });        
     });

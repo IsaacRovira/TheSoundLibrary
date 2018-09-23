@@ -8,6 +8,23 @@ var aux = require(path.normalize(config.raiz + '/app/misc/misc.js'));
 
 
 module.exports = function (data_router) {
+    //Discos DISCOG
+    data_router.post('/add/discos', isLoggedIn, function (req, res) {
+        
+        logCtrl(req, "Request add/discos.");
+        var url;
+        if(req.body['qry']){
+            url =   req.body['qry'];            
+        }
+        else
+        {            
+            var datosSearch = getBodyData(searchParamDiscog, req);
+            var datosPagination = getBodyData(paginationDiscog, req);            
+            url = URL + buildDiscogString(serializeObject(datosSearch), serializeObject(datosPagination));
+        }
+        doQuery(url, header, res);
+    })
+    ;
     //Canciones por fonoteca
     data_router.post('/fonotecas/canciones', isLoggedIn, function (req, res) {
         
@@ -21,13 +38,12 @@ module.exports = function (data_router) {
         
         //userCheck(query, res, datos.userID, queryDb);
         queryDb(query, datos.userID, res);
-    });
-
+    })
+    ;
     //Discos por fonoteca
     data_router.post('/fonotecas/discos', isLoggedIn, function (req, res) {        
-        
         logCtrl(req, "Request fonotecas/discos.");
-        
+                
         var datos   = getBodyData(dataSet().discos, req);
         var string  = buildSqlValues(datos,true);
         var limit   = buildLimit(datos);
@@ -281,20 +297,85 @@ function dataSet() {
 }
 ;
 // isLoggedIn verifica que el usuario haya iniciado sesi�n.
-function isLoggedIn(req, res, error, next) {
+function isLoggedIn(req, res, next) {
+    console.log("Funcion isLoggedIn");
     //Verificar si el usuario ha iniciado sesión.
+    console.log(req.isAuthenticated());
     if (req.isAuthenticated()) {
+        console.log("isLoggedIn OK");
         return next();
     }
-    //Usuarios no identificados a la p�gina de inicio.
-    return error({errorRes: ["Not logged in."], errorLog: ['Not logged in.'], code: [500]}, res);
+    console.log("isLoggedIn error");
+    error(({errorRes: ["Not logged in."], errorLog: ['Not logged in.'], status: [500]}),res);
 }
 ;
+
 //Envia los mensajes de error a la consola y como respuesta.
 function error(err, res) {
 //console.log("\n"+"\x1b[31m"+ mensaje+"\x1b[0m"+"\n");
     console.log("\n" + aux.ahora() + " \x1b[31m" + err.errorLog + "\x1b[0m" + "\n");
-    res.status(err.code);
-    return res.json(err.errorRes);
+    res.status(err.status);
+    res.json(err.errorRes);
+}
+;
+
+//Query DISCOGS
+var URL = "https://api.discogs.com/database/search";
+var header ={
+    'user-agent': "TheSoundLibrary/1.0 +http://thesoundlibrary.com",
+    Authorization: "Discogs token=SdnGXnFwzcWVCMUhDmuumAZJOdCkpCcVGNApmdju"
+}
+;
+function doQuery(destino, header, callback){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function(){
+        if(this.readyState === 4 && this.status === 200){
+            callback (this.responseText);
+        }
+        if(this.readyState === 4 && this.status > 400){
+            console.error(this.status+ "=>" +JSON.parse(this.responseText));
+            callback (this.responseText);
+        }
+    }
+    ;
+    xhttp.open("GET", destino, true);
+    xhttp.setRequestHeader('user-agent'+"="+header['user-agent'], 'Authorization'+"="+header['Authorization']);
+    xhttp.send();
+}
+;
+//Estructura que recoge los parámetros para la búsqueda.
+var searchParamDiscog={
+    barcode:    "",
+    format:     "",
+    genre:      "",
+    label:      "",    
+    style:      "",
+    title:      "",
+    type:       "",
+    year:       ""
+}
+;
+//Estructura que recoge los parámetros de paginación.
+var paginationDiscog={
+    per_page: "",   //Elementos por pagina
+    page   : ""     //Pagina consultada.
+}
+;
+//serializa el objeto searchy y pagination para psarselo a la función xhttp.send
+function buildDiscogString(search, pagination){
+    var string = serializeObject('',search);
+    string = serializeObject(string,pagination);
+    return string;
+}
+;
+//Devuelve un objecto como una cadena del tipo clave1=valor1&clave2=valor2&claveN=valorN
+function serializeObject(string, object){
+    for(var key in object){
+        if(string.length === 0){
+            string=key +"="+object[key];
+        }
+        string+="&"+key+"="+object[key];
+    }
+    return string;
 }
 ;
