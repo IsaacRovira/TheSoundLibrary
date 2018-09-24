@@ -200,7 +200,7 @@ function convertAlbumResults(datos){
         var obj = {
             discoID:    result['id'],
             album:      result['title'],
-            img_cover:  result['cover_image']
+            img_cover:  encodeURI(result['cover_image'])
         };
         newData.push(obj);
     });    

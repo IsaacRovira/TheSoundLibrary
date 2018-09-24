@@ -412,7 +412,8 @@ function buildDiscogString(search, pagination){
     return string;
 }
 ;
-//Devuelve un objecto como una cadena del tipo clave1=valor1&clave2=valor2&claveN=valorN
+//Acepta un objeto y una cadena y los devuelve
+//unidos como una cadena del tipo clave1=valor1&clave2=valor2&claveN=valorN
 function serializeObject(string, object){
     for(var key in object){
         if(string.length === 0){
