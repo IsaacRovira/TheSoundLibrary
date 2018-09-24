@@ -434,11 +434,11 @@ legend{
 /*Pie de página*/
 .footer{
     z-index: 1;
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 0;
     left: 0;
-    height: 20px;
+    height: 40px;
     width: 100%;
     background: rgba(0,0,0,0.9);
     text-align: center;

@@ -103,10 +103,10 @@ function doQueryDiscogAlbum2(destino, qry, callback){
             callback(JSON.parse(this.responseText));
         }
     }
-    ;    
+    ;
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("qry="+qry);
+    xhttp.send(objectToStringArray(urlToObject(qry)));
 }
 ;
 //DISCOG QUERY METODO 1
@@ -155,6 +155,38 @@ function serializeObject(string, object){
     return string;
 }
 ;
+//Descompone el URL y devuelve un objecto con sus elementos. Protoclo, host, path, parámetros de búsqueda.
+//https://api.discogs.com/database/search?title=back to black&type=release&per_page=3&page=1
+function urlToObject(url){
+    
+    var protocol=   url.split('://')[0];            //Protocolo....
+    var host=       url.split('\/')[2];              //Cadena con la dirección del host.    
+    var path=       url.split('\?')[0].split(host)[1];//Cadena con el path de la consulta
+    var string=     url.split('\?')[1].split('&');   //Obtenemos un array con los elementos de la búsqueda.
+    var search={};
+    string.forEach(function(element){               //Creamos un objecto con los parámetros de la búsqueda.
+        element = element.split('=');
+        search[element[0]] = element[1];
+    });
+    //Descomponemos el URL y devolvemos un objecto con sus elementos.
+    return {protocol:protocol, host:host, path:path, search:search};
+}
+;
+function objectToStringArray(object){
+    var string = '';
+    for(var key in object){
+        switch(typeof(object[key])){
+            case 'object':
+                string+=objectToStringArray(object[key])+"&";
+                break;
+            default:
+                string+=key+"="+object[key]+"&";
+        }
+    }
+    return string;
+}
+;
+
 //To test. No usada.
 var getAll = function (callback) {
     var url = "http://127.0.0.1:3030/api/discos";

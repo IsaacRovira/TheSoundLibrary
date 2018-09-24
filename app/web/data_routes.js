@@ -9,22 +9,15 @@ var https = require('https');
 
 module.exports = function (data_router) {
     //Discos DISCOG
-    data_router.post('/add/discos', isLoggedIn, function (req, res) {        
-        console.log("Request add/discos.;")
-        //logCtrl(req, "Request add/discos.");
-        var url;
-        if(req.body['qry']){
-            url =   req.body['qry'];
-            console.log(url);
-           
-        }
-        else
-        {            
-            var datosSearch = getBodyData(searchParamDiscog, req);
-            var datosPagination = getBodyData(paginationDiscog, req);            
-            url = URL + buildDiscogString(serializeObject(datosSearch), serializeObject(datosPagination));
-        }
-        doQuery(url, header, res);
+    data_router.post('/add/discos', isLoggedIn, function (req, res) {
+        logCtrl(req, "Request add/discos.");
+        
+        var url = req.body.host;
+        var path = req.body.path;
+        var datosSearch = getBodyData(searchParamDiscog, req);
+        var datosPagination = getBodyData(paginationDiscog, req);
+        
+        doQuery(url, path, datosSearch, datosPagination, header, res);
     })
     ;
     //Canciones por fonoteca
@@ -344,6 +337,7 @@ function doQueryOLD(destino, header, callback){
     xhttp.send();
 }
 ;
+//https://api.discogs.com/database/search?title=back to black&type=release&per_page=3&page=1
 function divideURI(uri){
     var protocol    = uri.split('://')[0];
     var host        = uri.split('/')[2];
@@ -354,13 +348,12 @@ function divideURI(uri){
 //Funciónq realiza la consulta a la base de datos DISCOG
 //utilizando el modulo https y su función request.
 
-function doQuery(destino, header, callback){    
-    var datos='';
-    var uri = divideURI(destino);        
+function doQuery(host, path, search, pagination, header, callback){    
+    var datos='';    
     var opt = {
         port: 443,
-        host: uri.host,
-        path: encodeURI(uri.path),
+        host: host,
+        path: encodeURI(buildDiscogString(path,search, pagination)),
         method: 'GET',
         headers: header
     };
@@ -380,6 +373,9 @@ function doQuery(destino, header, callback){
         });
         res.on('end', function(){
            console.log("Respuesta recibida.");
+           if(res.statusCode > 200){
+               console.log(datos);
+           }            
            callback.status(res.statusCode);
            callback.send(datos);
         });
@@ -406,15 +402,18 @@ var paginationDiscog={
 }
 ;
 //serializa el objeto searchy y pagination para psarselo a la función xhttp.send
-function buildDiscogString(search, pagination){
-    var string = serializeObject('',search);
-    string = serializeObject(string,pagination);
+function buildDiscogString(path, search, pagination){
+    string = path+'\?';
+    string += serializeObject(search);
+    string +='&';
+    string += serializeObject(pagination);
     return string;
 }
 ;
 //Acepta un objeto y una cadena y los devuelve
 //unidos como una cadena del tipo clave1=valor1&clave2=valor2&claveN=valorN
-function serializeObject(string, object){
+function serializeObject(object){
+    var string='';
     for(var key in object){
         if(string.length === 0){
             string=key +"="+object[key];

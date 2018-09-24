@@ -112,8 +112,11 @@ function updateImgContainerValues(datos, container) {
             case 'album':
                 container.imgTag.alt = datos[key];
                 break;
-            case 'img_cover':
+            case 'img_cover':                
                 container.imgTag.src = commonData.path.get().cover + datos[key];
+                break;
+            case 'cover_image':
+                container.imgTag.src = datos[key];
                 break;
         }
         ;

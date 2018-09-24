@@ -390,9 +390,9 @@ function updateDataAlbums(newData) {
     commonData.isActive.set(false);         //Asignamos false a la variable que indica que hay un album q muestra los detalles.
     removeElements();    
     if(esMosaico){        
-        genImageMosaico(newData);
+        genImageMosaico(JSON.parse(newData));
     }else{
-        genImageList(newData);        
+        genImageList(JSON.parse(newData));        
     }
 }
 ;

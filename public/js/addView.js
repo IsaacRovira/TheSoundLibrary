@@ -175,7 +175,7 @@ function loadAddView(){
     console.log(commonData.url.get().std.discog.discos);
     console.log("https://api.discogs.com/database/search?title=back to black&type=release&per_page=3&page=1");
     
-    doQueryDiscogAlbum2(commonData.url.get().std.discog.discos,"https://api.discogs.com/database/search?title=back to black&type=release&per_page=3&page=1",commonData.datosDiscogAlbums.set);
+    doQueryDiscogAlbum2(commonData.url.get().std.discog.discos,"https://api.discogs.com/database/search?title=back to black&type=release&per_page=9&page=1",commonData.datosDiscogAlbums.set);
     //https://api.discogs.com/database/search?title=back to black&type=release&per_page=3&page=1
     
     //Recuperamos la última búsqueda?????    
@@ -190,17 +190,17 @@ function updateAddView(data){
     removeElements();//Vaciamos el mainRow.
     updateFootState();//actualizamos el pie de página.    
     var datos = convertAlbumResults(data);
-    commonData.datosDiscos.set(datos);
+    commonData.datosDiscos.set(JSON.stringify(datos));
 }
 ;
 //Transforma los resultados recibidos de discog al formato q aceptan otras funciones.
 function convertAlbumResults(datos){    
     var newData = [];    
-    datos['results'].forEach(function(result){
+    datos['results'].forEach(function(result){        
         var obj = {
             discoID:    result['id'],
             album:      result['title'],
-            img_cover:  encodeURI(result['cover_image'])
+            cover_image:  encodeURI(result['cover_image'])
         };
         newData.push(obj);
     });    
