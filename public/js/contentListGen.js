@@ -134,18 +134,30 @@ var altValue = function (valorOrg, valorAlt) {
 ;
 //Genera la lista con los albunes atendiendo a la estructura indicada mÃ¡s arriba.
 function genImageList(data) {
+    //console.log("Lista: ",data);
     var ulNode = document.createElement('ul');
     ulNode.setAttribute('class', 'list-group');
     ulNode.setAttribute('id', 'mainUl');
 
     for (var i = 0; i < data.length; i++) {
-        liAtt.id = data[i]['discoID'];
-
-        imgAtt.src = commonData.path.get().cover + data[i]['img_cover'];
-        imgAtt.alt = data[i]['album'];
-        imgAtt.fileName = data[i]['img_cover'];
-        imgAtt.onclick = 'detailsOnOff(' + data[i]['discoID'] + ')';
-
+        for(var key in data[i]){
+            switch(key){
+                case "discoID":
+                    liAtt.id = data[i][key];
+                    imgAtt.onclick = 'detailsOnOff(' + data[i][key] + ')';
+                    break;
+                case "cover_image":
+                    imgAtt.src = data[i][key];
+                    imgAtt.fileName = data[i][key];
+                    break;
+                case "img_cover":
+                    imgAtt.src = commonData.path.get().cover + data[i][key];
+                    imgAtt.fileName = data[i][key];
+                    break;
+                case "album": imgAtt.alt = data[i][key];break;
+                default:
+            }
+        }
         for (var key in pText) {
             switch (key) {
                 case 'class':

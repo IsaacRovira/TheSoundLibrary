@@ -76,7 +76,7 @@ function imgContainerNew() {
 ;
 var genImageMosaico = function (data) {
     //data = JSON.parse(data);
-
+    console.log("Mosaico: ", data);    
     for (var i = 0; i < data.length; i++) {
         imgContainer = updateImgContainerValues(data[i], imgContainerNew());
         imgContainer = genNodes(imgContainer);

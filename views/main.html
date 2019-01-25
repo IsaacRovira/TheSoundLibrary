@@ -17,7 +17,7 @@
         <script src="./bootstrap/js/bootstrap.min.js"></script>
         
         <!--CSS-->
-        <link rel="stylesheet" type="text/css" href="./css/main.css">
+        <link rel="stylesheet" type="text/css" href="./css/main.css">       
         
         <!--JavaScript-->
         <script src= "./js/commonDataStruct.js" type="text/javascript"></script>
@@ -29,6 +29,7 @@
         <script src= "./js/albumDetails.js" type="text/javascript"></script>
         <script src= "./js/navFunctions.js" type="text/javascript"></script>
         <script src= "./js/addView.js" type="text/javascript"></script>
+        <script src= "./js/orderFunctions.js" type="text/javascript"></script>
 	<!--<script type="text/javascript">getUserId();</script>-->
         <title>TheSoundLibrary</title>
     </head>
@@ -82,24 +83,24 @@
         <form class="filter-form form-text" id="formFilter">
             <div class="row">
                 <div class="filter-input col-3">
-                    <div class="orderby-icon"><i id="album-asc" class="fas fa-sort-up" onclick="orderBy(this.id)"></i></div>
+                    <div class="orderby-icon"><i id="album-asc" class="fas fa-sort-up" onclick="orderByMe(this.id)"></i></div>
                     <div class="texto-orderby">Album</div>
-                    <div class="orderby-icon"><i id="album-desc" class="fas fa-sort-down" onclick="orderBy(this.id)"></i></div>                
+                    <div class="orderby-icon"><i id="album-desc" class="fas fa-sort-down" onclick="orderByMe(this.id)"></i></div>                
                 </div>
             <div class="filter-input col-3">
-                <div class="orderby-icon"><i id="artista-asc" class="fas fa-sort-up" onclick="orderBy(this.id)"></i></div>
+                <div class="orderby-icon"><i id="artista-asc" class="fas fa-sort-up" onclick="orderByMe(this.id)"></i></div>
                 <div class="texto-orderby">Artista</div>
-                <div class="orderby-icon"><i id="artista-desc" class="fas fa-sort-down" onclick="orderBy(this.id)"></i></div>
+                <div class="orderby-icon"><i id="artista-desc" class="fas fa-sort-down" onclick="orderByMe(this.id)"></i></div>
             </div>
             <div class="filter-input col-3">
-                <div class="orderby-icon"><i id="year-asc" class="orderby-icon fas fa-sort-up" onclick="orderBy(this.id)"></i></div>
+                <div class="orderby-icon"><i id="year-asc" class="orderby-icon fas fa-sort-up" onclick="orderByMe(this.id)"></i></div>
                 <div class="texto-orderby">Año</div>                            
-                <div class="orderby-icon"><i id="year-desc" class="fas fa-sort-down" onclick="orderBy(this.id)"></i></div>                    
+                <div class="orderby-icon"><i id="year-desc" class="fas fa-sort-down" onclick="orderByMe(this.id)"></i></div>                    
             </div>
             <div class="filter-input col-3">                
-                <div class="orderby-icon"><i id="genero-asc" class="fas fa-sort-up" onclick="orderBy(this.id)"></i></div>
+                <div class="orderby-icon"><i id="genero-asc" class="fas fa-sort-up" onclick="orderByMe(this.id)"></i></div>
                 <div class="texto-orderby">Genero</div>
-                <div class="orderby-icon"><i id="genero-desc" class="fas fa-sort-down" onclick="orderBy(this.id)"></i></div>                
+                <div class="orderby-icon"><i id="genero-desc" class="fas fa-sort-down" onclick="orderByMe(this.id)"></i></div>                
             </div>
             </div>
         </form>
@@ -131,7 +132,7 @@
         
         NAV MENU HORIZONTAL-->
         <div class="row sidenav-h" id="sideMenu-h">
-            <div class="menu-h-item col-1" onclick="changeMode(dataAlbum)" id="modeBtn">Lista</div>
+            <div class="menu-h-item col-1" onclick="changeMode(commonData.datosDiscos.get())" id="modeBtn">Lista</div>
             <div class="menu-h-item col-1" onclick="refreshData()">Refrescar</div>
             <div class="menu-h-item col-1" onclick="openSearch(this.id)" id="h-search">Buscar</div>
             <div class="menu-h-item col-1" onclick="openOrderBy(this.id)" id="h-orderby">Ordenar</div>
@@ -145,7 +146,7 @@
         NAV MENU VERTICAL-->
         <div class="sidenav" id="sideMenu">
             <ul class="list-group" id="list-group-sidenav">
-                <li class="list-group-item-text"><i id="modo" onclick="changeMode(dataAlbum)" class="far fa-newspaper"></i></li>
+                <li class="list-group-item-text"><i id="modo" onclick="changeMode(commonData.datosDiscos.get())" class="far fa-newspaper"></i></li>
                 <li class="list-group-item-text"><i class="fas fa-redo" onclick="refreshData()"></i></li>
                 <li class="list-group-item-text"><i class="fas fa-search" onclick="openSearch(this.id)" id="v-search"></i></li>
                 <li class="list-group-item-text"><i id="elementFilter" class="fas fa-filter" onclick="openOrderBy()"></i></li>

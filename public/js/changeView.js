@@ -29,14 +29,14 @@ function textChange(text1, text2, id){
 //Llama a las funciones q generan las vistas mosáico o lista.
 function changeMode(data) {
     activeId = null;
-    avtiveDiv = null;
+    activeDiv = null;
     isActive = false;
 
     removeElements();
     textChange('Mosaico', 'Lista', 'modeBtn');
     openNav();
     
-    if (commonData.esMosaico.get()) {
+    if(commonData.esMosaico.get()) {
         //f302
         //<i class="far fa-newspaper"></i>
         document.getElementById('modo').setAttribute('class',"far fa-newspaper" );

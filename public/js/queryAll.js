@@ -27,7 +27,8 @@ function doQueryAll(destino, callback) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 201) {
-            callback(this.responseText);
+            callback(JSON.parse(this.responseText));
+            //callback(this.responseText);
         }
     };
 
@@ -95,17 +96,18 @@ function doQuerySongsByAlbumId(destino, albumId, callback) {
 //Pasa el string completo al servidor de la forma (https://api.discogs.com/database/search?label=Universal+Records&year=1977&genre=Rock&per_page=3&type=release&page=2)
 //y el servidor completa el header, hace la consulta y devuelve el objecto con la respuesta.
 function doQueryDiscogAlbum2(destino, qry, callback){
-    console.log("qry",qry);
+    console.log("qry: ",qry);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
-        if(this.readyState === 4 && this.status === 200){            
-            console.log(this.responseText);
+        if(this.readyState === 4 && this.status === 200){
+            console.log("ResponseText: ",JSON.parse(this.responseText));
             callback(JSON.parse(this.responseText));
         }
     }
     ;
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //xhttp.send("full_url="+escape(qry));
     xhttp.send(objectToStringArray(urlToObject(qry)));
 }
 ;
@@ -121,7 +123,7 @@ function doQueryDiscogAlbum(destino, searchData, paginationSettings, callback){
     }
     ;
     xhttp.open("POST", destino, true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
     xhttp.send(buildDiscogString(searchData,paginationSettings));
 }
 ;

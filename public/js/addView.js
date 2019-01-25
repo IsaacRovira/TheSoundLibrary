@@ -81,19 +81,19 @@ function generarNode(nodeStruct){
 ;
 //Funciones del pie de página
 function toFirst(){
-    doQueryDiscogsAlbums2(commonData.url.get().std.discog.discos,commonData.datosDiscogAlbums['pagination']['urls']['first'],commonData.datosDiscogAlbums.set());  
+    doQueryDiscogAlbum2(commonData.url.get().std.discog.discos,commonData.datosDiscogAlbums.get()['pagination']['urls']['first'],commonData.datosDiscogAlbums.set);  
 }
 ;
 function oneBack(){
-    doQueryDiscogsAlbums2(commonData.url.get().std.discog.discos,commonData.datosDiscogAlbums['pagination']['urls']['prev'],commonData.datosDiscogAlbums.set());
+    doQueryDiscogAlbum2(commonData.url.get().std.discog.discos,commonData.datosDiscogAlbums.get()['pagination']['urls']['prev'],commonData.datosDiscogAlbums.set);
 }
 ;
 function oneFoward(){
-    doQueryDiscogsAlbums2(commonData.url.get().std.discog.discos,commonData.datosDiscogAlbums['pagination']['urls']['next'],commonData.datosDiscogAlbums.set());
+    doQueryDiscogAlbum2(commonData.url.get().std.discog.discos, commonData.datosDiscogAlbums.get()['pagination']['urls']['next'],commonData.datosDiscogAlbums.set);
 }
 ;
 function toLast(){
-    doQueryDiscogsAlbums2(commonData.url.get().std.discog.discos,commonData.datosDiscogAlbums['pagination']['urls']['last'],commonData.datosDiscogAlbums.set());
+    doQueryDiscogAlbum2(commonData.url.get().std.discog.discos,commonData.datosDiscogAlbums.get()['pagination']['urls']['last'],commonData.datosDiscogAlbums.set);
 }
 ;
 
@@ -110,8 +110,8 @@ function updateFootInfo(){
     var pag = 0;
     var maxpag = 0;
     if(checkPagination()){
-        pag = commonData.datosDiscogAlbums['pagination']['page']; //Página actual
-        maxpag = commonData.datosDiscogAlbums['pagination']['pages']; //Total páginas en la consulta
+        pag = commonData.datosDiscogAlbums.get()['pagination']['page']; //Página actual
+        maxpag = commonData.datosDiscogAlbums.get()['pagination']['pages']; //Total páginas en la consulta
     }    
     document.getElementById(footChildElements.info.id).textContent = pag + "/" + maxpag; 
 }
@@ -124,12 +124,12 @@ function updateFootState(){
                 default:
                     var oldNode = document.getElementById(key);
                     var newNode;
-                    if(key in commonData.datosDiscogAlbums['pagination']['urls']){
+                    if(key in commonData.datosDiscogAlbums.get()['pagination']['urls']){
                         newNode = generarNode(footChildElements[key]);
                     }else{
                         newNode = generarNode(elementNew('i','',key,'',[]));
                     }
-                    document.getElementById(footerStruct.id).newreplaceChild(newNode,oldNode);
+                    document.getElementById(footerStruct.id).replaceChild(newNode,oldNode);
                     break;
                 case 'info':
                     updateFootInfo();
@@ -154,9 +154,9 @@ function updateFootState(){
 ;
 //Verifica q existe el elemento paginación. Utilizado en UpdateFootState.
 function checkPagination(){
-    if(commonData.datosDiscogAlbums != null){
-        if('pagination' in commonData.datosDiscogAlbums){
-            if('urls' in commonData.datosDiscogAlbums.pagination){
+    if(commonData.datosDiscogAlbums.get() !== null){
+        if('pagination' in commonData.datosDiscogAlbums.get()){
+            if('urls' in commonData.datosDiscogAlbums.get()["pagination"]){
                 return true;
             }
         }
@@ -168,14 +168,14 @@ function checkPagination(){
 function loadAddView(){    
     commonData.currentMode.set('Añadir');//Cambiamos el estado de la variable q indica el modo en el q nos encotnramos.    
     textChange('Fonoteca', 'Añadir', 'navPosition');//Cambiamos el subtitulo a Base de datos
-    removeElements();//Vaciamos el mainRow.
+    //removeElements();//Vaciamos el mainRow.
     newFootNode();
     updateFootState();//actualizamos el pie de página.
     
     console.log(commonData.url.get().std.discog.discos);
-    console.log("https://api.discogs.com/database/search?title=back to black&type=release&per_page=3&page=1");
+    console.log("https://api.discogs.com/database/search?title=back to black&type=release&per_page=27&page=1");
     
-    doQueryDiscogAlbum2(commonData.url.get().std.discog.discos,"https://api.discogs.com/database/search?title=back to black&type=release&per_page=9&page=1",commonData.datosDiscogAlbums.set);
+    doQueryDiscogAlbum2(commonData.url.get().std.discog.discos,"https://api.discogs.com/database/search?type=master&release_title=back to black&per_page=24&page=1",commonData.datosDiscogAlbums.set);
     //https://api.discogs.com/database/search?title=back to black&type=release&per_page=3&page=1
     
     //Recuperamos la última búsqueda?????    
@@ -190,7 +190,8 @@ function updateAddView(data){
     removeElements();//Vaciamos el mainRow.
     updateFootState();//actualizamos el pie de página.    
     var datos = convertAlbumResults(data);
-    commonData.datosDiscos.set(JSON.stringify(datos));
+    commonData.datosDiscos.set(datos);
+    console.log("Discog Album: ", commonData.datosDiscos.get());
 }
 ;
 //Transforma los resultados recibidos de discog al formato q aceptan otras funciones.
@@ -198,9 +199,13 @@ function convertAlbumResults(datos){
     var newData = [];    
     datos['results'].forEach(function(result){        
         var obj = {
-            discoID:    result['id'],
-            album:      result['title'],
-            cover_image:  encodeURI(result['cover_image'])
+            discoID:        result['id'],
+            album:          result['title'].split(' - ')[1],
+            cover_image:    encodeURI(result['cover_image']),
+            year:           result['year'],
+            artista:        result['title'].split(' - ')[0],
+            genero:         result['genre'].toString(),
+            tipo:           result['format'].toString()
         };
         newData.push(obj);
     });    

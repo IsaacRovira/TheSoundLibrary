@@ -1,3 +1,5 @@
+/* global localstorage */
+
 //  ./public/js/commonDataStruct.js
 var PATH = {
     cover: "./img/Caratulas/",
@@ -51,6 +53,68 @@ var releaseType = "release"; //Master-Release //Almacenar en base de datos por u
 var datosDiscogAlbums = null;
 var datosDiscogCanciones = null;
 
+
+
+
+commonData = {
+    path:               pathClass(function () {
+        return null;
+    }),
+    server:             serverClass(function () {
+        return null;
+    }),
+    userID:             userIDClass(function () {
+        return null;
+    }),
+    apiPort:            apiPortClass(function () {
+        return null;
+    }),
+    songsUpdateStatus:  songsUpdateStatusClass(function () {
+        return null;
+    }),
+    albumsUpdateStatus: albumsUpdateStatusClass(function () {
+        return null;
+    }),
+    datosCanciones:     datosCancionesClass(function (datos) {
+        updateDataSongs(datos);
+    }),
+    datosDiscos:        datosDiscosClass(function (datos) {        
+        updateDataAlbums(datos);
+    }),
+    url:                urlClass(function () {
+        return null;
+    }),
+    esMosaico:          esMosaicoClass(function(){
+        return null;
+    }),
+    idActivo:           idActivoClass(function(){
+        return null;
+    }),
+    activeId:           activeIdClass(function(){
+        return null;
+    }),
+    isActive:           isActiveClass(function(){
+        return null;
+    }),
+    activeDiv:          activeDivClass(function(){
+        return null;
+    }),
+    orderByField:       orderByFieldClass(function(){
+        return null;
+    }),
+    dataToSearch:       dataToSearchClass(function(){
+        return null;
+    }),
+    currentMode:        currentModeClass(function(){
+        return null;
+    }),
+    datosDiscogAlbums:  datosDiscogAlbumsClass(function(data){
+        return updateAddView(data);
+    }),
+    datosDiscogCanciones: datosDiscogCancionesClass(function(){
+        return null;
+    })
+};
 //***************************************************************
 
 function datosDiscogCancionesClass(callback){
@@ -72,7 +136,7 @@ function datosDiscogAlbumsClass(callback){
         },
         set: function(dato){
             datosDiscogAlbums = dato;
-            callback(datosDiscogAlbums);
+            callback(dato);
         }
     };
 }
@@ -202,8 +266,9 @@ function datosDiscosClass(callback) {
         get: function () {
             return dataAlbum;
         },
-        set: function (dato) {
-            dataAlbum = (dato);
+        set: function (dato) {            
+            //dataAlbum = JSON.parse(dato);
+            dataAlbum = dato;
             callback(dato);
         }
     };
@@ -317,83 +382,25 @@ function currentModeClass(callback){
     };
 }
 ;
-//**************************************************************
-var commonData = {
-    path:               pathClass(function () {
-        return null;
-    }),
-    server:             serverClass(function () {
-        return null;
-    }),
-    userID:             userIDClass(function () {
-        return null;
-    }),
-    apiPort:            apiPortClass(function () {
-        return null;
-    }),
-    songsUpdateStatus:  songsUpdateStatusClass(function () {
-        return null;
-    }),
-    albumsUpdateStatus: albumsUpdateStatusClass(function () {
-        return null;
-    }),
-    datosCanciones:     datosCancionesClass(function (datos) {
-        updateDataSongs(datos);
-    }),
-    datosDiscos:        datosDiscosClass(function (datos) {        
-        updateDataAlbums(datos);
-    }),
-    url:                urlClass(function () {
-        return null;
-    }),
-    esMosaico:          esMosaicoClass(function(){
-        return null;
-    }),
-    idActivo:           idActivoClass(function(){
-        return null;
-    }),
-    activeId:           activeIdClass(function(){
-        return null;
-    }),
-    isActive:           isActiveClass(function(){
-        return null;
-    }),
-    activeDiv:          activeDivClass(function(){
-        return null;
-    }),
-    orderByField:       orderByFieldClass(function(){
-        return null;
-    }),
-    dataToSearch:       dataToSearchClass(function(){
-        return null;
-    }),
-    currentMode:        currentModeClass(function(){
-        return null;
-    }),
-    datosDiscogAlbums:  datosDiscogAlbumsClass(function(data){
-        return updateAddView(data);
-    }),
-    datosDiscogCanciones: datosDiscogCancionesClass(function(){
-        return null;
-    })
-};
 
+//**************************************************************
 //Funciones que actualizan las variables con los datos.
-function updateDataSongs(newData) {
+function updateDataSongs() {
     commonData.songsUpdateStatus.set(true);
+    console.log("canciones: ",commonData.datosCanciones.get());
 }
 ;
 function updateDataAlbums(newData) {
-    console.log(newData);
     commonData.albumsUpdateStatus.set(true); //Actualizamos el estado del estado de albumsUpdata
     commonData.activeId.set(null);          //Pasamos el valor null a la variable que almacena la id del album que muestra los detalles.
     commonData.isActive.set(false);         //Asignamos false a la variable que indica que hay un album q muestra los detalles.
-    removeElements();    
-    if(esMosaico){        
-        genImageMosaico(JSON.parse(newData));
+    removeElements();
+    //console.log("albumData: ",commonData.datosDiscos.get());
+    if(esMosaico){
+        genImageMosaico(commonData.datosDiscos.get());
     }else{
-        genImageList(JSON.parse(newData));        
-    }
+        genImageList(commonData.datosDiscos.get());        
+    }       
 }
 ;
 function getServer() {
@@ -412,7 +419,7 @@ function getuserID() {
 function load() {    
     //changeMode(JSON.parse(data));
     //doQueryAll(urlSettings.std.fonotecas.canciones, commonData.datosCanciones.set);
-    doQueryAll(commonData.url.get().std.fonotecas.discos, commonData.datosDiscos.set);
+    doQueryAll(commonData.url.get().std.fonotecas.discos, commonData.datosDiscos.set);    
     //doQueryAll(urlSettings.std.general.canciones, commonData.datosCanciones.set);
     //doQueryAll(urlSettings.std.general.discos, commonData.datosDiscos.set);
 }

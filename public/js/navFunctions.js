@@ -131,8 +131,11 @@ function closeIconOnOff(text,id){
 //busca discos q coincidan con los criterios.
 function searchAlbum(){
     var elements = document.getElementById('formSearch').elements;
-    var dataToSearch={};    
-    for(var key in elements){        
+    var dataToSearch={};
+    console.log("currentMode: ", commonData.currentMode.get());
+    console.log("Elements: ",elements);
+    for(var key in elements){
+        console.log("key in elements: ", key);
         switch(elements[key].value){
             case 'Album':
             case 'Artista':
@@ -146,14 +149,19 @@ function searchAlbum(){
     }
     //Almacenamos la cadena con los criterios de busqueda.
     commonData.dataToSearch.set(dataToSearch);    
-    //Realizamos la consulta.
-    doQuerySearch(commonData.url.get()['std']['general']['discos'], commonData.dataToSearch.get(), 0, commonData.orderByField.get(), commonData.datosDiscos.set);
+    if(commonData.currentMode === 'Fonoteca'){
+        //Realizamos la consulta.
+        doQuerySearch(commonData.url.get()['std']['general']['discos'], commonData.dataToSearch.get(), 0, commonData.orderByField.get(), commonData.datosDiscos.set);        
+    }else{
+        //Enviamos el objecto dataSearch y lo procesamos en el servidor para hacer la consulta a discog. Modulo addViewSearch.
+    }    
     //Cerramos el menú consulta.
     closeSubMenus();
     //Desactivamos el los detalles si los estamos mostrando.
-    deactivateDivMosaic(id)
+    if(commonData.activeId.get())deactivateDivMosaic(commonData.activeId.get());
 }
 ;
+
 //Ordenar
 function openOrderBy(nodeId){    
         
@@ -193,6 +201,11 @@ function openOrderBy(nodeId){
     }
 }
 ;
+/*
+ * OBSOLETA.... NO UTILIZADA
+ * @param {type} id
+ * @returns {undefined}
+ */
 function orderBy(id){    
     switch(id){
         case 'select-orderBy':
@@ -201,7 +214,7 @@ function orderBy(id){
             commonData.orderByField.set(valor);
             break;
         default:
-            var valor = id=id.split('-')[0] + ' ' + id.split('-')[1];
+            var valor = id.split('-')[0] + ' ' + id.split('-')[1];
             commonData.orderByField.set(valor);
     }
     doQuerySearch(commonData.url.get()['std']['general']['discos'],commonData.dataToSearch.get(), 0, valor, commonData.datosDiscos.set);

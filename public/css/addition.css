@@ -27,6 +27,14 @@ and open the template in the editor.
     text-align: center;
     padding: 1% 0 1% 0 ;
 }
+next{
+    padding: 0% 2% 0% 2%;
+}
+#next:hover{
+    padding: 0% 2% 0% 2%;
+    opacity: 0.8;
+    cursor: pointer;
+}
 
 /*HEADER*/
 @media screen and (min-width: 700px){

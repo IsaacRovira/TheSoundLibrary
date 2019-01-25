@@ -12,12 +12,16 @@ module.exports = function (data_router) {
     data_router.post('/add/discos', isLoggedIn, function (req, res) {
         logCtrl(req, "Request add/discos.");
         
-        var url = req.body.host;
-        var path = req.body.path;
-        var datosSearch = getBodyData(searchParamDiscog, req);
-        var datosPagination = getBodyData(paginationDiscog, req);
-        
-        doQuery(url, path, datosSearch, datosPagination, header, res);
+        if(req.body.full_url){
+            doQuery(req.body.full_url, res);
+        }else{
+            var url = req.body.host || "api.discogs.com";
+            var path = req.body.path;
+            var datosSearch = getBodyData(searchParamDiscog, req);
+            var datosPagination = getBodyData(paginationDiscog, req);
+
+            doQuery(url, path, datosSearch, datosPagination, header, res);
+        }
     })
     ;
     //Canciones por fonoteca
@@ -349,14 +353,21 @@ function divideURI(uri){
 //utilizando el modulo https y su función request.
 
 function doQuery(host, path, search, pagination, header, callback){    
-    var datos='';    
-    var opt = {
-        port: 443,
-        host: host,
-        path: encodeURI(buildDiscogString(path,search, pagination)),
-        method: 'GET',
-        headers: header
-    };
+    
+    console.log(arguments.length, arguments[0], arguments[2]);
+    
+    if(arguments.length < 6){
+        var opt = host;
+    }else{
+        var opt = {
+            port: 443,
+            host: host,
+            path: encodeURI(buildDiscogString(path,search, pagination)),
+            method: 'GET',
+            headers: header
+        };
+    }
+    var datos='';
     var req = https.request(opt, function(res){
         //console.log("statusCode: ", res.statusCode);
         //console.log("headers: ", res.headers);
