@@ -69,7 +69,7 @@ var sql = {
         by_titulo: "select * from canciones where Titulo contains ",
         by_Any: "SELECT cancionID, discoID, artistas, duracion, pista, titulo FROM canciones "
     },
-    discosNew: 'SELECT discos.discoID, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteID = soportes.soporteID where discoID not in (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.userID where ID_key = ?)',
+    discosNew: 'SELECT discos.discoID, album, artista, discografica, etiquetado, genero, identificadores, img_backcover, img_cover, tipo, year from discos inner join soportes on discos.soporteID = soportes.soporteID where discoID in (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.userID where ID_key = ?)',
     cancionesNew: 'SELECT cancionID, canciones.discoID, artistas, duracion, pista, titulo FROM canciones where discoID NOT IN (select DISTINCT discoID from fonotecasdata INNER JOIN users on fonotecasdata.userID = users.userID where ID_key = ?)',
     
     //Devuelve una función para la consulta según el motor seleccionado en configuración.
@@ -94,7 +94,7 @@ var sql = {
     sqlite:{
             connect: new sqlite3.Database('./sqlite/soundlib.db', function (err){
                 if(err){
-                    console.log(err.message);
+                    console.log("Error: ",err.message);
                 }
                 console.log("Conectado a la base de datos soundlib.db");
                 /*
@@ -108,7 +108,7 @@ var sql = {
                 */
             }),
             query:  function(qry,parameter,callback){
-                console.log(qry +" "+parameter);
+                console.log("DB.js: ",qry +" "+parameter);
                 var param = parameter;
                 if(typeof(parameter) === 'string'){
                     param = [param];                    
@@ -116,7 +116,7 @@ var sql = {
                 return sql.sqlite.connect.all(qry,param,callback);
             },
             insert: function(qry, parameter, callback){
-                console.log(qry +" "+parameter);
+                //console.log("DB.js: ",qry +" "+parameter);
                 var param = parameter;
                 if(typeof(parameter) === 'string'){
                     param = [param];
@@ -124,7 +124,7 @@ var sql = {
                 return sql.sqlite.connect.run(qry,param,callback);
             },
             queryall:  function(qry,parameter,callback){
-                console.log(qry +" "+parameter);
+                //console.log("DB.js: ",qry +" "+parameter);
                 var param = parameter;
                 if(typeof(parameter) === 'string'){
                     param = [param];                    

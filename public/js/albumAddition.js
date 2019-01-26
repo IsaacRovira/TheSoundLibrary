@@ -54,7 +54,8 @@ var pagination ={
 
 
 /*
- * Debe generar una cadena tipo: {back to black, Amy Winehouse, soul,release}&{?title,artist,genere,type}
+ * NOT WORKING {back to black, Amy Winehouse, soul,release}&{?title,artist,genere,type}
+ * Debe generar una cadena tipo: ?type=album&release_title=back to black&artist=Amy&per_page=1
  * con los datos del formulario.
  * Identificaremos que datos se han introducido y construiremos la cadena.
  */

@@ -1,4 +1,4 @@
-﻿//aux.js
+//aux.js
 
 /*
 Funcione auxiliares para todos los modulos

@@ -43,7 +43,7 @@ function doQuerySearch(destino, conditionsObj, limitINT, callback) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 201) {
-            callback(this.responseText);
+            callback(JSON.parse(this.responseText));
         }
     };
 
@@ -56,7 +56,7 @@ function doQuerySearch(destino, conditionsObj, callback) {
     var xhttp = new XMLHttpRequest();    
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 201) {            
-            callback(this.responseText);
+            callback(JSON.parse(this.responseText));
         }
     };
 
@@ -69,7 +69,7 @@ function doQuerySearch(destino, conditionsObj, limitINT, orderby, callback) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 201) {
-            callback(this.responseText);
+            callback(JSON.parse(this.responseText));
         }
     }
     ;

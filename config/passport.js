@@ -27,8 +27,8 @@ module.exports = function(passport) {
         sql[config.dbmode].query("SELECT * from users where ID_key = ?", id, function(err, results){            
             user = new User();
             if(err){
-                console.log(err);
-                done(err, user);
+                console.log("Error: ",err);
+                done(err, null);
             }
             user = addUser({id:results[0].ID_key,email:results[0].email,password:results[0].password});            
             done(err, user);

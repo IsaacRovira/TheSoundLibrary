@@ -148,8 +148,9 @@ function searchAlbum(){
         }
     }
     //Almacenamos la cadena con los criterios de busqueda.
-    commonData.dataToSearch.set(dataToSearch);    
-    if(commonData.currentMode === 'Fonoteca'){
+    commonData.dataToSearch.set(dataToSearch);
+    console.log("DataToSearch: ",dataToSearch);
+    if(commonData.currentMode.get() === 'Fonoteca'){
         //Realizamos la consulta.
         doQuerySearch(commonData.url.get()['std']['general']['discos'], commonData.dataToSearch.get(), 0, commonData.orderByField.get(), commonData.datosDiscos.set);        
     }else{

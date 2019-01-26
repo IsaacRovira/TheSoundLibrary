@@ -1,6 +1,6 @@
 /* 
  * Cambia el main.html para mostrar el modo Añadir albumes.
- * Estomo modo consultara la base de datos de DISCOG y mostrara los resultados
+ * Este modo consultara la base de datos de DISCOG y mostrara los resultados
  * agrupados en un número configurable por página.
  * 
  * Pasos:
@@ -15,7 +15,7 @@
 
 //Cambiar el subtitulo y la variable currentMode que recoge el modo en el que nos encontramos.
 var subtituloValor = ['Fonoteca','Añadir','navPosition'];
-commonData.currentMode.set(subtituloValor);
+//commonData.currentMode.set(subtituloValor[0]);
 
 //Generar un pie de página.
 //5 subelementos FIRST, BACK, INFO, NEXT, LAST

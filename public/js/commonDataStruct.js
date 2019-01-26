@@ -416,7 +416,7 @@ function getuserID() {
     return userID;
 }
 ;
-function load() {    
+function load(){    
     //changeMode(JSON.parse(data));
     //doQueryAll(urlSettings.std.fonotecas.canciones, commonData.datosCanciones.set);
     doQueryAll(commonData.url.get().std.fonotecas.discos, commonData.datosDiscos.set);    
