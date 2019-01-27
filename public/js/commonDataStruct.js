@@ -46,17 +46,18 @@ var activeDiv;
 var orderByField = "discoID";
 var dataToSearch={};
 var currentMode = 'Fonoteca'; //fonotecas, Añadir
-var currentPage = 1;
-var numItemsPerPage = 9; //Almacenar en base de datos por usuario o en una cookie
+//var currentPage = 1;
+//var numItemsPerPage = 9; //Almacenar en base de datos por usuario o en una cookie
+var pagination ={
+    currentPage: 1,
+    numItemsPerPage: 9 //Almacenar en base de datos por usuario o en una cookie
+}
+;
 var releaseType = "release"; //Master-Release //Almacenar en base de datos por usuario o en una cookie
-
 var datosDiscogAlbums = null;
 var datosDiscogCanciones = null;
 
-
-
-
-commonData = {
+var commonData = {    
     path:               pathClass(function () {
         return null;
     }),
@@ -113,10 +114,24 @@ commonData = {
     }),
     datosDiscogCanciones: datosDiscogCancionesClass(function(){
         return null;
+    }),
+    pagination:         pagClass(function(){
+        return null;
     })
 };
 //***************************************************************
-
+function pagClass(callback){
+    return{
+        get: function(){
+            return pagination;
+        },
+        set: function(dato){
+            pagination = dato;
+            callback(dato);
+        }
+    };
+}
+;
 function datosDiscogCancionesClass(callback){
     return{
         get: function(){

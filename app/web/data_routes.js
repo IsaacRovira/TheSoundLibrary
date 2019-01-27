@@ -12,6 +12,8 @@ module.exports = function (data_router) {
     data_router.post('/add/discos', isLoggedIn, function (req, res) {
         logCtrl(req, "Request add/discos.");
         
+        console.log("No JSON: ", req.body.pagination);
+        console.log("JSON: ", req.body.pagination);
         if(req.body.full_url){
             doQuery(req.body.full_url, res);
         }else{

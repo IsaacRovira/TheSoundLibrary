@@ -37,7 +37,25 @@ barcode         => Search barcodes. Example: 7 2064-24425-2 4
 track           => Search track titles.
  */
 
-
+function switchParamName(searchObject, pagObject){
+    var string = '';
+    var param = new searchParam;
+    for(var key in searchObject){
+        switch(key){
+            case 'Album':   param['release_title'] = searchObject[key];
+                break;
+            case 'ISBN':    param['barcode'] = searchObject[key];
+                break;
+            case 'Artista': param['artist'] = searchObject[key];
+                break;
+            case 'Genero':  param['genre'] = searchObject[key];
+                break;
+            case 'year':    param['year'] = searchObject[key];
+        }
+    }
+    return getParamString(param)+getPaginationString(pagObject);
+}
+;
 function paginationParam(per_page, page){
     if(arguments.length === 1){        
         this.page = 1;

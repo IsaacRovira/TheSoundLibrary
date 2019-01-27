@@ -124,7 +124,8 @@ function doQueryDiscogAlbum(destino, searchData, paginationSettings, callback){
     ;
     xhttp.open("POST", destino, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");    
-    xhttp.send(buildDiscogString(searchData,paginationSettings));
+    //xhttp.send(buildDiscogString(searchData,paginationSettings));
+    xhttp.send("search="+JSON.stringify(searchData)+"&pagination="+JSON.stringify(paginationSettings));
 }
 ;
 //Serializa el objeto dataObject de tipo clave=valor y añade el valor maxInt al final.
@@ -141,8 +142,9 @@ function buildSearchString(dataObject, maxInt, ordby){
 ;
 //serializa el objeto searchy y pagination para psarselo a la función xhttp.send
 function buildDiscogString(search, pagination){
-    var string = serializeObject('',search);
+    var string = serializeObject('',search);    
     string = serializeObject(string,pagination);
+    console.log("query: ", string);
     return string;
 }
 ;
@@ -151,8 +153,9 @@ function serializeObject(string, object){
     for(var key in object){
         if(string.length === 0){
             string=key +"="+object[key];
-        }
-        string+="&"+key+"="+object[key];
+        }else{
+            string+="&"+key+"="+object[key];
+        }        
     }
     return string;
 }

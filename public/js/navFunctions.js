@@ -155,6 +155,7 @@ function searchAlbum(){
         doQuerySearch(commonData.url.get()['std']['general']['discos'], commonData.dataToSearch.get(), 0, commonData.orderByField.get(), commonData.datosDiscos.set);        
     }else{
         //Enviamos el objecto dataSearch y lo procesamos en el servidor para hacer la consulta a discog. Modulo addViewSearch.
+        doQueryDiscogAlbum(commonData.url.get()['std']['discog']['discos'],commonData.dataToSearch.get(), commonData.pagination.get(), commonData.datosDiscogAlbums.set);
     }    
     //Cerramos el menú consulta.
     closeSubMenus();

@@ -23,7 +23,7 @@
     "passport-twitter": "~1.0.4",
     "path": "^0.12.7",
     "read-file": "^0.2.0",
-    "sqlite3": "^4.0.4"
+    "sqlite3": "^4.0.6"
   },
   "scripts": {
     "start": "node server.js"
